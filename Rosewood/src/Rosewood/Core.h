@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 #ifdef RW_PLATFORM_WINDOWS
 
 	#ifdef RW_BUILD_DLL

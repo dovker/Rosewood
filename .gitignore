@@ -1,2 +1,4 @@
-
-*.opendb
+.vs\
+\.vs\
+.vs\Rosewood
+.vs
