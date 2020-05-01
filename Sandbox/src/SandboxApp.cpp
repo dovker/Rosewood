@@ -27,7 +27,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());  
-		PushOverlay(new Rosewood::ImGuiLayer());
 	}
 
 	~Sandbox()

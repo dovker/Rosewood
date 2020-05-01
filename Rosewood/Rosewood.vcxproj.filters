@@ -1349,6 +1349,9 @@
     <ClCompile Include="src\Rosewood\Application.cpp">
       <Filter>src\Rosewood</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rosewood\ImGui\ImGuiBuild.cpp">
+      <Filter>src\Rosewood\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Rosewood\ImGui\ImGuiLayer.cpp">
       <Filter>src\Rosewood\ImGui</Filter>
     </ClCompile>
