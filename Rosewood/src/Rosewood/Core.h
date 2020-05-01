@@ -1,5 +1,6 @@
 #pragma once
-#include <memory>
+
+
 #ifdef RW_PLATFORM_WINDOWS
 
 	#ifdef RW_BUILD_DLL
@@ -10,6 +11,27 @@
 #else
 #define ROSEWOOD_API
 #endif // RW_PLATFORM_WINDOWS
+
+#define RW_ENABLE_ASSERTS
+
+#ifdef RW_ENABLE_ASSERTS
+#define RW_ASSERT(x, ...) { if(!(x)) { RW_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#define RW_CORE_ASSERT(x, ...) { if(!(x)) { RW_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#else
+#define RW_ASSERT(x, ...)
+#define RW_CORE_ASSERT(x, ...)
+#endif
+
+#define BIT(x) (1 << x)
+#define RW_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+//HIHI. whoever is reading this, my crdid cart details are:
+//Walter White
+//5284 7858 2365 4058
+//01/25
+//857
+
+
 // Define EXPORTED for any platform
 /*
 #if defined _WIN32 || defined __CYGWIN__
