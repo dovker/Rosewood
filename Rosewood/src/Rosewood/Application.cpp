@@ -19,6 +19,9 @@ namespace Rosewood
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNCTION(Application::OnEvent));
 
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
+
 	}
 	Application::~Application()
 	{
@@ -36,7 +39,10 @@ namespace Rosewood
 				layer->OnUpdate();
 			}
 
-			RW_CORE_TRACE("{0}, {1}", Input::GetMouseX(), Input::GetMouseY());
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack) 
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}

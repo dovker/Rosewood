@@ -22,7 +22,7 @@ namespace Rosewood {
 	};
 
 	// Interface representing a desktop system based Window
-	class ROSEWOOD_API Window
+	class  Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

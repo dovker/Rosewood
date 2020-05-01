@@ -2,14 +2,18 @@
 
 
 #ifdef RW_PLATFORM_WINDOWS
-
-	#ifdef RW_BUILD_DLL
-		#define ROSEWOOD_API _declspec(dllexport)
+/*
+	#ifdef RW_DYNAMIC_LINKING
+		#ifdef RW_BUILD_DLL
+			#define  _declspec(dllexport)
+		#else
+			#define  _declspec(dllimport)
+		#endif // RW_BUILD_DLL
 	#else
-		#define ROSEWOOD_API _declspec(dllimport)
-	#endif // RW_BUILD_DLL
+		#define 
+	#endif
 #else
-#define ROSEWOOD_API
+	#define */
 #endif // RW_PLATFORM_WINDOWS
 
 #define RW_ENABLE_ASSERTS

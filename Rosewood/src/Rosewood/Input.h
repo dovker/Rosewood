@@ -4,7 +4,7 @@
 
 namespace Rosewood
 {
-	class ROSEWOOD_API Input
+	class  Input
 	{
 	public:
 

@@ -5,7 +5,7 @@
 
 namespace Rosewood
 {
-	class ROSEWOOD_API WindowsInput : public Input
+	class  WindowsInput : public Input
 	{
 	protected:
 

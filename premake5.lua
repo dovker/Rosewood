@@ -23,8 +23,10 @@ include "Rosewood/vendor/imgui"
 
 project "Rosewood"
     location "Rosewood"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
+    staticruntime "on"
+    cppdialect "C++17"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -59,8 +61,7 @@ project "Rosewood"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
-        staticruntime "On"
+        
         systemversion "latest"
 
         defines
@@ -68,11 +69,6 @@ project "Rosewood"
             "RW_PLATFORM_WINDOWS",
             "RW_BUILD_DLL",
             "GLFW_INCLUDE_NONE"
-        }
-
-        postbuildcommands
-        {
-            {"{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"}
         }
 
     filter "configurations.Debug"
@@ -94,6 +90,8 @@ project "Sandbox"
         location "Sandbox"
         kind "ConsoleApp"
         language "C++"
+        cppdialect "C++17"
+        staticruntime "On"
 
         targetdir ("bin/" .. outputdir .. "/%{prj.name}")
         objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -119,8 +117,7 @@ project "Sandbox"
         }
 
         filter "system:windows"
-            cppdialect "C++17"
-            staticruntime "On"
+            
             systemversion "latest"
     
             defines
