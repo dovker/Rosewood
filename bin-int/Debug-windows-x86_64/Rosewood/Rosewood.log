@@ -1,16 +1,2 @@
-﻿  rwpch.cpp
-  WindowsInput.cpp
-  WindowsWindow.cpp
-  Application.cpp
-  ImGuiBuild.cpp
-C:\dev\Rosewood\Rosewood\Vendor\imgui\examples\imgui_impl_opengl3.cpp(194,5): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\dev\Rosewood\Rosewood\Vendor\imgui\examples\imgui_impl_opengl3.cpp(195,5): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\dev\Rosewood\Rosewood\Vendor\imgui\examples\imgui_impl_opengl3.cpp(521,5): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  ImGuiLayer.cpp
-C:\dev\Rosewood\Rosewood\src\Rosewood\ImGui\ImGuiLayer.cpp(82,80): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\dev\Rosewood\Rosewood\src\Rosewood\ImGui\ImGuiLayer.cpp(82,51): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  Layer.cpp
-  LayerStack.cpp
-  Log.cpp
-  Generating Code...
+﻿  Application.cpp
   Rosewood.vcxproj -> C:\dev\Rosewood\Rosewood\..\bin\Debug-windows-x86_64\Rosewood\Rosewood.lib

@@ -59,6 +59,10 @@ project "Rosewood"
         "ImGui",
         "opengl32.lib"
     }
+    defines
+    {
+        "_CRT_SCURE_NO_WARNINGS"
+    }
 
     filter "system:windows"
         
@@ -108,6 +112,7 @@ project "Sandbox"
         {
             "Rosewood/vendor/spdlog/include",
             "Rosewood/src",
+            "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}"
         }
 

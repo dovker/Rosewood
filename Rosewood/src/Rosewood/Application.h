@@ -28,6 +28,7 @@ namespace Rosewood
 
 		inline static Application& Get() { return *s_Instance;  }
 		inline Window& GetWindow() { return *m_Window; }
+		inline static float GetDeltaTime() { return m_DeltaTime;  }
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 
@@ -38,6 +39,7 @@ namespace Rosewood
 
 	private:
 		static Application* s_Instance;
+		static float m_DeltaTime;
 	};
 
 	//Has to be defined in CLIENT

@@ -159,6 +159,11 @@ namespace Rosewood {
 		glfwSwapBuffers(m_Window);
 	}
 
+	inline float WindowsWindow::GetTime()
+	{
+		return (float)glfwGetTime();
+	}
+
 	void WindowsWindow::SetVSync(bool enabled)
 	{
 		if (enabled)

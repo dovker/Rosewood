@@ -11,6 +11,7 @@ namespace Rosewood
 #define BIND_EVENT_FUNCTION(x) std::bind(&x, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
+	float Application::m_DeltaTime = 0.0f;
 	Application::Application()
 	{
 		RW_CORE_ASSERT(!s_Instance, "Why are you trying to make two applications? There is one already dumbass!");
@@ -28,10 +29,13 @@ namespace Rosewood
 	}
 	void Application::Run()
 	{
-		
+		float currentTime = 0;
+		float lateTime = 0;
 
 		while (m_Running)
 		{
+			currentTime = m_Window->GetTime();
+			m_DeltaTime = currentTime - lateTime;
 			glClearColor(1, 1, 0.5, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
@@ -45,6 +49,7 @@ namespace Rosewood
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
+			lateTime = m_Window->GetTime();
 		}
 	}
 	void Application::OnEvent(Event& e)
@@ -52,7 +57,7 @@ namespace Rosewood
 		EventDispatcher dispatcher = EventDispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(Application::OnWindowClosed));
 
-		RW_CORE_TRACE("{0}", e);
+		//RW_CORE_TRACE("{0}", e);
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
