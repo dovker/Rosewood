@@ -16,6 +16,7 @@ IncludeDir["GLFW"] = "Rosewood/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Rosewood/Vendor/Glad/include"
 IncludeDir["ImGui"] = "Rosewood/Vendor/imgui"
 IncludeDir["glm"] = "Rosewood/Vendor/glm"
+IncludeDir["stb_image"] = "Rosewood/Vendor/stb_image"
 
 include "Rosewood/vendor/GLFW"
 include "Rosewood/vendor/Glad"
@@ -38,6 +39,8 @@ project "Rosewood"
     {
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/src/**.h",
+        "%{prj.name}/vendor/stb_image/**.h",
+        "%{prj.name}/vendor/stb_image/**.cpp",
         "%{prj.name}/vendor/glm/glm/**.hpp",
         "%{prj.name}/vendor/glm/glm/**.inl"
     }
@@ -49,7 +52,8 @@ project "Rosewood"
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
-        "%{IncludeDir.glm}"
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.stb_image}"
     }
 
     links

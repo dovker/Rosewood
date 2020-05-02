@@ -10,6 +10,7 @@
 #include <functional>
 
 #include <string>
+#include <fstream>
 #include <sstream>
 #include <ostream>
 #include <array>

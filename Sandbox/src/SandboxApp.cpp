@@ -6,6 +6,11 @@
 class ExampleLayer : public Rosewood::Layer
 {
 public:
+	unsigned int scrWidth = Rosewood::Application::Get().GetWindow().GetWidth();
+	unsigned int scrHeight = Rosewood::Application::Get().GetWindow().GetHeight();
+	float lastX = scrWidth / 2.0f;
+	float lastY = scrHeight / 2.0f;
+
 	Camera camera = Camera();
 	ExampleLayer()
 		: Layer("Example")
@@ -16,7 +21,7 @@ public:
 	void OnUpdate() override
 	{
 		//RW_INFO(" Ha Ha Pee Pee Updated LOLOLOLOL");
-		
+		//Add shader, texture, matrices and draw!
 	}
 	void OnImGuiRender() override
 	{
@@ -54,9 +59,23 @@ public:
 		return false;
 	}
 
+	bool firstMouse = true;
+
 	bool OnMouseMovedEvent(Rosewood::MouseMovedEvent& e)
 	{
-		
+		if (firstMouse)
+		{
+			lastX = e.GetX();
+			lastY = e.GetY();
+			firstMouse = false;
+		}
+
+		float xoffset = e.GetX() - lastX;
+		float yoffset = lastY - e.GetY(); // reversed since y-coordinates go from bottom to top
+		lastX = e.GetX();
+		lastY = e.GetY();
+
+		camera.ProcessMouseMovement(xoffset, yoffset);
 		//io.MousePos = ImVec2(e.GetX(), e.GetY());
 		//camera.ProcessMouseMovement()
 		return false;
