@@ -18,6 +18,11 @@ namespace Rosewood {
 		inline unsigned int GetHeight() const override { return m_Data.Height; }
 		inline float GetTime() override;
 
+		inline void LockCursor() override { glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); };
+		inline void UnlockCursor() override { glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); };
+		//extend to cursor modes
+
+
 		// Window attributes
 		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;

@@ -10,13 +10,14 @@ namespace Rosewood
     public:
         // the program ID
         
-
+        
         Texture(const std::string& path);
         Texture(uint32_t width, uint32_t height);
         ~Texture();
 
         uint32_t GetWidth() const { return m_Width; }
         uint32_t GetHeight() const { return m_Height; }
+        uint32_t GetID() const { return m_ID; }
 
         void SetData(void* data, uint32_t size);
 
@@ -26,7 +27,7 @@ namespace Rosewood
         std::string m_Path;
         uint32_t m_Width, m_Height;
         GLenum m_InternalFormat, m_DataFormat;
-        unsigned int m_ID;
+        uint32_t m_ID;
 	};
 
 }

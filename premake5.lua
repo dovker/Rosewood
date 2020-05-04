@@ -116,13 +116,15 @@ project "Sandbox"
         {
             "Rosewood/vendor/spdlog/include",
             "Rosewood/src",
+            "%{IncludeDir.Glad}",
             "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}"
         }
 
         links
         {
-            "Rosewood"
+            "Rosewood",
+            "Glad"
         }
 
         filter "system:windows"

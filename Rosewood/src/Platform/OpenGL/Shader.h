@@ -1,9 +1,10 @@
 #pragma once
 #include <rwpch.h>
-#include <glad/glad.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glad/glad.h>
 
 namespace Rosewood
 {
@@ -13,6 +14,7 @@ namespace Rosewood
         // the program ID
         unsigned int ID;
 
+        
         // constructor reads and builds the shader
         Shader(const std::string& filepath);
         // use/activate the shader

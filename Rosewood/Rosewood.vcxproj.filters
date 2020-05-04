@@ -51,6 +51,9 @@
     <ClInclude Include="src\Platform\OpenGL\Mesh.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGL.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\Shader.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>

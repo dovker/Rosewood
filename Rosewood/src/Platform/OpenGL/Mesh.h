@@ -1,11 +1,12 @@
 #pragma once
 #include <rwpch.h>
-#include <glad/glad.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Platform\OpenGL\Shader.h>
 #include <Platform\OpenGL\Texture.h>
+#include <glad/glad.h>
 
 namespace Rosewood
 {
@@ -15,7 +16,9 @@ namespace Rosewood
         glm::vec3 Normal;
         // texCoords
         glm::vec2 TexCoords;
-
+        Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex)
+            : Position(pos), Normal(norm), TexCoords(tex)
+        {}
     };
 
     
@@ -25,11 +28,11 @@ namespace Rosewood
         /*  Mesh Data  */
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        Texture texture;
+        Texture* texture;
         /*  Functions  */
         //Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
-
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture texture)
+        
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture* texture)
         {
             this->vertices = vertices;
             this->indices = indices;
@@ -40,15 +43,17 @@ namespace Rosewood
 
         void Draw(Shader shader)
         {
+            //glActiveTexture(GL_TEXTURE0);
+            texture->Bind();
             
-            texture.Bind(0);
+            shader.setInt("meshTexture", 0);
             // draw mesh
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
             // always good practice to set everything back to defaults once configured.
-            glActiveTexture(GL_TEXTURE0);
+            //glActiveTexture(GL_TEXTURE0);
         }
     private:
         /*  Render data  */

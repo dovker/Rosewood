@@ -34,8 +34,9 @@ namespace Rosewood
 
 		while (m_Running)
 		{
+			m_DeltaTime = lateTime-currentTime;
 			currentTime = m_Window->GetTime();
-			m_DeltaTime = currentTime - lateTime;
+			
 			glClearColor(1, 1, 0.5, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
