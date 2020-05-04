@@ -1,1 +1,8 @@
-﻿  Sandbox.vcxproj -> C:\dev\Rosewood\Sandbox\..\bin\Debug-windows-x86_64\Sandbox\Sandbox.exe
+﻿  SandboxApp.cpp
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(52,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\dev\Rosewood\Sandbox\src\SandboxApp.cpp(120,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\dev\Rosewood\Sandbox\src\SandboxApp.cpp(122,1): warning C4312: 'type cast': conversion from 'uint32_t' to 'ImTextureID' of greater size
+C:\dev\Rosewood\Sandbox\src\SandboxApp.cpp(122,96): warning C4244: 'argument': conversion from 'uint32_t' to 'float', possible loss of data
+C:\dev\Rosewood\Sandbox\src\SandboxApp.cpp(122,73): warning C4244: 'argument': conversion from 'uint32_t' to 'float', possible loss of data
+LINK : warning LNK4098: defaultlib 'LIBCMTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Sandbox.vcxproj -> C:\dev\Rosewood\Sandbox\..\bin\Debug-windows-x86_64\Sandbox\Sandbox.exe

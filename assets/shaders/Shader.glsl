@@ -49,8 +49,8 @@ void main()
     //result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
     //vec4 color = texture(meshTexture, TexCoords);
     
-    //vec4 color = vec4(Normal,1.0);
-    FragColor = texture(meshTexture, TexCoords);
-    
+    vec4 color = vec4(Normal ,1.0);
+    //FragColor = texture(meshTexture, TexCoords);
+    FragColor = color;
     
 }
