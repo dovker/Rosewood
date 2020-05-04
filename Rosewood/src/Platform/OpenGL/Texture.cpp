@@ -33,10 +33,10 @@ namespace Rosewood
 
 		glGenTextures(1, &m_ID);
 		
-		glTexImage2D(m_ID, 1, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+		//glTexImage2D(m_ID, 1, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 		//glTexImage2D(m_ID, 1, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(m_ID);
-		/* Doesn't work with this pc. UNCOMMENT LATER
+		//glGenerateMipmap(m_ID);
+		
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
 		glTextureStorage2D(m_ID, 1, internalFormat, m_Width, m_Height);
 
@@ -47,7 +47,7 @@ namespace Rosewood
 		glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
-		*/
+		
 		stbi_image_free(data);
 	}
 
@@ -81,8 +81,8 @@ namespace Rosewood
 
 	void Texture::Bind(uint32_t slot) const
 	{
-		//glBindTextureUnit(slot, m_ID);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_ID);
+		glBindTextureUnit(slot, m_ID);
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, m_ID);
 	}
 }

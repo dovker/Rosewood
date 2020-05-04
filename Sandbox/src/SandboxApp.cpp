@@ -82,11 +82,13 @@ public:
 	Rosewood::Mesh mesh = Rosewood::Mesh(vertices, indexes, &myTexture);
 
 	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
 	ExampleLayer()
 		: Layer("Example")
 	{
 		
 	}
+
 	bool open = true;
 	void OnUpdate() override
 	{
@@ -107,7 +109,7 @@ public:
 		shader.setMat4("model", model);
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
-		myTexture.Bind();
+		
 
 		mesh.Draw(shader);
 	}
@@ -119,7 +121,10 @@ public:
 		ImGui::Text("FPS:");
 		float deltaTime = 1.0 / (Rosewood::Application::GetDeltaTime()+0.00000001);//doesn't make it 0
 		ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, 5, ImGuiInputTextFlags_None);
-		ImGui::Image((ImTextureID)myTexture.GetID(), ImVec2(myTexture.GetWidth(), myTexture.GetHeight()));
+		int w = scrWidth;
+		int h = scrHeight;
+		ImGui::InputInt("px", &w);
+		ImGui::InputInt("px", &h);
 		ImGui::End();
 	}
 	void OnEvent(Rosewood::Event& event) override
@@ -131,7 +136,7 @@ public:
 		dispatcher.Dispatch<Rosewood::MouseScrolledEvent>(RW_BIND_EVENT_FN(ExampleLayer::OnMouseScrolledEvent));
 		dispatcher.Dispatch<Rosewood::KeyPressedEvent>(RW_BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
 		dispatcher.Dispatch<Rosewood::KeyReleasedEvent>(RW_BIND_EVENT_FN(ExampleLayer::OnKeyReleasedEvent));
-		
+		dispatcher.Dispatch<Rosewood::WindowResizeEvent>(RW_BIND_EVENT_FN(ExampleLayer::OnWindowResizeEvent));
 	}
 
 	bool OnMouseButtonPressedEvent(Rosewood::MouseButtonPressedEvent& e)
@@ -192,6 +197,14 @@ public:
 	{
 		//io.KeysDown[e.GetKeyCode()] = false;
 
+		return false;
+	}
+	bool OnWindowResizeEvent(Rosewood::WindowResizeEvent& e)
+	{
+		//io.KeysDown[e.GetKeyCode()] = false;
+		scrWidth = e.GetWidth();
+		scrHeight = e.GetHeight();
+		glViewport(0, 0, scrWidth, scrHeight);
 		return false;
 	}
 };

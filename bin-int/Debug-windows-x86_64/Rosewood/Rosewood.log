@@ -1,2 +1,6 @@
-﻿  Texture.cpp
+﻿  WindowsInput.cpp
+  WindowsWindow.cpp
+  Application.cpp
+  ImGuiLayer.cpp
+  Generating Code...
   Rosewood.vcxproj -> C:\dev\Rosewood\Rosewood\..\bin\Debug-windows-x86_64\Rosewood\Rosewood.lib

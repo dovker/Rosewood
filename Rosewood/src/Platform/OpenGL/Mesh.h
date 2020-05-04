@@ -46,7 +46,6 @@ namespace Rosewood
             //glActiveTexture(GL_TEXTURE0);
             texture->Bind();
             
-            shader.setInt("meshTexture", 0);
             // draw mesh
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

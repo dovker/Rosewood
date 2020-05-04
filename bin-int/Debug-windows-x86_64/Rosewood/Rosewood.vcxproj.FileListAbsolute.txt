@@ -1,2 +1,0 @@
-C:\dev\Rosewood\bin\Debug-windows-x86_64\Rosewood\Rosewood.pdb
-C:\dev\Rosewood\bin-int\Debug-windows-x86_64\Rosewood\Rosewood.pdb

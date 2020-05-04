@@ -1,2 +1,0 @@
-C:\dev\Rosewood\Rosewood\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.pdb
-C:\dev\Rosewood\Rosewood\vendor\Glad\bin-int\Debug-windows-x86_64\Glad\Glad.pdb
