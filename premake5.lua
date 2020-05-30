@@ -94,8 +94,8 @@ project "Rosewood"
         buildoptions "/MD"
         optimize "On"
 
-project "Sandbox"
-        location "Sandbox"
+project "Sandbox2D"
+        location "Sandbox2D"
         kind "ConsoleApp"
         language "C++"
         cppdialect "C++17"
@@ -150,3 +150,59 @@ project "Sandbox"
             defines "RW_DIST"
             buildoptions "/MD"
             optimize "On"
+            project "Sandbox"
+            location "Sandbox"
+            kind "ConsoleApp"
+            language "C++"
+            cppdialect "C++17"
+            staticruntime "On"
+    
+            targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+            objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+        
+            files
+            {
+                "%{prj.name}/src/**.cpp",
+                "%{prj.name}/src/**.h",
+                "%{prj.name}/src/**.hpp",
+                "%{prj.name}/src/**.c",
+            }
+        
+            includedirs
+            {
+                "Rosewood/vendor/spdlog/include",
+                "Rosewood/src",
+                "%{IncludeDir.Glad}",
+                "%{IncludeDir.ImGui}",
+                "%{IncludeDir.glm}"
+            }
+    
+            links
+            {
+                "Rosewood",
+                "Glad"
+            }
+    
+            filter "system:windows"
+                
+                systemversion "latest"
+        
+                defines
+                {
+                    "RW_PLATFORM_WINDOWS"
+                }
+        
+            filter "configurations.Debug"
+                defines "RW_DEBUG"
+                buildoptions "/MDd"
+                symbols "On"
+        
+            filter "configurations.Release"
+                defines "RW_RELEASE"
+                buildoptions "/MD"
+                optimize "On"
+        
+            filter "configurations.Dist"
+                defines "RW_DIST"
+                buildoptions "/MD"
+                optimize "On"

@@ -117,7 +117,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Chunk.h" />
     <ClInclude Include="src\FPSCamera.h" />
+    <ClInclude Include="src\Map.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SandboxApp.cpp" />

@@ -1,4 +1,81 @@
 ﻿  SandboxApp.cpp
-C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(51,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\dev\Rosewood\Sandbox\src\SandboxApp.cpp(122,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Sandbox.vcxproj -> C:\dev\Rosewood\Sandbox\..\bin\Debug-windows-x86_64\Sandbox\Sandbox.exe
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(108,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(109,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(110,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(111,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(112,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(113,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(166,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(167,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(168,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(169,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(170,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(171,1): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(181,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\Mesh.h(194,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\dev\Rosewood\Sandbox\src\Map.h(16,24): error C2988: unrecognizable template declaration/definition
+C:\dev\Rosewood\Sandbox\src\Map.h(16,24): error C2143: syntax error: missing ';' before '<'
+C:\dev\Rosewood\Sandbox\src\Map.h(16,13): error C2913: explicit specialization; 'hash' is not a specialization of a class template
+C:\dev\Rosewood\Sandbox\src\Map.h(16,24): error C2059: syntax error: '<'
+C:\dev\Rosewood\Sandbox\src\Map.h(16,37): error C2143: syntax error: missing ';' before '{'
+C:\dev\Rosewood\Sandbox\src\Map.h(16,37): error C2447: '{': missing function header (old-style formal list?)
+C:\dev\Rosewood\Sandbox\src\Map.h(36,55): error C2653: 'lm': is not a class or namespace name
+C:\dev\Rosewood\Sandbox\src\Map.h(36,50): error C2065: 'ivec2': undeclared identifier
+C:\dev\Rosewood\Sandbox\src\Map.h(36,41): error C3203: 'hash': unspecialized class template can't be used as a template argument for template parameter '_Hasher', expected a real type
+C:\dev\Rosewood\Sandbox\src\Map.h(49,1): error C2679: binary '=': no operator found which takes a right-hand operand of type 'std::unordered_map<glm::ivec2,Chunk *,std::hash<glm::ivec2>,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>>' (or there is no acceptable conversion)
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\unordered_map(386,20): message : could be 'std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>> &std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>>::operator =(std::initializer_list<_Ty>)'
+          with
+          [
+              _Ty=std::pair<const glm::ivec2,Chunk *>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\unordered_map(221,20): message : or       'std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>> &std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>>::operator =(std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>> &&) noexcept(<expr>)'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\unordered_map(212,20): message : or       'std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>> &std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>>::operator =(const std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>> &)'
+C:\dev\Rosewood\Sandbox\src\Map.h(49,1): message : while trying to match the argument list '(std::unordered_map<glm::ivec2,Chunk *,int,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>>, std::unordered_map<glm::ivec2,Chunk *,std::hash<glm::ivec2>,std::equal_to<glm::ivec2>,std::allocator<std::pair<const glm::ivec2,Chunk *>>>)'

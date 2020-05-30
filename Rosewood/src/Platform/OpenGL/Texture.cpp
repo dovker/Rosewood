@@ -67,6 +67,7 @@ namespace Rosewood
 		glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 
+
 	Texture::~Texture()
 	{
 		glDeleteTextures(1, &m_ID);
@@ -81,7 +82,7 @@ namespace Rosewood
 
 	void Texture::Bind(uint32_t slot) const
 	{
-		glBindTextureUnit(slot, m_ID);
+		glBindTextureUnit(slot, m_ID); // 
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_2D, m_ID);
 	}

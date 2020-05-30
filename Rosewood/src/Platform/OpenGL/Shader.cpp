@@ -3,6 +3,7 @@
 
 namespace Rosewood
 {
+	
 	Shader::Shader(const std::string& path)
 	{
 

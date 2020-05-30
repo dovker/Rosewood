@@ -128,6 +128,7 @@
   <ItemGroup>
     <ClInclude Include="src\Platform\OpenGL\Mesh.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGL.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBatchRenderer.h" />
     <ClInclude Include="src\Platform\OpenGL\Shader.h" />
     <ClInclude Include="src\Platform\OpenGL\Texture.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -562,6 +563,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBatchRenderer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\Shader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\Texture.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
@@ -587,6 +589,9 @@
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Platform\OpenGL\Shaders\Default2D.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

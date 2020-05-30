@@ -13,6 +13,7 @@ namespace Rosewood
         
         Texture(const std::string& path);
         Texture(uint32_t width, uint32_t height);
+        
         ~Texture();
 
         uint32_t GetWidth() const { return m_Width; }
