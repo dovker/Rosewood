@@ -81,8 +81,23 @@ namespace Rosewood
 		return id;
 	}
 
+	void RecompileShader(const std::string& VSsource, const std::string& FSsource)
+	{
+		ID = glCreateProgram();
+		unsigned int vs = CompileShader(GL_VERTEX_SHADER, VSsource);
+		unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, FSsource);
 
-	void Shader::use()
+		glAttachShader(ID, vs);
+		glAttachShader(ID, fs);
+		glLinkProgram(ID);
+		glValidateProgram(ID);
+
+		glDeleteShader(vs);
+		glDeleteShader(fs); //Reconsider changing this because it changes everything realtime
+	}
+
+
+	void Shader::Bind()
 	{
 
 		glUseProgram(ID);

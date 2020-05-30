@@ -8,7 +8,11 @@
 #include "Rosewood/MouseButtonCodes.h"
 
 #include "Rosewood/Events/Event.h"
+
+
 #include <Platform/OpenGL/OpenGL.h>
+#include "Rosewood/Camera.h"
+
 #include "Rosewood/ImGui/ImGuiLayer.h"
 
 // ---Entry Point---------------------

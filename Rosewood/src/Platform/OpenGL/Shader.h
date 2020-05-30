@@ -18,9 +18,12 @@ namespace Rosewood
         // constructor reads and builds the shader
         Shader(const std::string& filepath);
         // use/activate the shader
-        void use();
+        void Bind();
         // utility uniform functions
         unsigned int CompileShader(unsigned int type, const std::string& source);
+
+        void RecompileShader(const std::string& VSsource, const std::string& FSsource);
+
         void setBool(const std::string& name, bool value) const;
         void setInt(const std::string& name, int value) const;
         void setFloat(const std::string& name, float value) const;

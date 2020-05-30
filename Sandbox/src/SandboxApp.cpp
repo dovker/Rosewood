@@ -117,7 +117,7 @@ public:
 
 		//myTexture.Bind(0);
 
-		shader.use();
+		shader.Bind();
 		shader.setMat4("model", model);
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
