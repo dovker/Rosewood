@@ -4,86 +4,268 @@
 
 namespace Rosewood
 { 
+    struct RendererData
+    {
+        GLuint QuadVA = 0;
+        GLuint QuadVB = 0;
+        GLuint QuadIB = 0;
+
+        Texture WhiteTexture = Texture(1, 1);
+        OrthographicCamera Camera;
+
+        uint32_t IndexCount = 0;
+        
+        QuadVertex* QuadBuffer = nullptr;
+        QuadVertex* QuadPointer = nullptr;
+
+        std::array<uint32_t, MAX_TEXTURES> TextureSlots;
+        uint32_t CurrentTexIndex = 0;
+
+        Shader CurrentShader = BatchRenderer::DefaultShader;
+
+        BatchRenderer::Stats RenderStats;
+    }
+
+    static RendererData s_Data;
 
     void BatchRenderer::Init()
     {
+        s_Data.QuadBuffer = new QuadVertex[MaxVertexCount];
+
+        SetupBuffers();
+
         glEnable(GL_BLEND);  
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
-        m_WhiteTexture = Texture(1, 1);
-        uint32_t whiteTextureData = 0xffffffff;
-        m_WhiteTexture.SetData(&whiteTextureData, sizeof(uint32_t));
-        setupBuffers();
-    }
-    void BatchRenderer::Begin(const OrthographicCamera& camera)
-    {
-        
-        defaultShader.Bind();
-        defaultShader.setMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-        m_Camera = camera;
-        int Samplers[16] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-        defaultShader.setIntPtr("u_Textures", 16, Samplers);
-        m_WhiteTexture.Bind(0);
 
+        s_Data.WhiteTexture = Texture(1, 1);
+        uint32_t whiteTextureData = 0xffffffff;
+        s_Data.WhiteTexture.SetData(&whiteTextureData, sizeof(uint32_t));
+
+        s_Data.TextureSlots[0] = s_Data.WhiteTexture.GetID();
+        for (size_t i = 1; i < MAX_TEXTURES; i++)
+        {
+            s_Data.TextureSlots[i];
+        }
         
+        
+    }
+    void BatchRenderer::Shutdown()
+    {
+        glDeleteVertexArrays(1, &s_Data.QuadVA);
+        glDeleteBuffers(1, &s_Data.QuadVB);
+        glDeleteBuffers(1, &s_Data.QuadIB);
+        
+        delete[] s_Data.QuadBuffer;
+    }
+    void BatchRenderer::SetShader(Shader& shader) //Only to be called before BatchRenderer::Begin
+    {
+        EndBatch();
+        Flush();
+        BeginBatch(s_Data.Camera, shader);
+    }
+
+    void BatchRenderer::Begin(const OrthographicCamera& camera, Shader& shader = BatchRenderer::DefaultShader)
+    {
+        s_Data.CurrentShader = shader;
+        s_Data.CurrentShader.Bind();
+        s_Data.CurrentShader.setMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+        s_Data.Camera = camera;
+        int Samplers[MAX_TEXTURES];
+        for (int i = 0; i<MAX_TEXTURES; i++)
+        {
+            Samplers[i] = i;
+        }
+        s_Data.CurrentShader.setIntPtr("u_Textures", 16, Samplers);
+        s_Data.WhiteTexture.Bind(0);
+
+        s_Data.QuadPointer = s_Data.QuadBuffer;
     }
     void BatchRenderer::End()
     {
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices[0]);
-
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-
-        vertices.clear();
-        m_IndexCount = 0;
-        m_CurrentTexIndex = 0;
+        GLsizeiptr size = (uint8_t*)s_Data.QuadPointer - (uint8_t*)s_Data.QuadBuffer;
+        glBindBuffer(GL_ARRAY_BUFFER, s_Data.QuadVB);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, s, s_Data.QuadBuffer);
     }
-    void BatchRenderer::Restart()
+    void BatchRenderer::Flush()
     {
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices[0]);
-
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-
-        vertices.clear();
-        m_IndexCount = 0;
-        
-    }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, float rotation, glm::vec4 uv, glm::vec4 color)
-    {
-        if (vertices.size() >= MAX_QUADS * 4)
+        for(uint32_t i = 0; i <= s_Data.TextureSlotIndex; i++) // My index is changed before setting the texture
         {
-            Restart();
-            RW_CORE_WARN("Too many Quads. Creating a new batch");
+            glBindTextureUnit(i, s_Data.TextureSlots[i]);
         }
-        /*
+        glBindVertexArray(s_Data.QuadVA);
+        glDrawElements(GL_TRIANGLES, s_Data.IndexCount, GL_UNSIGNED_INT, nullptr);
+        s_Data.RenderStats.DrawCount++;
+
+        s_Data.IndexCount = 0;
+        s_Data.CurrentTexIndex = 0;
+    }
+    
+    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Texture& texture, float rotation, glm::vec4 uv, glm::vec4 color)
+    {
+        if (s_Data.IndexCount >= MAX_INDICES || s_Data.CurrentTexIndex > MAX_TEXTURES-1)
+        {
+            EndBatch();
+            Flush();
+            BeginBatch(s_Data.Camera, s_Data.CurrentShader);
+        }
+
+
+        float textureIndex = 0.0f;
+        for (uint32_t i = 1; i < s_Data.CurrentTexIndex; i++)
+        {
+            if(s_Data.TextureSlots[i] == texture.GetID())
+            {
+                textureIndex = (float)i;
+                break;
+            }
+        }
+        if(textureIndex == 0.0f)
+        {
+            s_Data.CurrentTexIndex++;
+            textureIndex = (flaot)s_Data.CurrentTexIndex;
+            s_Data.TextureSlots[s_Data.CurrentTexIndex] = texture.GetID();
+        }
+        
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
 		* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
 		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-        */
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
-            * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+        
 
-        //Definitely do something about textures though
-        size_t vecBack = vertices.size();
-        vertices.push_back(QuadVertex(transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), color, glm::vec2(uv.x, uv.y), m_CurrentTexIndex));
-        vertices.push_back(QuadVertex(transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), color, glm::vec2(uv.x, uv.w), m_CurrentTexIndex));
-        vertices.push_back(QuadVertex(transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), color, glm::vec2(uv.z, uv.w), m_CurrentTexIndex));
-        vertices.push_back(QuadVertex(transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), color, glm::vec2(uv.z, uv.y), m_CurrentTexIndex));
-        m_IndexCount += 6;
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.RenderStats.QuadCount++;
+        s_Data.IndexCount += 6;
+    }
+    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Texture& texture, glm::vec4 uv, glm::vec4 color)
+    {
+        if (s_Data.IndexCount >= MAX_INDICES || s_Data.CurrentTexIndex > MAX_TEXTURES-1)
+        {
+            EndBatch();
+            Flush();
+            BeginBatch(s_Data.Camera, s_Data.CurrentShader);
+        }
+
+
+        float textureIndex = 0.0f;
+        for (uint32_t i = 1; i < s_Data.CurrentTexIndex; i++)
+        {
+            if(s_Data.TextureSlots[i] == texture.GetID())
+            {
+                textureIndex = (float)i;
+                break;
+            }
+        }
+        if(textureIndex == 0.0f)
+        {
+            s_Data.CurrentTexIndex++;
+            textureIndex = (flaot)s_Data.CurrentTexIndex;
+            s_Data.TextureSlots[s_Data.CurrentTexIndex] = texture.GetID();
+        }
+        
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
+		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+        
+
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.RenderStats.QuadCount++;
+        s_Data.IndexCount += 6;
+    }
+    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, glm::vec4 color)
+    {
+        if (s_Data.IndexCount >= MAX_INDICES)
+        {
+            EndBatch();
+            Flush();
+            BeginBatch(s_Data.Camera, s_Data.CurrentShader);
+        }
+        
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
+		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+        
+        float textureIndex = 0.0f;
+        
+
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f, 0.0f);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f, 1.0f);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(1.0f, 1.0f);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(1.0f, 0.0f);
+        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer++;
+        
+        s_Data.RenderStats.QuadCount++;
+        s_Data.IndexCount += 6;
     }
 
-    void BatchRenderer::setupBuffers()
+    void BatchRenderer::SetupBuffers()
     {
         // create buffers/arrays
-        glCreateVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
+        glCreateVertexArrays(1, &QuadVA);
+        glBindVertexArray(QuadVA);
 
-        glCreateBuffers(1, &VBO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glCreateBuffers(1, &QuadVB);
+        glBindBuffer(GL_ARRAY_BUFFER, QuadVB);
         glBufferData(GL_ARRAY_BUFFER, MAX_VERTICES * sizeof(QuadVertex), nullptr, GL_DYNAMIC_DRAW);
 
         glEnableVertexAttribArray(0);
@@ -96,7 +278,7 @@ namespace Rosewood
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), (void*)offsetof(QuadVertex, TexCoords));
 
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), (void*)offsetof(QuadVertex, TexCoords, TexIndex));
+        glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), (void*)offsetof(QuadVertex, TexIndex));
 
         uint32_t offset = 0;
         uint32_t indices[MAX_INDICES];
@@ -111,28 +293,16 @@ namespace Rosewood
             offset += 4;
         }
 
-        glCreateBuffers(1, &EBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glCreateBuffers(1, &QuadIB);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, QuadIB);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    }
 
-        //Something's up with vertex uffer
-    }
-    
-    void BatchRenderer::SetTexture(Texture& texture)
+    void BatchRenderer::ResetStats()
     {
-        if (m_CurrentTexIndex <= 15)
-        {
-            m_CurrentTexIndex++;
-            texture.Bind(m_CurrentTexIndex);
-        }
-        else
-        {
-            RW_CORE_WARN("Too many Textures bound. Creating a new batch");
-            End();
-            Begin(m_Camera);
-        }
+        s_Data.RenderStats.DrawCount = 0;
+        s_Data.RenderStats.QuadCount = 0;
     }
-    
 
 }

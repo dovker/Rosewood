@@ -17,13 +17,15 @@ public:
 	//Rosewood::OrthographicCamera camera = Rosewood::OrthographicCamera(0.0f, 0.0f, scrWidth, scrHeight);
 	//Camera camera = Camera({ scrWidth, scrHeight });
 	Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight ));
-	Rosewood::BatchRenderer renderer;
-
+	
 	ExampleLayer()
 		: Layer("Example")
 	{
-		renderer.Init();
 		
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CW);
 		
 	}
 
@@ -33,17 +35,21 @@ public:
 	{
 		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
 
-		renderer.Begin(camera.GetCamera());
+		Rosewood::BatchRenderer::ResetStats();
+		Rosewood::BatchRenderer::Begin(camera.GetCamera());
+
 		//renderer.SetTexture(myTexture);
 		for (int i = 0; i < 100; i++)
 		{
 			for (int j = 0; j < 100; j++)
 			{
 				glm::vec4 color((float)i / 100.0f, (float)j / 100.0f, 1.0f, 1.0f);
-				renderer.DrawQuad(glm::vec3(i * 25.0f, j * 25.0f, 0.0f), glm::vec2(25.0f, 25.0f), 45.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
+				Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * 25.0f, j * 25.0f, 0.0f), glm::vec2(25.0f, 25.0f), color);
 			}
 		}
-		renderer.End();
+		Rosewood::BatchRenderer::DrawQuad(glm::vec3(0.0f), glm::vec2(myTexture.GetWidth(), myTexture.GetHeight()), myTexture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
+
+		Rosewood::BatchRenderer::End();
 	}
 
 	void OnImGuiRender() override
@@ -138,7 +144,7 @@ public:
 
 	~Sandbox()
 	{
-
+		Rosewood::BatchRenderer::Shutdown();
 	}
 };
 
