@@ -1351,6 +1351,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBatchRenderer.h" />
+    <ClInclude Include="src\Rosewood\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\Shader.cpp">
@@ -1390,6 +1391,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBatchRenderer.cpp" />
+    <ClCompile Include="src\Rosewood\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Platform\OpenGL\Shaders\Default2D.glsl" />

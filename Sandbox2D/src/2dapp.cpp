@@ -1,5 +1,6 @@
 #include <Rosewood.h>
 #include "imgui.h"
+#include "2DCameraController.h"
 
 
 class ExampleLayer : public Rosewood::Layer
@@ -11,10 +12,11 @@ public:
 	float lastY = scrHeight / 2.0f;
 	
 	Rosewood::Texture myTexture = Rosewood::Texture("C:/dev/Rosewood/assets/container2.png");
-	//Rosewood::Shader shader = Rosewood::Shader("C:/dev/Rosewood/assets/shaders/Shader.glsl");
 	
 
-	Rosewood::OrthographicCamera camera = Rosewood::OrthographicCamera(0.0f, 0.0f, scrWidth, scrHeight);
+	//Rosewood::OrthographicCamera camera = Rosewood::OrthographicCamera(0.0f, 0.0f, scrWidth, scrHeight);
+	//Camera camera = Camera({ scrWidth, scrHeight });
+	Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight ));
 	Rosewood::BatchRenderer renderer;
 
 	ExampleLayer()
@@ -29,10 +31,18 @@ public:
 
 	void OnUpdate() override
 	{
-		renderer.Begin(camera);
-		renderer.SetTexture(&myTexture);
-		renderer.DrawQuad(glm::vec3(0.0, 0.0), glm::vec2(myTexture.GetWidth(), myTexture.GetHeight()), 0, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f));
-		renderer.DrawQuad(glm::vec3(100.0, 100.0), glm::vec2(myTexture.GetWidth()/2, myTexture.GetHeight()/2), 45, glm::vec4(0.0f, 0.0f, 0.5f, 0.5f), glm::vec4(1.0f, 0.0f, 0.0f, 0.5f));
+		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
+
+		renderer.Begin(camera.GetCamera());
+		//renderer.SetTexture(myTexture);
+		for (int i = 0; i < 100; i++)
+		{
+			for (int j = 0; j < 100; j++)
+			{
+				glm::vec4 color((float)i / 100.0f, (float)j / 100.0f, 1.0f, 1.0f);
+				renderer.DrawQuad(glm::vec3(i * 25.0f, j * 25.0f, 0.0f), glm::vec2(25.0f, 25.0f), 45.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
+			}
+		}
 		renderer.End();
 	}
 
@@ -40,7 +50,7 @@ public:
 	{
 		
 		ImGui::Begin("This is 2D Spritebatch System", &open, 0);
-
+		ImGui::Text("Camera Pos: %f, %f, %f", camera.GetCamera().GetPosition().x, camera.GetCamera().GetPosition().y, camera.GetCamera().GetPosition().z);
 		ImGui::Text("FPS:");
 		float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
 		ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, 5, ImGuiInputTextFlags_None);
@@ -87,7 +97,7 @@ public:
 
 	bool OnMouseScrolledEvent(Rosewood::MouseScrolledEvent& e)
 	{
-		//camera.ProcessMouseScroll( e.GetYOffset());
+		camera.ProcessMouseScroll( e.GetYOffset());
 
 		return false;
 	}
@@ -99,7 +109,6 @@ public:
 			Rosewood::Application::Get().GetWindow().LockCursor();
 		else if (key == KEY_T)
 			Rosewood::Application::Get().GetWindow().UnlockCursor();
-
 		return false;
 	}
 

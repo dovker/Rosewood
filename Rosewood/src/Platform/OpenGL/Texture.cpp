@@ -83,6 +83,7 @@ namespace Rosewood
 	void Texture::Bind(uint32_t slot) const
 	{
 		glBindTextureUnit(slot, m_ID); // 
+		//RW_CORE_TRACE("Texture bound at slot {0}", slot);
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_2D, m_ID);
 	}

@@ -81,7 +81,7 @@ namespace Rosewood
 		return id;
 	}
 
-	void RecompileShader(const std::string& VSsource, const std::string& FSsource)
+	void Shader::RecompileShader(const std::string& VSsource, const std::string& FSsource)
 	{
 		ID = glCreateProgram();
 		unsigned int vs = CompileShader(GL_VERTEX_SHADER, VSsource);
@@ -110,6 +110,10 @@ namespace Rosewood
 	void Shader::setInt(const std::string& name, int value) const
 	{
 		glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+	}
+	void Shader::setIntPtr(const std::string& name, int count, int* value) const
+	{
+		glUniform1iv(glGetUniformLocation(ID, name.c_str()), count, value);
 	}
 	void Shader::setFloat(const std::string& name, float value) const
 	{

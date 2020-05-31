@@ -11,6 +11,7 @@ namespace Rosewood
     class OrthographicCamera
 	{
 	public:
+		OrthographicCamera() {}
 		OrthographicCamera(float left, float right, float bottom, float top);
 
 		void SetProjection(float left, float right, float bottom, float top);
@@ -24,16 +25,17 @@ namespace Rosewood
 		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
-        const glm::mat4& GetProjectionViewMatrix() const { return m_ProjectionViewMatrix; }
+        //const glm::mat4& GetProjectionViewMatrix() const { return m_ProjectionViewMatrix; }
 	private:
 		void RecalculateViewMatrix();
 	private:
 		glm::mat4 m_ProjectionMatrix;
 		glm::mat4 m_ViewMatrix;
 		glm::mat4 m_ViewProjectionMatrix;
-        glm::mat4 m_ProjectionViewMatrix;
+        //glm::mat4 m_ProjectionViewMatrix;
 
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		float m_Rotation = 0.0f;
+		
 	};
 }

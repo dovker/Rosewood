@@ -127,6 +127,9 @@
   <ItemGroup>
     <ClCompile Include="src\2dapp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\2DCameraController.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

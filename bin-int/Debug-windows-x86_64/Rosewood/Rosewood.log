@@ -1,20 +1,7 @@
-﻿  rwpch.cpp
-  Shader.cpp
-  Texture.cpp
-  WindowsInput.cpp
-  WindowsWindow.cpp
-  Application.cpp
-  ImGuiBuild.cpp
-C:\dev\Rosewood\Rosewood\Vendor\imgui\examples\imgui_impl_opengl3.cpp(194,1): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133): message : see declaration of 'strcpy'
-C:\dev\Rosewood\Rosewood\Vendor\imgui\examples\imgui_impl_opengl3.cpp(195,1): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(90): message : see declaration of 'strcat'
-C:\dev\Rosewood\Rosewood\Vendor\imgui\examples\imgui_impl_opengl3.cpp(521,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
-  ImGuiLayer.cpp
-  Layer.cpp
-  LayerStack.cpp
-  Log.cpp
-  stb_image.cpp
-  Generating Code...
+﻿  OpenGLBatchRenderer.cpp
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(72,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(73,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(74,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(75,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(99,84): warning C4002: too many arguments for function-like macro invocation 'offsetof'
   Rosewood.vcxproj -> C:\dev\Rosewood\Rosewood\..\bin\Debug-windows-x86_64\Rosewood\Rosewood.lib
