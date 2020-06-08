@@ -14,7 +14,7 @@ namespace Rosewood
         // the program ID
         unsigned int ID;
 
-        Shader();
+        Shader() { ID = 0; }
         // constructor reads and builds the shader
         Shader(const std::string& filepath);
         // use/activate the shader

@@ -47,9 +47,14 @@ void main()
 {
     //check if the If statements are needed because wtf cherno
     
-    FragColor = texture(u_Textures[int(TexIndex)], TexCoords)*Color;
-    //FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    
-    
+    //FragColor = texture(u_Textures[int(TexIndex)], TexCoords)*Color;
+    if (TexIndex == 0.0)
+    {
+        FragColor = Color;
+    } else
+    {
+        FragColor = texture(u_Textures[int(TexIndex)], TexCoords) * Color;
+   //FragColor = vec4(TexCoords.x, TexCoords.y, 0.0, 1.0); 
+    }
     
 }

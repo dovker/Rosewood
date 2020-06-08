@@ -18,10 +18,10 @@ public:
     {
         m_Position = camera.GetPosition();
     }*/
-    Camera(glm::vec2 scrSize) : m_MovementSpeed(SPEED), m_Zoom(ZOOM), m_ScrSize(scrSize),
+    Camera(glm::vec2 scrSize) : m_MovementSpeed(SPEED), m_Zoom(ZOOM), m_ScrSize(scrSize), m_Position(glm::vec3(0.0f, 0.0f, 0.0f)),
         m_Camera(Rosewood::OrthographicCamera(0, m_ScrSize.x / m_Zoom, m_ScrSize.y / m_Zoom, 0))
     {
-        m_Position = m_Camera.GetPosition();
+        
     }
 
     Rosewood::OrthographicCamera GetCamera()
@@ -54,12 +54,19 @@ public:
         
         m_Camera.SetProjection(0, m_ScrSize.x / m_Zoom, m_ScrSize.y / m_Zoom, 0);
     }
+    void ProcessScreenResize(glm::vec2 scrSize)
+    {
+
+
+        m_Camera.SetProjection(0, scrSize.x / m_Zoom, scrSize.y / m_Zoom, 0);
+    }
+
 private:
     glm::vec3 m_Position;
     // Camera options
     float m_MovementSpeed;
     float m_Zoom = 1.0f;
-    float m_AspectRatio;
+    float m_AspectRatio = 16.0f/9.0f;
     glm::vec2 m_ScrSize;
     Rosewood::OrthographicCamera m_Camera;
 };

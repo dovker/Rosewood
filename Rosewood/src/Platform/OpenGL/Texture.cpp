@@ -50,12 +50,14 @@ namespace Rosewood
 		
 		stbi_image_free(data);
 	}
-
+	
 	Texture::Texture(uint32_t width, uint32_t height)
 		: m_Width(width), m_Height(height)
 	{
 		m_InternalFormat = GL_RGBA8;
 		m_DataFormat = GL_RGBA;
+
+		glGenTextures(1, &m_ID);
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
 		glTextureStorage2D(m_ID, 1, m_InternalFormat, m_Width, m_Height);
@@ -66,6 +68,8 @@ namespace Rosewood
 		glTextureParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
+
+
 
 
 	Texture::~Texture()

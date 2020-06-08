@@ -10,9 +10,10 @@ namespace Rosewood
     public:
         // the program ID
         
-        
+        Texture() { m_ID = 0; }
         Texture(const std::string& path);
         Texture(uint32_t width, uint32_t height);
+        
         
         ~Texture();
 

@@ -1,7 +1,2 @@
-﻿  OpenGLBatchRenderer.cpp
-C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(72,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(73,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(74,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(75,116): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\dev\Rosewood\Rosewood\src\Platform\OpenGL\OpenGLBatchRenderer.cpp(99,84): warning C4002: too many arguments for function-like macro invocation 'offsetof'
+﻿  Application.cpp
   Rosewood.vcxproj -> C:\dev\Rosewood\Rosewood\..\bin\Debug-windows-x86_64\Rosewood\Rosewood.lib

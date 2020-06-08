@@ -12,6 +12,7 @@ namespace Rosewood
 
 	Application* Application::s_Instance = nullptr;
 	float Application::m_DeltaTime = 0.0f;
+	float Application::m_Time = 0.0f;
 	Application::Application()
 	{
 		RW_CORE_ASSERT(!s_Instance, "Why are you trying to make two applications? There is one already dumbass!");
@@ -29,17 +30,19 @@ namespace Rosewood
 	}
 	void Application::Run()
 	{
-		float currentTime = 0;
+		
 		float lateTime = 0;
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		while (m_Running)
 		{
-			m_DeltaTime = lateTime-currentTime;
-			currentTime = m_Window->GetTime();
+			m_DeltaTime = lateTime- m_Time;
+			m_Time = m_Window->GetTime();
 			
 
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+			glClearColor(0.2f, 0.3f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 
@@ -79,6 +82,7 @@ namespace Rosewood
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
+	
 	bool Application::OnWindowClosed(WindowCloseEvent& e)
 	{
 		m_Running = false;

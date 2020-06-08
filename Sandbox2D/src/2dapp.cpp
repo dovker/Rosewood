@@ -12,21 +12,20 @@ public:
 	float lastY = scrHeight / 2.0f;
 	
 	Rosewood::Texture myTexture = Rosewood::Texture("C:/dev/Rosewood/assets/container2.png");
+
 	
 
 	//Rosewood::OrthographicCamera camera = Rosewood::OrthographicCamera(0.0f, 0.0f, scrWidth, scrHeight);
 	//Camera camera = Camera({ scrWidth, scrHeight });
-	Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight ));
+	Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight));
 	
 	ExampleLayer()
 		: Layer("Example")
 	{
-		
+		Rosewood::BatchRenderer::Init();
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glFrontFace(GL_CW);
 		
+		//ADD BLENDING
 	}
 
 	bool open = true;
@@ -36,18 +35,23 @@ public:
 		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
 
 		Rosewood::BatchRenderer::ResetStats();
-		Rosewood::BatchRenderer::Begin(camera.GetCamera());
 
+		Rosewood::BatchRenderer::Begin(camera.GetCamera());
+		
+		
+		
 		//renderer.SetTexture(myTexture);
+		
+
+		Rosewood::BatchRenderer::DrawQuad(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(myTexture.GetWidth(), myTexture.GetHeight()), myTexture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
 		for (int i = 0; i < 100; i++)
 		{
 			for (int j = 0; j < 100; j++)
 			{
-				glm::vec4 color((float)i / 100.0f, (float)j / 100.0f, 1.0f, 1.0f);
-				Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * 25.0f, j * 25.0f, 0.0f), glm::vec2(25.0f, 25.0f), color);
+				Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * 10, j*10, 0.0f), glm::vec2(10.0f), glm::vec4((float)i / 100.0f, (float)j / 100.0f, glm::sin(Rosewood::Application::GetTime()), 0.5f));
 			}
 		}
-		Rosewood::BatchRenderer::DrawQuad(glm::vec3(0.0f), glm::vec2(myTexture.GetWidth(), myTexture.GetHeight()), myTexture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
 
 		Rosewood::BatchRenderer::End();
 	}
@@ -128,6 +132,7 @@ public:
 		
 		scrWidth = e.GetWidth();
 		scrHeight = e.GetHeight();
+		camera.ProcessScreenResize(glm::vec2(scrWidth, scrHeight));
 		glViewport(0, 0, scrWidth, scrHeight);
 		return false;
 	}

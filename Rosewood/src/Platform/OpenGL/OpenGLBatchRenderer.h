@@ -11,10 +11,6 @@
 
 namespace Rosewood
 {
-#define MAX_QUADS 10000
-#define MAX_INDICES 60000
-#define MAX_VERTICES 40000
-#define MAX_TEXTURES 16
 
     struct QuadVertex {
         glm::vec3 Position;
@@ -24,27 +20,19 @@ namespace Rosewood
         glm::vec2 TexCoords;
         // tex index
         float TexIndex;
-
-        QuadVertex::QuadVertex(glm::vec4 pos, glm::vec4 color, glm::vec2 tex, float texInd)
-            : Position(glm::vec3(pos.x, pos.y, pos.z)), Color(color), TexCoords(tex), TexIndex(texInd)
-        {}
     };
     class BatchRenderer
     {
     public:
         
         //C:/dev/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/Default2D.glsl
-        static Rosewood::Shader DefaultShader = Rosewood::Shader("C:/dev/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/Default2D.glsl");
+        
         //Rosewood::Shader defaultShader = Rosewood::Shader("Platform/OpengGL/Shaders/Default2D.glsl");
         
         static void Init();
-        static void Begin(const OrthographicCamera& camera, Shader& shader = BatchRenderer::DefaultShader);
+        static void Begin(const OrthographicCamera& camera);
         static void End();
         static void Flush();
-
-        static void Restart(); // Ends Batch without affecting Texture idex
-
-        static void SetTexture(Texture& texture);
 
         static void DrawQuad(glm::vec3 pos, glm::vec2 size, Texture& texture, glm::vec4 uv, glm::vec4 color);
         static void DrawQuad(glm::vec3 pos, glm::vec2 size, Texture& texture, float rotation, glm::vec4 uv, glm::vec4 color);

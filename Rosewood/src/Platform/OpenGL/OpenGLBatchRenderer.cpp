@@ -4,48 +4,47 @@
 
 namespace Rosewood
 { 
+    const uint32_t MAX_QUADS = 1000;
+    const uint32_t MAX_INDICES = MAX_QUADS * 6;
+    const uint32_t MAX_VERTICES = MAX_QUADS * 4;
+    const uint32_t MAX_TEXTURES = 16;
+
     struct RendererData
     {
         GLuint QuadVA = 0;
         GLuint QuadVB = 0;
         GLuint QuadIB = 0;
 
-        Texture WhiteTexture = Texture(1, 1);
         OrthographicCamera Camera;
 
         uint32_t IndexCount = 0;
-        
+
         QuadVertex* QuadBuffer = nullptr;
         QuadVertex* QuadPointer = nullptr;
 
         std::array<uint32_t, MAX_TEXTURES> TextureSlots;
-        uint32_t CurrentTexIndex = 0;
+        uint32_t CurrentTexIndex = 1;
 
-        Shader CurrentShader = BatchRenderer::DefaultShader;
+        Shader DefaultShader;
+
+        Shader CurrentShader;
 
         BatchRenderer::Stats RenderStats;
-    }
+    };
 
     static RendererData s_Data;
 
     void BatchRenderer::Init()
     {
-        s_Data.QuadBuffer = new QuadVertex[MaxVertexCount];
+        
+        s_Data.QuadBuffer = new QuadVertex[MAX_VERTICES];
 
         SetupBuffers();
 
-        glEnable(GL_BLEND);  
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+        s_Data.DefaultShader = Shader("C:/dev/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/Default2D.glsl");
+        s_Data.CurrentShader = s_Data.DefaultShader;
 
-        s_Data.WhiteTexture = Texture(1, 1);
-        uint32_t whiteTextureData = 0xffffffff;
-        s_Data.WhiteTexture.SetData(&whiteTextureData, sizeof(uint32_t));
-
-        s_Data.TextureSlots[0] = s_Data.WhiteTexture.GetID();
-        for (size_t i = 1; i < MAX_TEXTURES; i++)
-        {
-            s_Data.TextureSlots[i];
-        }
+        s_Data.TextureSlots[0] = 0;
         
         
     }
@@ -59,14 +58,13 @@ namespace Rosewood
     }
     void BatchRenderer::SetShader(Shader& shader) //Only to be called before BatchRenderer::Begin
     {
-        EndBatch();
-        Flush();
-        BeginBatch(s_Data.Camera, shader);
+        End();
+        s_Data.CurrentShader = shader;
+        Begin(s_Data.Camera);
     }
 
-    void BatchRenderer::Begin(const OrthographicCamera& camera, Shader& shader = BatchRenderer::DefaultShader)
+    void BatchRenderer::Begin(const OrthographicCamera& camera)
     {
-        s_Data.CurrentShader = shader;
         s_Data.CurrentShader.Bind();
         s_Data.CurrentShader.setMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
         s_Data.Camera = camera;
@@ -75,20 +73,21 @@ namespace Rosewood
         {
             Samplers[i] = i;
         }
-        s_Data.CurrentShader.setIntPtr("u_Textures", 16, Samplers);
-        s_Data.WhiteTexture.Bind(0);
+        s_Data.CurrentShader.setIntPtr("u_Textures", MAX_TEXTURES, Samplers);
 
         s_Data.QuadPointer = s_Data.QuadBuffer;
+        s_Data.CurrentTexIndex = 1;
     }
     void BatchRenderer::End()
     {
         GLsizeiptr size = (uint8_t*)s_Data.QuadPointer - (uint8_t*)s_Data.QuadBuffer;
         glBindBuffer(GL_ARRAY_BUFFER, s_Data.QuadVB);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, s, s_Data.QuadBuffer);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, size, s_Data.QuadBuffer);
+        Flush();
     }
     void BatchRenderer::Flush()
     {
-        for(uint32_t i = 0; i <= s_Data.TextureSlotIndex; i++) // My index is changed before setting the texture
+        for(uint32_t i = 1; i < s_Data.CurrentTexIndex; i++)
         {
             glBindTextureUnit(i, s_Data.TextureSlots[i]);
         }
@@ -97,16 +96,15 @@ namespace Rosewood
         s_Data.RenderStats.DrawCount++;
 
         s_Data.IndexCount = 0;
-        s_Data.CurrentTexIndex = 0;
+        s_Data.CurrentTexIndex = 1;
     }
     
     void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Texture& texture, float rotation, glm::vec4 uv, glm::vec4 color)
     {
         if (s_Data.IndexCount >= MAX_INDICES || s_Data.CurrentTexIndex > MAX_TEXTURES-1)
         {
-            EndBatch();
-            Flush();
-            BeginBatch(s_Data.Camera, s_Data.CurrentShader);
+            End();
+            Begin(s_Data.Camera);
         }
 
 
@@ -121,9 +119,9 @@ namespace Rosewood
         }
         if(textureIndex == 0.0f)
         {
-            s_Data.CurrentTexIndex++;
-            textureIndex = (flaot)s_Data.CurrentTexIndex;
+            textureIndex = (float)s_Data.CurrentTexIndex;
             s_Data.TextureSlots[s_Data.CurrentTexIndex] = texture.GetID();
+            s_Data.CurrentTexIndex++;
         }
         
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
@@ -162,9 +160,8 @@ namespace Rosewood
     {
         if (s_Data.IndexCount >= MAX_INDICES || s_Data.CurrentTexIndex > MAX_TEXTURES-1)
         {
-            EndBatch();
-            Flush();
-            BeginBatch(s_Data.Camera, s_Data.CurrentShader);
+            End();
+            Begin(s_Data.Camera);
         }
 
 
@@ -179,9 +176,9 @@ namespace Rosewood
         }
         if(textureIndex == 0.0f)
         {
-            s_Data.CurrentTexIndex++;
-            textureIndex = (flaot)s_Data.CurrentTexIndex;
+            textureIndex = (float)s_Data.CurrentTexIndex;
             s_Data.TextureSlots[s_Data.CurrentTexIndex] = texture.GetID();
+            s_Data.CurrentTexIndex++;
         }
         
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
@@ -219,39 +216,36 @@ namespace Rosewood
     {
         if (s_Data.IndexCount >= MAX_INDICES)
         {
-            EndBatch();
-            Flush();
-            BeginBatch(s_Data.Camera, s_Data.CurrentShader);
+            End();
+            Begin(s_Data.Camera);
         }
         
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
 		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-        
-        float textureIndex = 0.0f;
-        
+       
 
         s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(0.0f, 0.0f);
-        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
 
         s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(0.0f, 1.0f);
-        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
         
         s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(1.0f, 1.0f);
-        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
         
         s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(1.0f, 0.0f);
-        s_Data.QuadPointer->TexIndex = textureIndex;
+        s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
         
         s_Data.RenderStats.QuadCount++;
@@ -261,11 +255,11 @@ namespace Rosewood
     void BatchRenderer::SetupBuffers()
     {
         // create buffers/arrays
-        glCreateVertexArrays(1, &QuadVA);
-        glBindVertexArray(QuadVA);
+        glCreateVertexArrays(1, &s_Data.QuadVA);
+        glBindVertexArray(s_Data.QuadVA);
 
-        glCreateBuffers(1, &QuadVB);
-        glBindBuffer(GL_ARRAY_BUFFER, QuadVB);
+        glCreateBuffers(1, &s_Data.QuadVB);
+        glBindBuffer(GL_ARRAY_BUFFER, s_Data.QuadVB);
         glBufferData(GL_ARRAY_BUFFER, MAX_VERTICES * sizeof(QuadVertex), nullptr, GL_DYNAMIC_DRAW);
 
         glEnableVertexAttribArray(0);
@@ -293,8 +287,8 @@ namespace Rosewood
             offset += 4;
         }
 
-        glCreateBuffers(1, &QuadIB);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, QuadIB);
+        glCreateBuffers(1, &s_Data.QuadIB);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_Data.QuadIB);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     }
