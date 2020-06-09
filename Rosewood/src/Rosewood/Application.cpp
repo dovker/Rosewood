@@ -35,7 +35,7 @@ namespace Rosewood
 		//glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+        //RW_CORE_INFO(glGetString(GL_VERSION));
 		while (m_Running)
 		{
 			m_DeltaTime = lateTime- m_Time;

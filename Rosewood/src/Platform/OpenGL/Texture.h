@@ -2,6 +2,7 @@
 
 #include <string>
 #include <glad/glad.h>
+#include <OpenGL/gl.h>
 
 namespace Rosewood
 {

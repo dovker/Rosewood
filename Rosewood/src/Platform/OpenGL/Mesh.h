@@ -4,8 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <Platform\OpenGL\Shader.h>
-#include <Platform\OpenGL\Texture.h>
+#include <Platform/OpenGL/Shader.h>
+#include <Platform/OpenGL/Texture.h>
 #include <glad/glad.h>
 
 namespace Rosewood
@@ -16,7 +16,7 @@ namespace Rosewood
         glm::vec3 Normal;
         // texCoords
         glm::vec2 TexCoords;
-        Vertex::Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex)
+        Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex)
             : Position(pos), Normal(norm), TexCoords(tex)
         {}
     };
@@ -39,15 +39,15 @@ namespace Rosewood
         Texture* texture;
         /*  Functions  */
         //Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
-        Mesh::Mesh()
+        Mesh()
         {
         }
-        Mesh::Mesh(Texture* texture)
+        Mesh(Texture* texture)
         {
             this->texture = texture;
         }
-        void Mesh::SetupMesh() { setupMesh(); }
-        Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture* texture)
+        void SetupMesh() { setupMesh(); }
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture* texture)
         {
             this->vertices = vertices;
             this->indices = indices;
@@ -55,7 +55,7 @@ namespace Rosewood
 
             setupMesh();
         }
-        void Mesh::AddQuad(glm::vec3 pos, Rosewood::Orientation orient, glm::vec2 uv0, glm::vec2 uv1)
+        void AddQuad(glm::vec3 pos, Rosewood::Orientation orient, glm::vec2 uv0, glm::vec2 uv1)
         {
             size_t vecBack = vertices.size();
             
@@ -113,7 +113,7 @@ namespace Rosewood
             indices.push_back(vecBack + 0);
           
         }
-        static void Mesh::AddQuad(std::vector<unsigned int>* indices, std::vector<Vertex>* vertices, glm::vec3 pos, Rosewood::Orientation orient, glm::vec2 uv0, glm::vec2 uv1)
+        static void AddQuad(std::vector<unsigned int>* indices, std::vector<Vertex>* vertices, glm::vec3 pos, Rosewood::Orientation orient, glm::vec2 uv0, glm::vec2 uv1)
         {
             size_t vecBack = vertices->size();
 
@@ -171,7 +171,7 @@ namespace Rosewood
             indices->push_back(vecBack + 0);
 
         }
-        void Mesh::Draw(Shader shader)
+        void Draw(Shader shader)
         {
             //glActiveTexture(GL_TEXTURE0);
             texture->Bind();
@@ -184,7 +184,7 @@ namespace Rosewood
             // always good practice to set everything back to defaults once configured.
             //glActiveTexture(GL_TEXTURE0);
         }
-        void Mesh::Draw()
+        void Draw()
         {
             //glActiveTexture(GL_TEXTURE0);
             texture->Bind(0);
@@ -202,7 +202,7 @@ namespace Rosewood
         unsigned int VAO, VBO, EBO;
         /*  Functions    */
 
-        void Mesh::setupMesh()
+        void setupMesh()
         {
             // create buffers/arrays
             glGenVertexArrays(1, &VAO);

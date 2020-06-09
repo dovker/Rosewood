@@ -26,13 +26,13 @@ public:
 	//Rosewood::Texture* Texture;
 
 
-	Map::Map(int width, int height)
+	Map(int width, int height)
 		: MapWidth((uint)width), MapHeight((uint)height)
 	{
 		GenerateMap();
 	};
 
-	void Map::GenerateMap()
+	void GenerateMap()
 	{
 		chunks = std::unordered_map<glm::ivec2, Chunk*>(glm::ivec2(0), glm::ivec2(MapWidth, MapHeight));
 
@@ -132,13 +132,13 @@ public:
 	}
 	
 
-	bool Map::outOfBounds(glm::ivec3 pos)
+	bool outOfBounds(glm::ivec3 pos)
 	{
 		return pos.x < 0 || pos.x > CHUNK_SIZE || pos.y < 0 || pos.y > CHUNK_SIZE || pos.z < 0 || pos.z > CHUNK_SIZE;
 	}
 
-	void Map::SetBlock(glm::vec3 pos, uint block) {};
-	uint Map::GetBlock(glm::ivec3 pos)
+	void SetBlock(glm::vec3 pos, uint block) {};
+	uint GetBlock(glm::ivec3 pos)
 	{
 		pos = glm::max(pos, glm::ivec3(0));
 		int chunkIndex = (pos.z / CHUNK_SIZE) * MapWidth + (pos.x / CHUNK_SIZE);
@@ -153,7 +153,7 @@ public:
 		}
 	}
 
-	void Map::Draw(Rosewood::Texture* tex)
+	void Draw(Rosewood::Texture* tex)
 	{
 		for (Rosewood::Mesh mesh : meshes)
 		{

@@ -1,4 +1,5 @@
-#include <Rosewood.h>
+#include "Rosewood.h"
+#include "Rosewood/EntryPoint.h"
 #include "imgui.h"
 #include "2DCameraController.h"
 
@@ -11,7 +12,7 @@ public:
 	float lastX = scrWidth / 2.0f;
 	float lastY = scrHeight / 2.0f;
 	
-	Rosewood::Texture myTexture = Rosewood::Texture("C:/dev/Rosewood/assets/container2.png");
+	Rosewood::Texture myTexture = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/container.jpg");
 
 	
 
@@ -37,11 +38,6 @@ public:
 		Rosewood::BatchRenderer::ResetStats();
 
 		Rosewood::BatchRenderer::Begin(camera.GetCamera());
-		
-		
-		
-		//renderer.SetTexture(myTexture);
-		
 
 		Rosewood::BatchRenderer::DrawQuad(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(myTexture.GetWidth(), myTexture.GetHeight()), myTexture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -49,7 +45,7 @@ public:
 		{
 			for (int j = 0; j < 100; j++)
 			{
-				Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * 10, j*10, 0.0f), glm::vec2(10.0f), glm::vec4((float)i / 100.0f, (float)j / 100.0f, glm::sin(Rosewood::Application::GetTime()), 0.5f));
+                Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * 10, j*10, 0.0f), glm::vec2(10.0f), glm::vec4((float)i / 100.0f, (float)j / 100.0f, glm::sin(Rosewood::Application::GetTime()), 0.6f));
 			}
 		}
 
@@ -58,16 +54,18 @@ public:
 
 	void OnImGuiRender() override
 	{
-		
+		auto stats = Rosewood::BatchRenderer::GetStats();
 		ImGui::Begin("This is 2D Spritebatch System", &open, 0);
 		ImGui::Text("Camera Pos: %f, %f, %f", camera.GetCamera().GetPosition().x, camera.GetCamera().GetPosition().y, camera.GetCamera().GetPosition().z);
+        ImGui::Text("Batch stats: %i, %i", stats.DrawCount, stats.QuadCount);
 		ImGui::Text("FPS:");
 		float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
 		ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, 5, ImGuiInputTextFlags_None);
 		int w = scrWidth;
 		int h = scrHeight;
 		ImGui::InputInt("px", &w);
-		ImGui::InputInt("px", &h);
+        ImGui::InputInt("px", &h);
+        ImGui::Image((ImTextureID)myTexture.GetID(), ImVec2(500, 500));
 		
 		ImGui::End();
 	}

@@ -1,10 +1,11 @@
 #include "rwpch.h"
 #include "WindowsWindow.h"
-#include <Rosewood\Events\ApplicationEvent.h>
-#include <Rosewood\Events\KeyEvent.h>
-#include <Rosewood\Events\MouseEvent.h>
-
+#include "Rosewood/Events/ApplicationEvent.h"
+#include "Rosewood/Events/KeyEvent.h"
+#include "Rosewood/Events/MouseEvent.h"
 #include <glad/glad.h>
+#include <OpenGL/gl.h>
+
 
 namespace Rosewood {
 
@@ -46,14 +47,20 @@ namespace Rosewood {
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInitialized = true;
 		}
-
+        #ifdef RW_PLATFORM_MACOS
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        #endif
+        
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		RW_CORE_ASSERT(status, "Glad was not initialized!");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
-
+        RW_CORE_INFO("OpenGL Version: {0}", glGetString(GL_VERSION));
 
 		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)

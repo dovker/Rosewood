@@ -27,7 +27,7 @@ namespace Rosewood {
 		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
-		void* GetWindowPtr() { return m_Window; }
+		void* GetWindowPtr() override { return m_Window; }
 	private:
 		virtual void Init(const WindowProperties& properties);
 		virtual void Shutdown();

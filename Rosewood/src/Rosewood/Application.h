@@ -4,10 +4,10 @@
 
 #include "Core.h"
 #include "Events/Event.h"
-#include <Rosewood\Events\ApplicationEvent.h>
-#include <Rosewood\Window.h>
-#include <Rosewood\Layer.h>
-#include <Rosewood\LayerStack.h>
+#include <Rosewood/Events/ApplicationEvent.h>
+#include <Rosewood/Window.h>
+#include <Rosewood/Layer.h>
+#include <Rosewood/LayerStack.h>
 #include <Rosewood/ImGui/ImGuiLayer.h>
 
 

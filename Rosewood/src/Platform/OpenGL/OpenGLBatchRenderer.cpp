@@ -4,7 +4,7 @@
 
 namespace Rosewood
 { 
-    const uint32_t MAX_QUADS = 1000;
+    const uint32_t MAX_QUADS = 10000;
     const uint32_t MAX_INDICES = MAX_QUADS * 6;
     const uint32_t MAX_VERTICES = MAX_QUADS * 4;
     const uint32_t MAX_TEXTURES = 16;
@@ -40,8 +40,7 @@ namespace Rosewood
         s_Data.QuadBuffer = new QuadVertex[MAX_VERTICES];
 
         SetupBuffers();
-
-        s_Data.DefaultShader = Shader("C:/dev/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/Default2D.glsl");
+        s_Data.DefaultShader = Shader("/Users/dovydas/Documents/GitHub/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/Default2D.glsl");
         s_Data.CurrentShader = s_Data.DefaultShader;
 
         s_Data.TextureSlots[0] = 0;
@@ -89,7 +88,12 @@ namespace Rosewood
     {
         for(uint32_t i = 1; i < s_Data.CurrentTexIndex; i++)
         {
+#ifndef RW_PLATFORM_MACOS
             glBindTextureUnit(i, s_Data.TextureSlots[i]);
+#else
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, s_Data.TextureSlots[i]);
+#endif
         }
         glBindVertexArray(s_Data.QuadVA);
         glDrawElements(GL_TRIANGLES, s_Data.IndexCount, GL_UNSIGNED_INT, nullptr);
@@ -184,7 +188,6 @@ namespace Rosewood
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
 		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
         
-
         s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
@@ -255,12 +258,22 @@ namespace Rosewood
     void BatchRenderer::SetupBuffers()
     {
         // create buffers/arrays
+#ifndef RW_PLATFORM_MACOS
         glCreateVertexArrays(1, &s_Data.QuadVA);
         glBindVertexArray(s_Data.QuadVA);
 
         glCreateBuffers(1, &s_Data.QuadVB);
         glBindBuffer(GL_ARRAY_BUFFER, s_Data.QuadVB);
         glBufferData(GL_ARRAY_BUFFER, MAX_VERTICES * sizeof(QuadVertex), nullptr, GL_DYNAMIC_DRAW);
+#else
+        glGenVertexArrays(1, &s_Data.QuadVA);
+        glBindVertexArray(s_Data.QuadVA);
+
+        glGenBuffers(1, &s_Data.QuadVB);
+        glBindBuffer(GL_ARRAY_BUFFER, s_Data.QuadVB);
+        glBufferData(GL_ARRAY_BUFFER, MAX_VERTICES * sizeof(QuadVertex), nullptr, GL_DYNAMIC_DRAW);
+#endif
+        
 
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), (void*)0);
@@ -286,11 +299,15 @@ namespace Rosewood
             indices[i + 5] = offset + 0;
             offset += 4;
         }
-
+#ifndef RW_PLATFORM_MACOS
         glCreateBuffers(1, &s_Data.QuadIB);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_Data.QuadIB);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+#else
+        glGenBuffers(1, &s_Data.QuadIB);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_Data.QuadIB);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+#endif
     }
 
     void BatchRenderer::ResetStats()
@@ -298,5 +315,8 @@ namespace Rosewood
         s_Data.RenderStats.DrawCount = 0;
         s_Data.RenderStats.QuadCount = 0;
     }
-
+    BatchRenderer::Stats BatchRenderer::GetStats()
+    {
+        return s_Data.RenderStats;
+    }
 }

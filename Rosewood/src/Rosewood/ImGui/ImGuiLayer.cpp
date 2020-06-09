@@ -7,8 +7,8 @@
 #include "GLFW/glfw3.h"
 #include "Rosewood/Application.h"
 
-#include <Rosewood\Events\MouseEvent.h>
-#include <glad\glad.h>
+#include <Rosewood/Events/MouseEvent.h>
+#include <glad/glad.h>
 
 const char* ImGui_GetClipboardText(void* user_data)
 {

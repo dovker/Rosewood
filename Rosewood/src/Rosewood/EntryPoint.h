@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef RW_PLATFORM_WINDOWS
-
 extern Rosewood::Application* Rosewood::CreateApplication();
 
 int main(int argc, char** argv)
@@ -11,4 +9,3 @@ int main(int argc, char** argv)
 	app->Run();
 	delete app;
 }
-#endif

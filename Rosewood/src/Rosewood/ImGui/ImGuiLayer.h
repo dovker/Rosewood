@@ -2,9 +2,9 @@
 
 #include "Rosewood/Layer.h"
 #include "Rosewood/Events/Event.h"
-#include <Rosewood\Events\KeyEvent.h>
-#include <Rosewood\Events\MouseEvent.h>
-#include <Rosewood\Events\ApplicationEvent.h>
+#include <Rosewood/Events/KeyEvent.h>
+#include <Rosewood/Events/MouseEvent.h>
+#include <Rosewood/Events/ApplicationEvent.h>
 
 namespace Rosewood {
 

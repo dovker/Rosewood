@@ -29,25 +29,32 @@ namespace Rosewood
 		m_InternalFormat = internalFormat;
 		m_DataFormat = dataFormat;
 
-		//RW_CORE_ASSERT(internalFormat & dataFormat, "Format not supported!");
+		RW_CORE_ASSERT(internalFormat & dataFormat, "Format not supported!");
 
-		glGenTextures(1, &m_ID);
-		
-		//glTexImage2D(m_ID, 1, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-		//glTexImage2D(m_ID, 1, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		//glGenerateMipmap(m_ID);
-		
+        
+#ifndef RW_PLATFORM_MACOS
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
 		glTextureStorage2D(m_ID, 1, internalFormat, m_Width, m_Height);
+        
+        glTextureParameteri(m_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTextureParameteri(m_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTextureParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
+#else
+        glGenTextures(1, &m_ID);
+        
+        glTexParameteri(m_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTextureParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
-		
+        glTexImage2D(m_ID, 1, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(m_ID);
+#endif
 		stbi_image_free(data);
 	}
 	
@@ -86,9 +93,13 @@ namespace Rosewood
 
 	void Texture::Bind(uint32_t slot) const
 	{
-		glBindTextureUnit(slot, m_ID); // 
-		//RW_CORE_TRACE("Texture bound at slot {0}", slot);
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, m_ID);
+		
+#ifndef RW_PLATFORM_MACOS
+        glBindTextureUnit(slot, m_ID); // 
+#else
+        glActiveTexture(GL_TEXTURE0 + slot);
+        glBindTexture(GL_TEXTURE_2D, m_ID);
+#endif
+        
 	}
 }

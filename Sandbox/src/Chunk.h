@@ -20,7 +20,7 @@ public:
 
 	uint xPos = 0, zPos = 0;
 
-	Chunk::Chunk() {
+	Chunk() {
 		
 		for (int i = 0; i < CHUNK_SIZE; i++)
 		{
@@ -33,7 +33,7 @@ public:
 			}
 		}
 	}
-	Chunk::~Chunk() {}
+	~Chunk() {}
 
 
 };

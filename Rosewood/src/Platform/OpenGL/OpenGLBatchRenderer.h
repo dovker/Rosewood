@@ -51,6 +51,6 @@ namespace Rosewood
         };
 
         static void ResetStats();
-        
+        static Stats GetStats();
     };
 }
