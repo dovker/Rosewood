@@ -45,15 +45,20 @@ namespace Rosewood
         glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
 #else
         glGenTextures(1, &m_ID);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, m_ID);
         
-        glTexParameteri(m_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTexParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-        glTexImage2D(m_ID, 1, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(m_ID);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
 #endif
 		stbi_image_free(data);
 	}

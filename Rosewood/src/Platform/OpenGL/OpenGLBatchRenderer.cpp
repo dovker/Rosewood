@@ -7,7 +7,8 @@ namespace Rosewood
     const uint32_t MAX_QUADS = 10000;
     const uint32_t MAX_INDICES = MAX_QUADS * 6;
     const uint32_t MAX_VERTICES = MAX_QUADS * 4;
-    const uint32_t MAX_TEXTURES = 16;
+    const uint32_t MAX_TEXTURES = 32; //query the driver later
+
 
     struct RendererData
     {
@@ -128,30 +129,28 @@ namespace Rosewood
             s_Data.CurrentTexIndex++;
         }
         
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
-		* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
-		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+        glm::mat4 transform = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f });
         
 
-        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x, pos.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
 
-        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x + size.x, pos.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
-        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x + size.x, pos.y + size.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
-        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x, pos.y + size.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
@@ -185,28 +184,25 @@ namespace Rosewood
             s_Data.CurrentTexIndex++;
         }
         
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
-		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-        
-        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = pos;
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
 
-        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = { pos.x + size.x, pos.y, pos.z};
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
-        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = { pos.x + size.x, pos.y + size.y, pos.z};
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
-        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = { pos.x, pos.y + size.y, pos.z};
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
@@ -222,32 +218,28 @@ namespace Rosewood
             End();
             Begin(s_Data.Camera);
         }
-        
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
-		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-       
 
-        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = pos;
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f, 0.0f);
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
         s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
 
-        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = { pos.x + size.x, pos.y, pos.z};
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f, 1.0f);
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
         s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
         
-        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = { pos.x + size.x, pos.y + size.y, pos.z};
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(1.0f, 1.0f);
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
         s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
         
-        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Position = { pos.x, pos.y + size.y, pos.z};
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(1.0f, 0.0f);
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
         s_Data.QuadPointer->TexIndex = 0.0f;
         s_Data.QuadPointer++;
         

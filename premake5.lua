@@ -230,7 +230,7 @@ project "Sandbox2D"
         {
             "RW_PLATFORM_MACOS"
         }
-
+--["RW_WORKSPACE_DIR=%{wks.location}"]
     
     filter "configurations.Debug"
         defines "RW_DEBUG"
