@@ -3,6 +3,9 @@
 #include "Rosewood/Window.h"
 
 #include <GLFW/glfw3.h>
+#include "Rosewood/Graphics/Graphics.h"
+#include "Platform/OpenGL/OpenGLContext.h"
+
 
 namespace Rosewood {
 
@@ -33,6 +36,8 @@ namespace Rosewood {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+        
+        GraphicsContext* m_Context;
 
 		struct WindowData
 		{

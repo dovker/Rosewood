@@ -3,14 +3,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include "Rosewood/Graphics/Shader.h"
 
 namespace Rosewood
 {
-    class OpenGLShader
+    class OpenGLShader : public Shader
     {
     public:
-        OpenGLShader();
         OpenGLShader(const std::string& filepath);
         virtual ~OpenGLShader();
         

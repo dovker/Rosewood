@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-
+#include "Rosewood/Graphics/Texture.h"
+#include <glad/glad.h>
 
 namespace Rosewood
 {
@@ -10,18 +11,14 @@ namespace Rosewood
     {
     public:
         // the program ID
+        OpenGLTexture(const std::string& path);
+        OpenGLTexture(uint32_t width, uint32_t height);
         
-        OpenGLTexture() const = 0;
-        OpenGLTexture(const std::string& path) override;
-        OpenGLTexture(uint32_t width, uint32_t height) override;
-        
-        
-         
-        virtual ~OpenGLTexture();
+        ~OpenGLTexture();
 
         virtual uint32_t GetWidth() const override { return m_Width;  }
         virtual uint32_t GetHeight() const override { return m_Height; }
-        virtual uint32_t GetID() const override { return m_RendererID; }
+        virtual uint32_t GetID() const override { return m_ID; }
 
         virtual void SetData(void* data, uint32_t size) override;
 

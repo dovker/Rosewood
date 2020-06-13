@@ -1,26 +1,20 @@
 #include "rwpch.h"
-#include "Texture.h"
-#include "Graphics.h"
 
-#include "Platform/OpenGL/OpenGLTexture.h"
+#include "Graphics.h"
+#include "Shader.h"
+
+#include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Rosewood
 {
-    Shader::Shader()
+    Shader* Shader::Create(const std::string& filepath)
     {
         switch (Graphics::GetAPI())
         {
-            //case RendererAPI::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return Texture();
-            case Graphics::API::OpenGL:  return OpenGLShader();
+            case Graphics::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return nullptr;
+            case Graphics::API::OpenGL:  return new OpenGLShader(filepath);
         }
-    }
-    Shader::Shader(const std::string& path)
-    {
-        switch (Graphics::GetAPI())
-        {
-            //case RendererAPI::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return Texture();
-            case Graphics::API::OpenGL:  return OpenGLShader(path);
-        }
+        return nullptr;
     }
     
 }

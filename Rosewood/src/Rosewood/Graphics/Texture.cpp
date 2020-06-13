@@ -6,28 +6,22 @@
 
 namespace Rosewood
 {
-    Texture::Texture()
+    Texture* Texture::Create(const std::string& path)
     {
         switch (Graphics::GetAPI())
         {
-            //case RendererAPI::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return Texture();
-            case Graphics::API::OpenGL:  return OpenGLTexture();
+            case Graphics::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return nullptr;
+            case Graphics::API::OpenGL:  return new OpenGLTexture(path);
         }
+        return nullptr;
     }
-    Texture::Texture(const std::string& path)
+    Texture* Texture::Create(uint32_t width, uint32_t height)
     {
         switch (Graphics::GetAPI())
         {
-            //case RendererAPI::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return Texture();
-            case Graphics::API::OpenGL:  return OpenGLTexture(path);
+            case Graphics::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return nullptr;
+            case Graphics::API::OpenGL:  return new OpenGLTexture(width, height);
         }
-    }
-    Texture::Texture(uint32_t width, uint32_t height)
-    {
-        switch (Graphics::GetAPI())
-        {
-            //case RendererAPI::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return Texture();
-            case Graphics::API::OpenGL:  return OpenGLTexture(width, height);
-        }
+        return nullptr;
     }
 }

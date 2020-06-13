@@ -36,6 +36,8 @@ namespace Rosewood {
 		m_Data.Title = properties.Title;
 		m_Data.Width = properties.Width;
 		m_Data.Height = properties.Height;
+        
+        
 
 		RW_CORE_INFO("Creating window {0} ({1}, {2})", properties.Title, properties.Width, properties.Height);
 
@@ -47,20 +49,16 @@ namespace Rosewood {
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInitialized = true;
 		}
-        #ifdef RW_PLATFORM_MACOS
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        #endif
+        
         
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		RW_CORE_ASSERT(status, "Glad was not initialized!");
+        m_Context = new OpenGLContext(m_Window);
+        m_Context->Init();
+        
+		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
-        RW_CORE_INFO("OpenGL Version: {0}", glGetString(GL_VERSION));
+        
 
 		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
@@ -163,7 +161,7 @@ namespace Rosewood {
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+        m_Context->SwapBuffers();
 	}
 
 	inline float WindowsWindow::GetTime()

@@ -57,4 +57,14 @@ namespace Rosewood
     private:
         static Scope<Graphics> s_Graphics;
     };
+
+    class GraphicsContext
+    {
+        
+    public:
+        virtual void Init() = 0;
+        virtual void SwapBuffers() = 0;
+
+        
+    };
 }

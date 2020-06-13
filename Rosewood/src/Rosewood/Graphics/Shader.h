@@ -4,19 +4,16 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <glad/glad.h>
 
 namespace Rosewood
 {
     class Shader
     {
     public:
-        Shader();
-        Shader(const std::string& filepath);
-        virtual ~Shader();
+        virtual ~Shader() = default;
         
-        virtual void Bind();
-        virtual void Unbind();
+        virtual void Bind() = 0;
+        virtual void Unbind() = 0;
         
         virtual void setBool(const std::string& name, bool value)               = 0;
         virtual void setInt(const std::string& name, int value)                 = 0;
@@ -28,5 +25,7 @@ namespace Rosewood
         virtual void setVec4(const std::string& name, const glm::vec4& value)   = 0;
         virtual void setVec3(const std::string& name, const glm::vec3& value)   = 0;
         virtual void setVec2(const std::string& name, const glm::vec2& value)   = 0;
+        
+        static Shader* Create(const std::string& filepath);
     };
 }

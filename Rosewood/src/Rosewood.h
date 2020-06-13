@@ -10,8 +10,13 @@
 #include "Rosewood/Events/Event.h"
 
 
-#include "Platform/OpenGL/OpenGL.h"
-#include "Rosewood/Graphics/Camera.h"
+//#include "Platform/OpenGL/OpenGL.h"
+#include "Rosewood/Graphics/Graphics.h"
+#include "Rosewood/Graphics/Buffer.h"
+#include "Rosewood/Graphics/Texture.h"
+#include "Rosewood/Graphics/Shader.h"
+#include "Rosewood/Graphics/BatchRenderer.h"
+#include "Rosewood/Graphics/FrameBuffer.h"
 
 //#include "Rosewood/Audio/Audio.h"
 

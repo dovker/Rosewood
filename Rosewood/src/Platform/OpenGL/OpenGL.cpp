@@ -12,6 +12,13 @@ namespace Rosewood
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        int major, minor;
+        glGetIntegerv(GL_MAJOR_VERSION, &major);
+        glGetIntegerv(GL_MINOR_VERSION, &minor);
+        if (major < 4 || minor < 5)
+        {
+            OpenGL::Old = true;
+        }
     }
 
     void OpenGL::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
