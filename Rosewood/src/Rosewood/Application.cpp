@@ -2,7 +2,8 @@
 #include "Application.h"
 #include "Rosewood/Log.h"
 #include "glad/glad.h"
-#include "Rosewood/Input.h"
+#include "Rosewood/Input/Input.h"
+#include "Audio/Audio.h"
 
 
 namespace Rosewood
@@ -30,7 +31,7 @@ namespace Rosewood
 	}
 	void Application::Run()
 	{
-		
+		//Audio::Init();
 		float lateTime = 0;
 		//glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);

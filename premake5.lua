@@ -18,10 +18,13 @@ IncludeDir["Glad"] = "Rosewood/vendor/Glad/include"
 IncludeDir["ImGui"] = "Rosewood/vendor/imgui"
 IncludeDir["glm"] = "Rosewood/vendor/glm"
 IncludeDir["stb_image"] = "Rosewood/vendor/stb_image"
+IncludeDir["minimp3"] = "Rosewood/vendor/minimp3"
 
-include "Rosewood/vendor/GLFW"
-include "Rosewood/vendor/Glad"
-include "Rosewood/vendor/imgui"
+group "Dependencies"
+    include "Rosewood/vendor/GLFW"
+    include "Rosewood/vendor/Glad"
+    include "Rosewood/vendor/imgui"
+group ""
 
 xcodebuildsettings = { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
 
@@ -73,7 +76,8 @@ project "Rosewood"
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.glm}",
-        "%{IncludeDir.stb_image}"
+        "%{IncludeDir.stb_image}",
+        "%{IncludeDir.minimp3}"
     }
     
     filter "action:xcode4"
@@ -81,11 +85,12 @@ project "Rosewood"
 		{
 			"%{prj.name}/src",
 			"%{prj.name}/vendor/spdlog/include",
-			"${PROJECT_DIR}/vendor/GLFW/include",
-			"${PROJECT_DIR}/vendor/Glad/include",
-            "${PROJECT_DIR}/vendor/imgui",
-            "${PROJECT_DIR}/vendor/glm",
-            "${PROJECT_DIR}/vendor/stb_image"
+			"%{prj.name}/vendor/GLFW/include",
+			"%{prj.name}/vendor/Glad/include",
+            "%{prj.name}/vendor/imgui",
+            "%{prj.name}/vendor/glm",
+            "%{prj.name}/vendor/stb_image",
+            "%{prj.name}/vendor/minimp3"
 		}
 
 	filter "system:macosx"
@@ -93,7 +98,11 @@ project "Rosewood"
 		{
 			"Cocoa.framework",
 			"IOKit.framework",
-			"QuartzCore.framework"
+            "QuartzCore.framework",
+            "AudioToolbox.framework",
+			"AudioUnit.framework",
+			"CoreAudio.framework",
+			"CoreFoundation.framework"
 		}
 
     filter {}
@@ -185,25 +194,26 @@ project "Sandbox2D"
 		sysincludedirs
 		{
 			"Rosewood/src",
-			"Rosewood/vendor/spdlog/include",
-			"Rosewood/vendor/GLFW/include",
-			"Rosewood/vendor/Glad/include",
+            "Rosewood/vendor/spdlog/include",
+            "Rosewood/vendor/Glad/include",
             "Rosewood/vendor/imgui",
-            "Rosewood/vendor/glm",
-            "Rosewood/vendor/stb_image"
+            "Rosewood/vendor/glm"
 		}
 
     links
     {
-        "Rosewood",
-        "Glad"
+        "Rosewood"
     }
     filter "system:macosx"
 		links
 		{
 			"Cocoa.framework",
 			"IOKit.framework",
-			"QuartzCore.framework"
+            "QuartzCore.framework",
+            "AudioToolbox.framework",
+			"AudioUnit.framework",
+			"CoreAudio.framework",
+			"CoreFoundation.framework"
 		}
 
     filter "system:windows"
@@ -242,70 +252,6 @@ project "Sandbox2D"
         buildoptions "/MD"
         optimize "On"
     
-    filter "configurations.Dist"
-        defines "RW_DIST"
-        buildoptions "/MD"
-        optimize "On"
-project "Sandbox"
-    location "Sandbox"
-    kind "ConsoleApp"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "On"
-    
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-        
-    files
-    {
-        "%{prj.name}/src/**.cpp",
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.hpp",
-        "%{prj.name}/src/**.c",
-    }
-        
-    includedirs
-    {
-        "Rosewood/vendor/spdlog/include",
-        "Rosewood/src",
-        "%{IncludeDir.Glad}",
-        "%{IncludeDir.ImGui}",
-        "%{IncludeDir.glm}"
-    }
-    filter "action:xcode4"
-		sysincludedirs
-		{
-			"Rosewood/src",
-			"Rosewood/vendor/spdlog/include",
-			"Rosewood/vendor/GLFW/include",
-			"Rosewood/vendor/Glad/include",
-            "Rosewood/vendor/imgui",
-            "Rosewood/vendor/glm",
-            "Rosewood/vendor/stb_image"
-		}
-    links
-    {
-        "Rosewood",
-        "Glad"
-    }
-    filter "system:macosx"
-		links
-		{
-			"Cocoa.framework",
-			"IOKit.framework",
-			"QuartzCore.framework"
-		}
-        
-    filter "configurations.Debug"
-        defines "RW_DEBUG"
-        buildoptions "/MDd"
-        symbols "On"
-        
-    filter "configurations.Release"
-        defines "RW_RELEASE"
-        buildoptions "/MD"
-        optimize "On"
-        
     filter "configurations.Dist"
         defines "RW_DIST"
         buildoptions "/MD"

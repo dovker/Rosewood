@@ -1,7 +1,7 @@
 #pragma once
 #include "Rosewood/Core.h"
 #include <rwpch.h>
-#include "Rosewood/Input.h"
+#include "Rosewood/Input/Input.h"
 
 namespace Rosewood
 {

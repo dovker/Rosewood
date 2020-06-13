@@ -7,7 +7,7 @@
 #include <Platform/OpenGL/Texture.h>
 #include <glad/glad.h>
 //#include <Platform/OpenGL/Mesh.h>
-#include <Rosewood/Camera.h>
+#include "Rosewood/Graphics/Camera.h"
 
 namespace Rosewood
 {

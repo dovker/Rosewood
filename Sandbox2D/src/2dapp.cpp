@@ -18,6 +18,8 @@ public:
     Rosewood::Texture myTexture4 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/matrix.jpg");
     Rosewood::Texture myTexture5 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/NormalMap.png");
     Rosewood::Texture myTexture6 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/awesomeface.png");
+    
+    //Rosewood::Sound sound = Rosewood::Audio::LoadAudioSource("/Users/dovydas/Documents/GitHub/Rosewood/assets/sound.mp3");
 	
 
 	//Rosewood::OrthographicCamera camera = Rosewood::OrthographicCamera(0.0f, 0.0f, scrWidth, scrHeight);
@@ -29,7 +31,8 @@ public:
 	{
 		Rosewood::BatchRenderer::Init();
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		
+        //Rosewood::Audio::Play(sound);
+
 		//ADD BLENDING
 	}
 
