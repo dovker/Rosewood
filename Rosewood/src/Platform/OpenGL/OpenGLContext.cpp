@@ -11,14 +11,19 @@ namespace Rosewood
     {
         
     }
-	void OpenGLContext::Init()
+    void OpenGLContext::ForceModern()
     {
         #ifdef RW_PLATFORM_MACOS
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        RW_CORE_INFO("Mac OS");
         #endif
+    }
+	void OpenGLContext::Init()
+    {
+        
         
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

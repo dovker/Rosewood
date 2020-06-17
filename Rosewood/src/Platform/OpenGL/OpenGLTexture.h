@@ -21,6 +21,11 @@ namespace Rosewood
         virtual uint32_t GetID() const override { return m_ID; }
 
         virtual void SetData(void* data, uint32_t size) override;
+        
+        virtual bool operator==(const Texture& other) const override
+        {
+            return m_ID == ((OpenGLTexture&)other).m_ID;
+        }
 
         virtual void Bind(uint32_t slot = 0) const override;
     private:

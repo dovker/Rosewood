@@ -33,6 +33,8 @@ namespace Rosewood
 	{
 		//Audio::Init();
 		float lateTime = 0;
+        
+        GraphicsCommand::Init();
 
         while (m_Running)
 		{
@@ -40,8 +42,7 @@ namespace Rosewood
 			m_Time = m_Window->GetTime();
 			
 
-            GraphicsCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
-            GraphicsCommand::Clear();
+            
 			
 
 			for (Layer* layer : m_LayerStack) {

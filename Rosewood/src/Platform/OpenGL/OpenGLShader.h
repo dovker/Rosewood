@@ -11,21 +11,21 @@ namespace Rosewood
     {
     public:
         OpenGLShader(const std::string& filepath);
-        virtual ~OpenGLShader();
+        virtual ~OpenGLShader() {}
         
-        virtual void Bind();
-        virtual void Unbind();
+        virtual void Bind() override;
+        virtual void Unbind() override;
         
-        virtual void setBool(const std::string& name, bool value);
-        virtual void setInt(const std::string& name, int value);
-        virtual void setIntPtr(const std::string& name, int count, int* value);
-        virtual void setFloat(const std::string& name, float value);
-        virtual void setMat4(const std::string& name, const glm::mat4& mat);
-        virtual void setMat3(const std::string& name, const glm::mat3& mat);
-        virtual void setMat2(const std::string& name, const glm::mat2& mat);
-        virtual void setVec4(const std::string& name, const glm::vec4& value);
-        virtual void setVec3(const std::string& name, const glm::vec3& value);
-        virtual void setVec2(const std::string& name, const glm::vec2& value);
+        virtual void setBool(const std::string& name, bool value) override;
+        virtual void setInt(const std::string& name, int value) override;
+        virtual void setIntPtr(const std::string& name, int count, int* value) override;
+        virtual void setFloat(const std::string& name, float value) override;
+        virtual void setMat4(const std::string& name, const glm::mat4& mat) override;
+        virtual void setMat3(const std::string& name, const glm::mat3& mat) override;
+        virtual void setMat2(const std::string& name, const glm::mat2& mat) override;
+        virtual void setVec4(const std::string& name, const glm::vec4& value) override;
+        virtual void setVec3(const std::string& name, const glm::vec3& value) override;
+        virtual void setVec2(const std::string& name, const glm::vec2& value) override;
     private:
         uint32_t m_ID;
         uint32_t CompileShader(unsigned int type, const std::string& source);

@@ -14,6 +14,7 @@ namespace Rosewood
         OpenGLContext(GLFWwindow* windowHandle);
         
         virtual void Init() override;
+        static void ForceModern();
         virtual void SwapBuffers() override;
     private:
         GLFWwindow* m_WindowHandle;

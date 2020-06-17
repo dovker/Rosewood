@@ -16,8 +16,8 @@ namespace Rosewood
         virtual void SetClearColor(const glm::vec4& color) override;
         virtual void Clear() override;
 
-        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
         
-        static bool Old = false;
+        //static bool Old;
     };
 }

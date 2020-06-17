@@ -26,6 +26,6 @@ namespace Rosewood
         virtual void setVec3(const std::string& name, const glm::vec3& value)   = 0;
         virtual void setVec2(const std::string& name, const glm::vec2& value)   = 0;
         
-        static Shader* Create(const std::string& filepath);
+        static Ref<Shader> Create(const std::string& filepath);
     };
 }

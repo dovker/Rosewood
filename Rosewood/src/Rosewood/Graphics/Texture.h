@@ -16,8 +16,10 @@ namespace Rosewood
 
         virtual void Bind(uint32_t slot = 0) const = 0;
         
-        static Texture* Create(const std::string& path);
-        static Texture* Create(uint32_t width, uint32_t height);
+        virtual bool operator==(const Texture& other) const = 0;
+        
+        static Ref<Texture> Create(const std::string& path);
+        static Ref<Texture> Create(uint32_t width, uint32_t height);
 	};
 
 }

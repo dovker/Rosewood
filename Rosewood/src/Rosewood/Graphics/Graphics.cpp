@@ -8,6 +8,8 @@ namespace Rosewood
 	
     Graphics::API Graphics::s_API = Graphics::API::OpenGL;
 
+    
+
     Scope<Graphics> Graphics::Create()
     {
         switch (s_API)
@@ -19,4 +21,6 @@ namespace Rosewood
         RW_CORE_ASSERT(false, "Unknown RendererAPI!");
         return nullptr;
     }
+
+    Scope<Graphics> GraphicsCommand::s_Graphics = Graphics::Create();
 }

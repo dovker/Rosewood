@@ -1,6 +1,6 @@
 #pragma once
 #include <rwpch.h>
-
+#include "VertexArray.h"
 #include <glm/glm.hpp>
 
 namespace Rosewood
@@ -64,7 +64,7 @@ namespace Rosewood
     public:
         virtual void Init() = 0;
         virtual void SwapBuffers() = 0;
-
+        //virtual void ForceModern() = 0;
         
     };
 }

@@ -12,28 +12,22 @@ public:
 	float lastX = scrWidth / 2.0f;
 	float lastY = scrHeight / 2.0f;
 	
-	Rosewood::Texture myTexture = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/container.jpg");
-    Rosewood::Texture myTexture2 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/container2.png");
-    Rosewood::Texture myTexture3 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/emission.png");
-    Rosewood::Texture myTexture4 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/matrix.jpg");
-    Rosewood::Texture myTexture5 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/NormalMap.png");
-    Rosewood::Texture myTexture6 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/awesomeface.png");
+    Rosewood::Ref<Rosewood::Texture> myTexture;
+    Rosewood::Ref<Rosewood::Shader> m_Shader;
+    Rosewood::Ref<Rosewood::VertexArray> m_VertexArray;
     
     //Rosewood::Sound sound = Rosewood::Audio::LoadAudioSource("/Users/dovydas/Documents/GitHub/Rosewood/assets/sound.mp3");
 	
 
-	//Rosewood::OrthographicCamera camera = Rosewood::OrthographicCamera(0.0f, 0.0f, scrWidth, scrHeight);
-	//Camera camera = Camera({ scrWidth, scrHeight });
 	Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight));
 	
 	ExampleLayer()
 		: Layer("Example")
 	{
-		Rosewood::BatchRenderer::Init();
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        //Rosewood::Audio::Play(sound);
-
-		//ADD BLENDING
+		
+        myTexture = Rosewood::Texture::Create("/Users/dovydas/Documents/GitHub/Rosewood/assets/container.jpg");
+        
+        Rosewood::BatchRenderer::Init();
 	}
 
 	bool open = true;
@@ -41,22 +35,19 @@ public:
 	void OnUpdate() override
 	{
 		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
+        
 
-		Rosewood::BatchRenderer::ResetStats();
-
+        Rosewood::BatchRenderer::ResetStats();
+        
+        {
+            Rosewood::GraphicsCommand::SetClearColor({1.0f, 0.0f, 1.0f, 1.0f});
+            Rosewood::GraphicsCommand::Clear();
+        }
+        
 		Rosewood::BatchRenderer::Begin(camera.GetCamera());
 
-		Rosewood::BatchRenderer::DrawQuad(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(myTexture.GetWidth(), myTexture.GetHeight()), myTexture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(100.0f, 10.0f, 0.0f), glm::vec2(myTexture2.GetWidth(), myTexture2.GetHeight()), myTexture2, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(200.0f, 20.0f, 0.0f), glm::vec2(myTexture3.GetWidth(), myTexture3.GetHeight()), myTexture3, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(300.0f, 30.0f, 0.0f), glm::vec2(myTexture4.GetWidth(), myTexture4.GetHeight()), myTexture4, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(400.0f, 40.0f, 0.0f), glm::vec2(myTexture5.GetWidth(), myTexture5.GetHeight()), myTexture5, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(500.0f, 50.0f, 0.0f), glm::vec2(myTexture6.GetWidth(), myTexture6.GetHeight()), myTexture6, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		Rosewood::BatchRenderer::DrawQuad(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(myTexture->GetWidth(), myTexture->GetHeight()), myTexture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
 
 		for (int i = 0; i < 1000; i++)
 		{
@@ -65,9 +56,7 @@ public:
                 Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * 10, j*10, 0.0f), glm::vec2(10.0f), glm::vec4((float)i / 1000.0f, (float)j / 100.0f, glm::sin(Rosewood::Application::GetTime()), 0.6f));
 			}
 		}
-        //myTexture.Bind(0);
 		Rosewood::BatchRenderer::End();
-        //RW_CORE_INFO(RW_WORKSPACE_DIR);
 	}
 
 	void OnImGuiRender() override
@@ -84,7 +73,7 @@ public:
 		ImGui::InputInt("px", &w);
         ImGui::InputInt("px", &h);
         //myTexture.Bind(0);
-        //ImGui::Image((ImTextureID)myTexture.GetID(), ImVec2(500, 500));
+        ImGui::Image((ImTextureID)myTexture->GetID(), ImVec2(myTexture->GetWidth(), myTexture->GetHeight()));
 		
 		ImGui::End();
 	}
@@ -150,7 +139,7 @@ public:
 		scrWidth = e.GetWidth();
 		scrHeight = e.GetHeight();
 		camera.ProcessScreenResize(glm::vec2(scrWidth, scrHeight));
-		glViewport(0, 0, scrWidth, scrHeight);
+        Rosewood::GraphicsCommand::SetViewport(0, 0, scrWidth, scrHeight);
 		return false;
 	}
 };
@@ -175,3 +164,5 @@ Rosewood::Application* Rosewood::CreateApplication()
 
 	return new Sandbox();
 }
+
+

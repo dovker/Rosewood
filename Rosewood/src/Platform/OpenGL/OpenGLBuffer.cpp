@@ -10,17 +10,26 @@ namespace Rosewood
     //////////////////*/
     OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
     {
-        /*if(!OpenGL::Old)
-        {
-            glCreateBuffers(1, &m_ID);
-            glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-        }
-        else
-        {*/
-            glGenBuffers(1, &m_ID);
-            glBindBuffer(GL_ARRAY_BUFFER, m_ID);
-            glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-        //} Maybe I should just stop supporting OpenGL 4.5 when I add metal support?
+        
+            //glCreateBuffers(1, &m_ID);
+            //glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+            //glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+
+        glGenBuffers(1, &m_ID);
+        glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+        glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+        //Maybe I should just stop supporting OpenGL 4.5 when I add metal support?
+    }
+    OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
+    {
+        
+//            glCreateBuffers(1, &m_ID);
+//            glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+//            glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+
+        glGenBuffers(1, &m_ID);
+        glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
     }
     OpenGLVertexBuffer::~OpenGLVertexBuffer()
     {
@@ -34,6 +43,12 @@ namespace Rosewood
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
+    void OpenGLVertexBuffer::SetData(const void* data, uint32_t size)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    }
+
     
     /*//////////////////
     ////Index Buffer////

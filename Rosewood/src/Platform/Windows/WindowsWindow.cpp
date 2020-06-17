@@ -49,10 +49,12 @@ namespace Rosewood {
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInitialized = true;
 		}
-        
+        OpenGLContext::ForceModern();
         
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
+        
         m_Context = new OpenGLContext(m_Window);
+
         m_Context->Init();
         
 		
