@@ -1,7 +1,7 @@
 #include "rwpch.h"
 #include "Application.h"
 #include "Rosewood/Log.h"
-#include "glad/glad.h"
+#include "Graphics/Graphics.h"
 #include "Rosewood/Input/Input.h"
 #include "Audio/Audio.h"
 
@@ -33,18 +33,16 @@ namespace Rosewood
 	{
 		//Audio::Init();
 		float lateTime = 0;
-		//glEnable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //RW_CORE_INFO(glGetString(GL_VERSION));
-		while (m_Running)
+        
+        GraphicsCommand::Init();
+
+        while (m_Running)
 		{
 			m_DeltaTime = lateTime- m_Time;
 			m_Time = m_Window->GetTime();
 			
 
-			glClearColor(0.2f, 0.3f, 1.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            
 			
 
 			for (Layer* layer : m_LayerStack) {

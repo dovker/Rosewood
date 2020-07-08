@@ -1,5 +1,4 @@
 #include "Rosewood.h"
-#include "Rosewood/EntryPoint.h"
 #include "imgui.h"
 #include "2DCameraController.h"
 
@@ -12,62 +11,63 @@ public:
 	float lastX = scrWidth / 2.0f;
 	float lastY = scrHeight / 2.0f;
 	
-	Rosewood::Texture myTexture = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/container.jpg");
-    Rosewood::Texture myTexture2 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/container2.png");
-    Rosewood::Texture myTexture3 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/emission.png");
-    Rosewood::Texture myTexture4 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/matrix.jpg");
-    Rosewood::Texture myTexture5 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/NormalMap.png");
-    Rosewood::Texture myTexture6 = Rosewood::Texture("/Users/dovydas/Documents/GitHub/Rosewood/assets/awesomeface.png");
+    Rosewood::Ref<Rosewood::Texture> texture;
+    
+    Rosewood::AssetManager assetManager;
+    Rosewood::Ref<Rosewood::VertexArray> m_VertexArray;
     
     //Rosewood::Sound sound = Rosewood::Audio::LoadAudioSource("/Users/dovydas/Documents/GitHub/Rosewood/assets/sound.mp3");
-	
+    //Rosewood::Ref<Rosewood::RenderMesh> mesh;
 
-	//Rosewood::OrthographicCamera camera = Rosewood::OrthographicCamera(0.0f, 0.0f, scrWidth, scrHeight);
-	//Camera camera = Camera({ scrWidth, scrHeight });
-	Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight));
+    Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight));
+    
+    glm::vec2 pos, vel;
 	
 	ExampleLayer()
 		: Layer("Example")
 	{
-		Rosewood::BatchRenderer::Init();
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        //Rosewood::Audio::Play(sound);
+        assetManager.Load<Rosewood::Texture>("/Users/dovydas/Documents/GitHub/Rosewood/assets/dvd_logo.png", "Deferred_Albedo");
 
-		//ADD BLENDING
+        texture = assetManager.Get<Rosewood::Texture>("Deferred_Albedo");
+        Rosewood::BatchRenderer::Init();
+        pos = {0.0f, 0.0f};
+        vel = {120.0f, 120.0f};
+        
 	}
 
 	bool open = true;
-
-	void OnUpdate() override
+    glm::vec4 col = glm::vec4(1.0f);
+    void OnUpdate() override
 	{
 		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
+        
+        {
+            Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
+            Rosewood::GraphicsCommand::Clear();
+        }
+        if (pos.x + (vel.x * Rosewood::Application::GetDeltaTime()) >= scrWidth || pos.x + (vel.x * Rosewood::Application::GetDeltaTime()) <=0)
+        {
+            vel.x *= -1;
+            col.r = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+            col.g = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+            col.b = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
 
-		Rosewood::BatchRenderer::ResetStats();
-
-		Rosewood::BatchRenderer::Begin(camera.GetCamera());
-
-		Rosewood::BatchRenderer::DrawQuad(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(myTexture.GetWidth(), myTexture.GetHeight()), myTexture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        }
+        if (pos.y + (vel.y * Rosewood::Application::GetDeltaTime())>= scrHeight || pos.y + (vel.y * Rosewood::Application::GetDeltaTime()) <=0)
+        {
+            vel.y *= -1;
+            col.r = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+            col.g = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+            col.b = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+        }
+        pos += vel * Rosewood::Application::GetDeltaTime();
         
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(100.0f, 10.0f, 0.0f), glm::vec2(myTexture2.GetWidth(), myTexture2.GetHeight()), myTexture2, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        Rosewood::BatchRenderer::ResetStats();
+        Rosewood::BatchRenderer::Begin(camera.GetCamera());
         
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(200.0f, 20.0f, 0.0f), glm::vec2(myTexture3.GetWidth(), myTexture3.GetHeight()), myTexture3, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        Rosewood::BatchRenderer::DrawQuad(glm::vec3(pos.x-150.0f, pos.y-150.0f, 0.0f), glm::vec2(300.0f, 300.0f), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), col);
         
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(300.0f, 30.0f, 0.0f), glm::vec2(myTexture4.GetWidth(), myTexture4.GetHeight()), myTexture4, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(400.0f, 40.0f, 0.0f), glm::vec2(myTexture5.GetWidth(), myTexture5.GetHeight()), myTexture5, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(500.0f, 50.0f, 0.0f), glm::vec2(myTexture6.GetWidth(), myTexture6.GetHeight()), myTexture6, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-
-		for (int i = 0; i < 1000; i++)
-		{
-			for (int j = 0; j < 100; j++)
-			{
-                Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * 10, j*10, 0.0f), glm::vec2(10.0f), glm::vec4((float)i / 1000.0f, (float)j / 100.0f, glm::sin(Rosewood::Application::GetTime()), 0.6f));
-			}
-		}
-        //myTexture.Bind(0);
-		Rosewood::BatchRenderer::End();
-        //RW_CORE_INFO(RW_WORKSPACE_DIR);
+        Rosewood::BatchRenderer::End();
 	}
 
 	void OnImGuiRender() override
@@ -84,7 +84,6 @@ public:
 		ImGui::InputInt("px", &w);
         ImGui::InputInt("px", &h);
         //myTexture.Bind(0);
-        //ImGui::Image((ImTextureID)myTexture.GetID(), ImVec2(500, 500));
 		
 		ImGui::End();
 	}
@@ -150,7 +149,7 @@ public:
 		scrWidth = e.GetWidth();
 		scrHeight = e.GetHeight();
 		camera.ProcessScreenResize(glm::vec2(scrWidth, scrHeight));
-		glViewport(0, 0, scrWidth, scrHeight);
+        Rosewood::GraphicsCommand::SetViewport(0, 0, scrWidth, scrHeight);
 		return false;
 	}
 };
@@ -166,7 +165,9 @@ public:
 
 	~Sandbox()
 	{
-		Rosewood::BatchRenderer::Shutdown();
+		//Rosewood::DeferredRenderer::Shutdown();
+        Rosewood::BatchRenderer::Shutdown();
+
 	}
 };
 
@@ -175,3 +176,5 @@ Rosewood::Application* Rosewood::CreateApplication()
 
 	return new Sandbox();
 }
+
+

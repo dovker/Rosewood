@@ -1,13 +1,10 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <Platform/OpenGL/Shader.h>
-#include <Platform/OpenGL/Texture.h>
-#include <glad/glad.h>
-//#include <Platform/OpenGL/Mesh.h>
-#include "Rosewood/Graphics/Camera.h"
+#include "Camera.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Rosewood/Core.h"
 
 namespace Rosewood
 {
@@ -32,15 +29,18 @@ namespace Rosewood
         static void Init();
         static void Begin(const OrthographicCamera& camera);
         static void End();
+        static void Draw();
         static void Flush();
+        static void FlushAndReset();
 
-        static void DrawQuad(glm::vec3 pos, glm::vec2 size, Texture& texture, glm::vec4 uv, glm::vec4 color);
-        static void DrawQuad(glm::vec3 pos, glm::vec2 size, Texture& texture, float rotation, glm::vec4 uv, glm::vec4 color);
+        static void DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 uv, glm::vec4 color);
+        static void DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, float rotation, glm::vec4 uv, glm::vec4 color);
         static void DrawQuad(glm::vec3 pos, glm::vec2 size, glm::vec4 color);
+        static void DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::ivec2 fromPix, glm::ivec2 toPix, glm::vec4 color);
 
-        static void SetShader(Shader& shader);
 
-        static void SetupBuffers();
+        static void SetShader(Ref<Shader> shader);
+
 
         static void Shutdown();
 
