@@ -85,6 +85,69 @@ namespace Rosewood
 		return id;
 	}
 
+    void  OpenGLShader::Recompile(const std::string& filepath)
+    {
+        std::ifstream stream(filepath);
+        enum class ShaderType
+        {
+            NONE = -1, VERTEX = 0, FRAGMENT = 1
+        };
+        std::string line;
+        std::stringstream ss[2];
+        ShaderType type = ShaderType::NONE;
+        try
+        {
+            while (getline(stream, line))
+            {
+                if (line.find("#shader") != std::string::npos)
+                {
+                    if (line.find("vertex") != std::string::npos)
+                        type = ShaderType::VERTEX;
+                    else if (line.find("fragment") != std::string::npos)
+                        type = ShaderType::FRAGMENT;
+
+                }
+                else
+                {
+                    ss[(int)type] << line << "\n";
+                }
+            }
+        }
+        catch (std::ifstream::failure e)
+        {
+            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+        }
+        const std::string vertexShader = ss[0].str();
+        const std::string fragmentShader = ss[1].str();
+        //std::cout << vertexShader << std::endl;
+        //std::cout << fragmentShader << std::endl;
+        uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+        uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+        glAttachShader(m_ID, vs);
+        glAttachShader(m_ID, fs);
+        glLinkProgram(m_ID);
+        glValidateProgram(m_ID);
+
+        glDeleteShader(vs);
+        glDeleteShader(fs);
+    }
+
+    void OpenGLShader::Recompile(const std::string& vs, const std::string& fs)
+    {
+
+        uint32_t vertexShader = CompileShader(GL_VERTEX_SHADER, vs);
+        uint32_t fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fs);
+
+        glAttachShader(m_ID, vertexShader);
+        glAttachShader(m_ID, fragmentShader);
+        glLinkProgram(m_ID);
+        glValidateProgram(m_ID);
+
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+    }
+
 
 	void OpenGLShader::Bind()
 	{

@@ -26,7 +26,7 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{
-        assetManager.Load<Rosewood::Texture>("/Users/dovydas/Documents/GitHub/Rosewood/assets/dvd_logo.png", "Deferred_Albedo");
+        assetManager.Load<Rosewood::Texture>("Content/dvd_logo.png", "Deferred_Albedo");
 
         texture = assetManager.Get<Rosewood::Texture>("Deferred_Albedo");
         Rosewood::BatchRenderer::Init();

@@ -75,7 +75,7 @@ namespace Rosewood
         
 
 
-        s_Data.DefaultShader = Shader::Create("/Users/dovydas/Documents/GitHub/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/Default2D.glsl");
+        s_Data.DefaultShader = Shader::Create("EngineContent/Shaders/Default2D.glsl");
         s_Data.CurrentShader = s_Data.DefaultShader;
         
 

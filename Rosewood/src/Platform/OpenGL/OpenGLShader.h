@@ -26,6 +26,10 @@ namespace Rosewood
         virtual void setVec4(const std::string& name, const glm::vec4& value) override;
         virtual void setVec3(const std::string& name, const glm::vec3& value) override;
         virtual void setVec2(const std::string& name, const glm::vec2& value) override;
+        
+        virtual void Recompile(const std::string& filepath) override;
+        virtual void Recompile(const std::string& vs, const std::string& fs) override;
+
     private:
         uint32_t m_ID;
         uint32_t CompileShader(unsigned int type, const std::string& source);

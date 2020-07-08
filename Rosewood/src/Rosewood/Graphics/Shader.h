@@ -15,6 +15,10 @@ namespace Rosewood
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
         
+        virtual void Recompile(const std::string& filepath) = 0;
+        virtual void Recompile(const std::string& vs, const std::string& fs) = 0;
+
+        
         virtual void setBool(const std::string& name, bool value)               = 0;
         virtual void setInt(const std::string& name, int value)                 = 0;
         virtual void setIntPtr(const std::string& name, int count, int* value)  = 0;

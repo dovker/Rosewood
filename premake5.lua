@@ -120,6 +120,8 @@ project "Rosewood"
         "_CRT_SCURE_NO_WARNINGS"
     }
 
+    
+
     filter "system:windows"
         
         systemversion "latest"
@@ -215,7 +217,13 @@ project "Sandbox2D"
 			"CoreAudio.framework",
 			"CoreFoundation.framework"
 		}
+    
+    postbuildcommands 
+        {
+            "{COPY} Content %{cfg.targetdir}",
+            "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}"
 
+        }
     filter "system:windows"
         
         systemversion "latest"
