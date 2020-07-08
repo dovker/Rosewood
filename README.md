@@ -11,11 +11,11 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Graphics API abstractions
 * Cross-Platform (Tested on major desktop platforms)
 * *Fast* Sprite / Quad Batcher
+* Simple Asset / content manager and library
 * Event system
 
 # Goals / To-do
 * Implement sound library
-* Asset / content manager
 * Serialization
 * Text rendering
 * Particle rendering
