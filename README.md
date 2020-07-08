@@ -19,7 +19,7 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Serialization
 * Text rendering
 * Particle rendering
-* Primitive rendering (~~Circle~~, Triangle, ~~Quad~~, Line)
+* Primitive rendering (~~Circle~~, Triangle, ~~Quad~~, Line, Function / curve)
 * Implement ECS
 * Support DX11, Vulkan and Metal
 * Asset importer application
