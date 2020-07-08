@@ -89,9 +89,9 @@ namespace Rosewood
     }
     void BatchRenderer::SetShader(Ref<Shader> shader) //Only to be called before BatchRenderer::Begin
     {
-        End();
+        //End();
         s_Data.CurrentShader = shader;
-        Begin(s_Data.Camera);
+        //Begin(s_Data.Camera);
     }
 
     void BatchRenderer::Begin(const OrthographicCamera& camera)
@@ -123,6 +123,11 @@ namespace Rosewood
             s_Data.TextureSlots[i]->Bind(i);
             
         }
+        GraphicsCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.IndexCount);
+        s_Data.RenderStats.DrawCount++;
+    }
+    void BatchRenderer::Draw() //Only to be used after End() for framebuffers and such
+    {
         GraphicsCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.IndexCount);
         s_Data.RenderStats.DrawCount++;
     }
@@ -170,25 +175,25 @@ namespace Rosewood
 
         s_Data.QuadPointer->Position = transform * glm::vec4(pos.x, pos.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
 
         s_Data.QuadPointer->Position = transform * glm::vec4(pos.x + size.x, pos.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
-        
+    
         s_Data.QuadPointer->Position = transform * glm::vec4(pos.x + size.x, pos.y + size.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
         s_Data.QuadPointer->Position = transform * glm::vec4(pos.x, pos.y + size.y, pos.z, 1.0f);
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
@@ -226,25 +231,25 @@ namespace Rosewood
         
         s_Data.QuadPointer->Position = pos;
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
 
         s_Data.QuadPointer->Position = { pos.x + size.x, pos.y, pos.z};
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
         s_Data.QuadPointer->Position = { pos.x + size.x, pos.y + size.y, pos.z};
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
         s_Data.QuadPointer->Position = { pos.x, pos.y + size.y, pos.z};
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
+        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
@@ -286,7 +291,10 @@ namespace Rosewood
         s_Data.RenderStats.QuadCount++;
         s_Data.IndexCount += 6;
     }
-
+    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::ivec2 fromPix, glm::ivec2 toPix, glm::vec4 color)
+    {
+        BatchRenderer::DrawQuad(pos, size, texture, glm::vec4((float)fromPix.x/size.x, (float)fromPix.y/size.y, (float)toPix.x/size.x, (float)toPix.y/size.y), color);
+    }
 
 
     void BatchRenderer::ResetStats()

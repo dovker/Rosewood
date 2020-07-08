@@ -43,8 +43,8 @@ namespace Rosewood
 		}
 		const std::string vertexShader = ss[0].str();
 		const std::string fragmentShader = ss[1].str();
-		std::cout << vertexShader << std::endl;
-		std::cout << fragmentShader << std::endl;
+		//std::cout << vertexShader << std::endl;
+		//std::cout << fragmentShader << std::endl;
 		m_ID = glCreateProgram();
 		uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 		uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);

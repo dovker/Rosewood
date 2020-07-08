@@ -15,6 +15,16 @@ namespace Rosewood
         }
         return nullptr;
     }
+
+    Ref<VertexBuffer> VertexBuffer::Create(Vertex* vertices, uint32_t size)
+    {
+        switch (Graphics::GetAPI())
+        {
+            case Graphics::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return nullptr;
+            case Graphics::API::OpenGL:  return CreateRef<OpenGLVertexBuffer>(vertices, size);
+        }
+        return nullptr;
+    }
     Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
     {
         switch (Graphics::GetAPI())

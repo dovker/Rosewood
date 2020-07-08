@@ -68,7 +68,7 @@ namespace Rosewood
                 element.Normalized ? GL_TRUE : GL_FALSE,
                 layout.GetStride(),
                 (const void*)element.Offset);
-            RW_CORE_TRACE("{0}, {1}, {2}", index, element.GetComponentCount(), layout.GetStride());
+            //RW_CORE_TRACE("{0}, {1}, {2}", index, element.GetComponentCount(), layout.GetStride());
             index++;
         }
         

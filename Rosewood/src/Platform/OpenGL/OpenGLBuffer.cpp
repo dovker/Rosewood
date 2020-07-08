@@ -20,6 +20,14 @@ namespace Rosewood
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
         //Maybe I should just stop supporting OpenGL 4.5 when I add metal support?
     }
+
+    OpenGLVertexBuffer::OpenGLVertexBuffer(Vertex* vertices, uint32_t size)
+    {
+        glGenBuffers(1, &m_ID);
+        glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+        glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+    }
+
     OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
     {
         

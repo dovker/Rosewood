@@ -9,6 +9,8 @@ namespace Rosewood
     {
     public:
         OpenGLVertexBuffer(float* vertices, uint32_t size);
+        OpenGLVertexBuffer(Vertex* vertices, uint32_t size);
+
         OpenGLVertexBuffer(uint32_t size);
         
         virtual ~OpenGLVertexBuffer();

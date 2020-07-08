@@ -10,8 +10,14 @@ namespace Rosewood
 
     void OpenGL::Init()
     {
+        //glEnable(GL_DEPTH_TEST);
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        
         //int major, minor;
         //glGetIntegerv(GL_MAJOR_VERSION, &major);
         //glGetIntegerv(GL_MINOR_VERSION, &minor);
@@ -29,8 +35,8 @@ namespace Rosewood
     }
     void OpenGL::Clear()
     {
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT);
     }
 
     void OpenGL::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
@@ -38,5 +44,10 @@ namespace Rosewood
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
         glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    void OpenGL::BindTexture(uint32_t ID, uint32_t slot)
+    {
+        glActiveTexture(GL_TEXTURE0 + slot);
+        glBindTexture(GL_TEXTURE_2D, ID);
     }
 }

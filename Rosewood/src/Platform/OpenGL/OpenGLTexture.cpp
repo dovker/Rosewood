@@ -32,15 +32,6 @@ namespace Rosewood
 
 		m_InternalFormat = internalFormat;
 		m_DataFormat = dataFormat;
-        
-        std::ofstream out;
-        out.open("buffer.lol",std::ios::binary);
-        for(int i = 0; i<sizeof(data); i++)
-        {
-            out.write(reinterpret_cast<char*>(&data[i]), sizeof(char));
-        }
-        
-        out.close();
 
 		RW_CORE_ASSERT(internalFormat & dataFormat, "Format not supported!");
 
@@ -90,19 +81,30 @@ namespace Rosewood
 //
 //            glTextureParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 //            glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        uint32_t* data = new uint32_t[width*height];
+        
+        for (int i = 0; i< width*height; i++)
+        {
+            data[i] = 0xffffffff;
+        }
          
         glGenTextures(1, &m_ID);
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, m_ID);
         
+
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_DataFormat, GL_UNSIGNED_BYTE, data);
+
                     
         glBindTexture(GL_TEXTURE_2D, 0);
+        delete [] data;
         
 	}
 
@@ -118,7 +120,10 @@ namespace Rosewood
 	{
 		uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
 		RW_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
-		glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+		//glTexSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+        glBindTexture(GL_TEXTURE_2D, m_ID);
+        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_DataFormat, GL_UNSIGNED_BYTE, data);
+        glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void OpenGLTexture::Bind(uint32_t slot) const

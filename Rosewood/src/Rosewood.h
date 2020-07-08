@@ -9,6 +9,9 @@
 
 #include "Rosewood/Events/Event.h"
 
+#include "Rosewood/Math.h"
+
+
 
 //#include "Platform/OpenGL/OpenGL.h"
 #include "Rosewood/Graphics/Graphics.h"
@@ -16,7 +19,11 @@
 #include "Rosewood/Graphics/Texture.h"
 #include "Rosewood/Graphics/Shader.h"
 #include "Rosewood/Graphics/BatchRenderer.h"
-//#include "Rosewood/Graphics/FrameBuffer.h"
+#include "Rosewood/Graphics/FrameBuffer.h"
+//#include "Rosewood/Graphics/DeferredRenderer.h"
+//#include "Rosewood/Graphics/Mesh.h"
+
+#include "Rosewood/Assets/Assets.h"
 
 //#include "Rosewood/Audio/Audio.h"
 

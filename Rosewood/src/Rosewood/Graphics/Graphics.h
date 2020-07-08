@@ -19,6 +19,7 @@ namespace Rosewood
         virtual void Clear() = 0;
 
         virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
+        virtual void BindTexture(uint32_t ID, uint32_t slot) = 0;
 
         static API GetAPI() { return s_API; }
         
@@ -53,6 +54,11 @@ namespace Rosewood
         static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0)
         {
             s_Graphics->DrawIndexed(vertexArray, count);
+        }
+        
+        static void BindTexture(uint32_t ID, uint32_t slot)
+        {
+            s_Graphics->BindTexture(ID, slot);
         }
     private:
         static Scope<Graphics> s_Graphics;
