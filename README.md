@@ -30,6 +30,8 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Multi-threading
 * Networking
 
+### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
+
 # Libraries / dependencies
 * [Premake5](https://github.com/premake/premake-core)
 * [Dear ImGui](https://github.com/ocornut/imgui)
