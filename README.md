@@ -13,9 +13,10 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * *Fast* Sprite / Quad Batcher
 * Simple Asset / content manager and library
 * Event system
+* SoLoud as an Audio Engine
 
 # Goals / To-do
-* Implement sound library
+* Abstract SoLoud
 * Serialization
 * Text rendering
 * Particle rendering
@@ -40,3 +41,4 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * [Glad](https://glad.dav1d.de/)
 * [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h)
 * [spdlog](https://github.com/gabime/spdlog)
+* [SoLoud](https://github.com/jarikomppa/soloud)
