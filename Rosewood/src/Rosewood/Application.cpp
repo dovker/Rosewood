@@ -5,6 +5,9 @@
 #include "Rosewood/Input/Input.h"
 #include "Audio/Audio.h"
 
+#include "soloud.h"
+#include "soloud_speech.h"
+#include "soloud_thread.h"
 
 namespace Rosewood
 {
@@ -31,6 +34,14 @@ namespace Rosewood
 	}
 	void Application::Run()
 	{
+        SoLoud::Soloud soloud;  // SoLoud engine core
+        SoLoud::Speech speech;  // A sound source (speech, in this case)
+        speech.setText("Welcome to Rosewood Engine.");
+        soloud.init();
+        soloud.play(speech);
+        
+
+
 		//Audio::Init();
 		float lateTime = 0;
         
@@ -41,8 +52,6 @@ namespace Rosewood
 			m_DeltaTime = lateTime- m_Time;
 			m_Time = m_Window->GetTime();
 			
-
-            
 			
 
 			for (Layer* layer : m_LayerStack) {
@@ -57,6 +66,8 @@ namespace Rosewood
 			m_Window->OnUpdate();
 			lateTime = m_Window->GetTime();
 		}
+        soloud.deinit();
+
 	}
 	void Application::OnEvent(Event& e)
 	{

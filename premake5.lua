@@ -18,10 +18,12 @@ IncludeDir["Glad"] = "Rosewood/vendor/Glad/include"
 IncludeDir["ImGui"] = "Rosewood/vendor/imgui"
 IncludeDir["glm"] = "Rosewood/vendor/glm"
 IncludeDir["stb_image"] = "Rosewood/vendor/stb_image"
-IncludeDir["minimp3"] = "Rosewood/vendor/minimp3"
+IncludeDir["SoLoud"] = "Rosewood/vendor/soloud/include"
+
 
 group "Dependencies"
     include "Rosewood/vendor/GLFW"
+    include "Rosewood/vendor/soloud/build"
     include "Rosewood/vendor/Glad"
     include "Rosewood/vendor/imgui"
 group ""
@@ -77,7 +79,7 @@ project "Rosewood"
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.glm}",
         "%{IncludeDir.stb_image}",
-        "%{IncludeDir.minimp3}"
+        "%{IncludeDir.SoLoud}"
     }
     
     filter "action:xcode4"
@@ -90,7 +92,7 @@ project "Rosewood"
             "%{prj.name}/vendor/imgui",
             "%{prj.name}/vendor/glm",
             "%{prj.name}/vendor/stb_image",
-            "%{prj.name}/vendor/minimp3"
+            "%{prj.name}/vendor/soloud"
 		}
 
 	filter "system:macosx"
@@ -113,6 +115,7 @@ project "Rosewood"
         "GLFW",
         "Glad",
         "ImGui",
+        "SoloudStatic",
         "opengl32.lib"
     }
     defines
