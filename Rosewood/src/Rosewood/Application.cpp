@@ -38,7 +38,7 @@ namespace Rosewood
         SoLoud::Speech speech;  // A sound source (speech, in this case)
         speech.setText("Welcome to Rosewood Engine.");
         soloud.init();
-        soloud.play(speech);
+        int WelcomeVoice = soloud.play(speech);
         
 
 
@@ -52,7 +52,7 @@ namespace Rosewood
 			m_DeltaTime = lateTime- m_Time;
 			m_Time = m_Window->GetTime();
 			
-			
+            soloud.setPan(WelcomeVoice, sin(m_Time*3));
 
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate();
