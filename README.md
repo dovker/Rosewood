@@ -11,15 +11,15 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Graphics API abstractions
 * Cross-Platform (Tested on major desktop platforms)
 * *Fast* Sprite / Quad Batcher
+* Simple Asset / content manager and library
 * Event system
 
 # Goals / To-do
 * Implement sound library
-* Asset / content manager
 * Serialization
 * Text rendering
 * Particle rendering
-* Primitive rendering (~~Circle~~, Triangle, ~~Quad~~, Line)
+* Primitive rendering (~~Circle~~, Triangle, ~~Quad~~, Line, Function / curve)
 * Implement ECS
 * Support DX11, Vulkan and Metal
 * Asset importer application
@@ -29,6 +29,8 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Physics support
 * Multi-threading
 * Networking
+
+### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
 
 # Libraries / dependencies
 * [Premake5](https://github.com/premake/premake-core)
