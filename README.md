@@ -13,13 +13,12 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * *Fast* Sprite / Quad Batcher
 * Simple Asset / content manager and library
 * Event system
-* SoLoud as an Audio Engine
+* Audio (SoLoud) support
 
 # Goals / To-do
-* Abstract SoLoud
 * Serialization
 * Text rendering
-* Particle rendering
+* Particle effects
 * Primitive rendering (~~Circle~~, Triangle, ~~Quad~~, Line, Function / curve)
 * Implement ECS
 * Support DX11, Vulkan and Metal
