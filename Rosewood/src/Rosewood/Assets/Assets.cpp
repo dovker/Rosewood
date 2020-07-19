@@ -16,7 +16,7 @@ namespace Rosewood
     Ref<Texture> AssetManager::Load<Texture>(const std::string path, const std::string name)
     {
         auto ptr = Texture::Create(path);
-        AssetManager::m_Textures[name] = ptr;
+        m_Textures[name] = ptr;
         return ptr;
     }
 
@@ -24,7 +24,14 @@ namespace Rosewood
     Ref<Shader> AssetManager::Load<Shader>(const std::string path, const std::string name)
     {
         auto ptr = Shader::Create(path);
-        AssetManager::m_Shaders[name] = ptr;
+        m_Shaders[name] = ptr;
+        return ptr;
+    }
+    template <>
+    Ref<Sound> AssetManager::Load<Sound>(const std::string path, const std::string name)
+    {
+        auto ptr = Sound::Create(path);
+        m_Sounds[name] = ptr;
         return ptr;
     }
 // // // // //
@@ -47,6 +54,11 @@ namespace Rosewood
     {
         m_Shaders[name].reset();
     }
+    template <>
+    void AssetManager::Unload<Sound>(const std::string name)
+    {
+        m_Sounds[name].reset();
+    }
 // // // // //
 // // // // //    ADD
 // // // // //
@@ -59,13 +71,18 @@ namespace Rosewood
     template <>
     void AssetManager::Add<Texture>(const Ref<Texture>& Asset, std::string name)
     {
-        AssetManager::m_Textures[name] = Asset;
+        m_Textures[name] = Asset;
     }
 
     template <>
     void AssetManager::Add<Shader>(const Ref<Shader>& Asset, std::string name)
     {
-        AssetManager::m_Shaders[name] = Asset;
+        m_Shaders[name] = Asset;
+    }
+    template <>
+    void AssetManager::Add<Sound>(const Ref<Sound>& Asset, std::string name)
+    {
+        m_Sounds[name] = Asset;
     }
 // // // // //
 // // // // //    EXISTS
@@ -86,6 +103,12 @@ namespace Rosewood
     bool AssetManager::Exists<Shader>(const std::string name)
     {
         return m_Shaders.find(name) != m_Shaders.end();
+    }
+
+    template <>
+    bool AssetManager::Exists<Sound>(const std::string name)
+    {
+        return m_Sounds.find(name) != m_Sounds.end();
     }
 // // // // //
 // // // // //    GET
@@ -110,4 +133,10 @@ namespace Rosewood
         return m_Shaders[name];
     }
     
+    template <>
+    Ref<Sound> AssetManager::Get<Sound>(const std::string name)
+    {
+        RW_CORE_ASSERT(Exists<Sound>(name), "Shader {0} not found", name);
+        return m_Sounds[name];
+    }
 }

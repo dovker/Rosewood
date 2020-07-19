@@ -1,58 +1,67 @@
 #pragma once
-/*
-#include <iostream>
-#include <string>
+#include "rwpch.h"
+
+#include "soloud.h"
+#include "soloud_speech.h"
+#include "soloud_thread.h"
+#include "soloud_wav.h"
+
 
 namespace Rosewood {
 
     class Sound
     {
     public:
-        ~Sound();
-
-        bool IsLoaded() const { return m_Loaded; }
-
-        void SetPosition(float x, float y, float z);
-        void SetGain(float gain);
-        void SetPitch(float pitch);
-        void SetSpatial(bool spatial);
-        void SetLoop(bool loop);
-
-        std::pair<uint32_t, uint32_t> GetLengthMinutesAndSeconds() const;
-
-        static Sound LoadFromFile(const std::string& file, bool spatial = false);
-    private:
+        ~Sound() {}
         Sound();
-        Sound(uint32_t handle, bool loaded, float length);
-
-        uint32_t m_BufferHandle = 0;
-        uint32_t m_SourceHandle = 0;
-        bool m_Loaded = false;
-        bool m_Spatial = false;
-
-        float m_TotalDuration = 0; // in seconds
+        Sound(const std::string& path);
         
-        // Attributes
-        float m_Position[3] = { 0.0f, 0.0f, 0.0f };
-        float m_Gain = 1.0f;
-        float m_Pitch = 1.0f;
-        bool m_Loop = false;
+        void Play();
+        void PlayBackground();
 
-        friend class Audio;
+        void Stop();
+        
+        double GetLength();
+        float GetVolume() {return m_Volume;}
+        
+        
+        //TODO: Pitch, 3D, Filters, protect so on.
+        //TODO: Faders and Filters
+
+        //CHANGED ANY TIME
+        void SetLooping(bool looping);
+        void SetProtected(bool prot);
+        void SetVolume(float volume);
+        
+        //CHANGED AFTER PLAYING
+        void SetPan(float pan);
+        void SetSpeed(float speed);
+        void SetPause(bool pause);
+
+        static Ref<Sound> Create(const std::string& path);
+    
+    private:
+        int m_Handle;
+        bool m_Paused = false;
+        bool m_Looping = false;
+        bool m_Protected = false;
+        float m_Volume = 1.0f;
+        float m_Pan = 0.0f;
+        
+        SoLoud::Wav m_Sound;
     };
 
     class Audio
     {
     public:
         static void Init();
-
-        static Sound LoadAudioSource(const std::string& filename);
-        static void Play(const Sound& source);
-
-        static void SetDebugLogging(bool log);
-    private:
-        static Sound LoadAudioSourceMP3(const std::string& filename);
+        static void Deinit();
+        
+        static float GetGlobalVolume();
+        static void SetGlobalVolume(float volume);
+        
+        static void StopAll();
     };
 
 }
-*/
+

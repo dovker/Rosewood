@@ -15,6 +15,8 @@ public:
     
     Rosewood::AssetManager assetManager;
     Rosewood::Ref<Rosewood::VertexArray> m_VertexArray;
+    Rosewood::Ref<Rosewood::Framebuffer> m_Framebuffer;
+    Rosewood::Ref<Rosewood::Sound> sound;
     
     //Rosewood::Sound sound = Rosewood::Audio::LoadAudioSource("/Users/dovydas/Documents/GitHub/Rosewood/assets/sound.mp3");
     //Rosewood::Ref<Rosewood::RenderMesh> mesh;
@@ -27,12 +29,15 @@ public:
 		: Layer("Example")
 	{
         assetManager.Load<Rosewood::Texture>("Content/dvd_logo.png", "Deferred_Albedo");
+        assetManager.Load<Rosewood::Sound>("Content/sound.mp3", "Sound");
 
         texture = assetManager.Get<Rosewood::Texture>("Deferred_Albedo");
+        sound = assetManager.Get<Rosewood::Sound>("Sound");
+
         Rosewood::BatchRenderer::Init();
         pos = {0.0f, 0.0f};
         vel = {120.0f, 120.0f};
-        
+
 	}
 
 	bool open = true;
@@ -51,6 +56,10 @@ public:
             col.r = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
             col.g = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
             col.b = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+            
+            float pan = ( pos.x / scrWidth ) - 0.5;
+            sound->SetPan(pan);
+            sound->Play();
 
         }
         if (pos.y + (vel.y * Rosewood::Application::GetDeltaTime())>= scrHeight || pos.y + (vel.y * Rosewood::Application::GetDeltaTime()) <=0)
@@ -59,6 +68,11 @@ public:
             col.r = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
             col.g = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
             col.b = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+            
+            float pan = ( pos.x / scrWidth ) - 0.5;
+            sound->SetPan(pan);
+            sound->Play();
+            sound->SetSpeed(1.0-static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX)/3);
         }
         pos += vel * Rosewood::Application::GetDeltaTime();
         
@@ -68,6 +82,9 @@ public:
         Rosewood::BatchRenderer::DrawQuad(glm::vec3(pos.x-150.0f, pos.y-150.0f, 0.0f), glm::vec2(300.0f, 300.0f), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), col);
         
         Rosewood::BatchRenderer::End();
+                
+        
+    
 	}
 
 	void OnImGuiRender() override
@@ -84,6 +101,7 @@ public:
 		ImGui::InputInt("px", &w);
         ImGui::InputInt("px", &h);
         //myTexture.Bind(0);
+        //ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), {192, 108});
 		
 		ImGui::End();
 	}
@@ -135,6 +153,8 @@ public:
 			Rosewood::Application::Get().GetWindow().LockCursor();
 		else if (key == KEY_T)
 			Rosewood::Application::Get().GetWindow().UnlockCursor();
+        else if (key == KEY_F)
+            sound->Play();
 		return false;
 	}
 

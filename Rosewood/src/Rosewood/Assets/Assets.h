@@ -2,6 +2,7 @@
 #include "rwpch.h"
 #include "Rosewood/Graphics/Texture.h"
 #include "Rosewood/Graphics/Shader.h"
+#include "Rosewood/Audio/Audio.h"
 
 
 namespace Rosewood {
@@ -25,6 +26,7 @@ namespace Rosewood {
     private:
         std::unordered_map<std::string, Ref<Texture>> m_Textures;
         std::unordered_map<std::string, Ref<Shader>>  m_Shaders;
+        std::unordered_map<std::string, Ref<Sound>>  m_Sounds;
     };
     
 }

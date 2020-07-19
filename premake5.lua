@@ -193,7 +193,8 @@ project "Sandbox2D"
         "Rosewood/src",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
-        "%{IncludeDir.glm}"
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.SoLoud}"
     }
     filter "action:xcode4"
 		sysincludedirs
@@ -202,7 +203,8 @@ project "Sandbox2D"
             "Rosewood/vendor/spdlog/include",
             "Rosewood/vendor/Glad/include",
             "Rosewood/vendor/imgui",
-            "Rosewood/vendor/glm"
+            "Rosewood/vendor/glm",
+            "%{prj.name}/vendor/soloud"
 		}
 
     links

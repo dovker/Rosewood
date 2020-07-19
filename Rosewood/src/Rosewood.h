@@ -25,7 +25,7 @@
 
 #include "Rosewood/Assets/Assets.h"
 
-//#include "Rosewood/Audio/Audio.h"
+#include "Rosewood/Audio/Audio.h"
 
 #include "Rosewood/ImGui/ImGuiLayer.h"
 
