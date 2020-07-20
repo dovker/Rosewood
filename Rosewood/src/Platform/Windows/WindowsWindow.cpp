@@ -4,7 +4,7 @@
 #include "Rosewood/Events/KeyEvent.h"
 #include "Rosewood/Events/MouseEvent.h"
 #include <glad/glad.h>
-#include <OpenGL/gl.h>
+//#include <OpenGL/gl.h>
 
 
 namespace Rosewood {

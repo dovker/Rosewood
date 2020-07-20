@@ -32,7 +32,7 @@ namespace Rosewood
 
         virtual uint32_t GetColorAttachmentRendererID() const = 0;
         virtual uint32_t CreateColorAttachment(uint32_t slot, TexChannelType channeType, TexChannelType format, TexChannelType dataType) = 0;
-        virtual void RenderPrep(const uint32_t attachments[], uint32_t count) = 0; // {0, 1, 2, 3, 4, ..}
+        virtual void RenderPrep(const uint32_t attachments[], const uint32_t count) = 0; // {0, 1, 2, 3, 4, ..}
 
         virtual const FramebufferSpecification& GetSpecification() const = 0;
 

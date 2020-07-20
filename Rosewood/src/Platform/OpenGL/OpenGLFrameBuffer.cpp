@@ -1,5 +1,5 @@
 #include "rwpch.h"
-#include "Shader.h"
+#include "Rosewood/Graphics/Shader.h"
 #include "OpenGLFrameBuffer.h"
 
 #include <glad/glad.h>
@@ -109,14 +109,14 @@ namespace Rosewood
         return ID;
     }
 
-    void OpenGLFramebuffer::RenderPrep(const uint32_t attachments[], uint32_t count)
+    void OpenGLFramebuffer::RenderPrep(const uint32_t attachments[], const uint32_t count)
     {
-        uint32_t attach[count];
+		std::vector<uint32_t> attach(count);
         for(int i = 0; i < count; i++)
         {
             attach[i] = GL_COLOR_ATTACHMENT0 + i;
         }
-        glDrawBuffers(count, attachments);
+        glDrawBuffers(count, attach.data());
         RW_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete!");
 
     }

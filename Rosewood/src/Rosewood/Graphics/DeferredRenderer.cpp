@@ -1,9 +1,11 @@
-#include "DeferredRenderer.h"
+#include "rwpch.h"
 
+#include "DeferredRenderer.h"
 #include "Graphics.h"
 #include "Rosewood/Application.h"
 
 #include "FrameBuffer.h"
+#include "Shader.h"
 
 namespace Rosewood
 {
@@ -65,9 +67,9 @@ namespace Rosewood
         
         float twoPi = glm::two_pi<float>();
         
-        uint32_t indices[vertexSegments*3];
+        std::vector<uint32_t> indices(vertexSegments*3);
         
-        float circleVertices[numberOfVertices];
+		std::vector<float> circleVertices(numberOfVertices);
         
         uint32_t currentIndex = 0;
         uint32_t currentVIndex = 3;
@@ -91,14 +93,14 @@ namespace Rosewood
         }
         Ref<VertexArray> VA = VertexArray::Create();
         
-        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices, sizeof(circleVertices));
+        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices.data(), sizeof(circleVertices));
         BufferLayout layout = {
             { ShaderDataType::Float3, "a_Position" }
         };
         VB->SetLayout(layout);
         VA->AddVertexBuffer(VB);
 
-        Ref<IndexBuffer> IB = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+        Ref<IndexBuffer> IB = IndexBuffer::Create(indices.data(), sizeof(indices) / sizeof(uint32_t));
         VA->SetIndexBuffer(IB);
         
         return VA;
@@ -110,9 +112,9 @@ namespace Rosewood
         
         float twoPi = glm::two_pi<float>();
         
-        uint32_t indices[vertexSegments*3];
+		std::vector<uint32_t> indices(vertexSegments*3);
         
-        float circleVertices[numberOfVertices];
+		std::vector<float> circleVertices(numberOfVertices);
         
         uint32_t currentIndex = 0;
         uint32_t currentVIndex = 5;
@@ -142,7 +144,7 @@ namespace Rosewood
         }
         Ref<VertexArray> VA = VertexArray::Create();
         
-        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices, sizeof(circleVertices));
+        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices.data(), sizeof(circleVertices));
         BufferLayout layout = {
             { ShaderDataType::Float3, "a_Position" },
             { ShaderDataType::Float2, "a_TexCoords" }
@@ -150,7 +152,7 @@ namespace Rosewood
         VB->SetLayout(layout);
         VA->AddVertexBuffer(VB);
 
-        Ref<IndexBuffer> IB = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+        Ref<IndexBuffer> IB = IndexBuffer::Create(indices.data(), sizeof(indices) / sizeof(uint32_t));
         VA->SetIndexBuffer(IB);
         VA->Unbind();
         return VA;

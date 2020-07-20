@@ -446,7 +446,7 @@ project "SoloudStatic"
 	rtti ("Off")
 	flags { "NoPCH" }
 
-    if (os.istarget("Windows")) then flags {"StaticRuntime"} end
+    if (os.istarget("Windows")) then staticruntime "On" end
 	if (os.istarget("Windows")) then defines { "_CRT_SECURE_NO_WARNINGS" } end
     
 	filter "configurations:Release"
