@@ -30,6 +30,24 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Multi-threading
 * Networking
 
+# Building
+## Windows:
+
+  Double click **"premake5.bat"** file and VS2019 project files will be generated
+  
+  If you wish to create project files for another IDE, change `vs2019` with whatever you choose in **"premake5.bat"** file.
+  
+## MacOS:
+
+  Open **Terminal** and type `cd <Enter the solution direction>`
+  Proceed by entering this command:
+  `vendor/bin/premake/premake5 xcode4`
+  Your project files should now be generated!
+  Once again, you are free to change `xcode4` with whatever you please!
+
+## Linux coming soon
+
+
 ### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
 
 # Libraries / dependencies
