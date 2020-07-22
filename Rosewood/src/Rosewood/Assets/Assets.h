@@ -27,6 +27,7 @@ namespace Rosewood {
         std::unordered_map<std::string, Ref<Texture>> m_Textures;
         std::unordered_map<std::string, Ref<Shader>>  m_Shaders;
         std::unordered_map<std::string, Ref<Sound>>  m_Sounds;
+
     };
     
 }

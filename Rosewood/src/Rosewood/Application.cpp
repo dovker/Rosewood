@@ -56,7 +56,7 @@ namespace Rosewood
 			m_Window->OnUpdate();
 			lateTime = m_Window->GetTime();
 		}
-        //Audio::Deinit();
+        Audio::Deinit();
 	}
 	void Application::OnEvent(Event& e)
 	{

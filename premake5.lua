@@ -203,12 +203,7 @@ workspace "Rosewood"
         {
             "Rosewood"
         }
-        postbuildcommands 
-        {
-            "{COPY} Content %{cfg.targetdir}/Content",
-            "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}/EngineContent"
-
-        }
+        
 
         filter "action:xcode4"
             xcodebuildsettings = { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
@@ -234,6 +229,11 @@ workspace "Rosewood"
                 "CoreAudio.framework",
                 "CoreFoundation.framework"
             }
+            postbuildcommands 
+            {
+                "{COPY} Content %{cfg.targetdir}",
+                "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}" --For some fucking reason folder copying is different on different platforms... FOR FUCKS SAKE
+            }
         
         filter "system:windows"
             
@@ -243,6 +243,11 @@ workspace "Rosewood"
             {
                 "RW_PLATFORM_WINDOWS"
             }
+            postbuildcommands 
+            {
+                "{COPY} Content %{cfg.targetdir}/Content",
+                "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}/EngineContent"
+            }
         filter "system:linux"
             
             systemversion "latest"
@@ -250,6 +255,11 @@ workspace "Rosewood"
             defines
             {
                 "RW_PLATFORM_LINUX"
+            }
+            postbuildcommands 
+            {
+                "{COPY} Content %{cfg.targetdir}",
+                "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}"
             }
         filter "system:macosx"
                 

@@ -20,6 +20,9 @@
 #include "Rosewood/Graphics/Shader.h"
 #include "Rosewood/Graphics/BatchRenderer.h"
 #include "Rosewood/Graphics/FrameBuffer.h"
+
+#include "Rosewood/Graphics/SpriteFont.h"
+
 //#include "Rosewood/Graphics/DeferredRenderer.h"
 //#include "Rosewood/Graphics/Mesh.h"
 

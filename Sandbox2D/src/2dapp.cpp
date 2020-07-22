@@ -12,6 +12,10 @@ public:
 	float lastY = scrHeight / 2.0f;
 	
     Rosewood::Ref<Rosewood::Texture> texture;
+    Rosewood::Ref<Rosewood::Texture> fontTexture;
+
+    
+    Rosewood::Ref<Rosewood::SpriteFont> font;
     
     Rosewood::AssetManager assetManager;
     Rosewood::Ref<Rosewood::VertexArray> m_VertexArray;
@@ -30,9 +34,14 @@ public:
 	{
         assetManager.Load<Rosewood::Texture>("Content/dvd_logo.png", "Deferred_Albedo");
         assetManager.Load<Rosewood::Sound>("Content/sound.mp3", "Sound");
+        assetManager.Load<Rosewood::Texture>("Content/SpriteFont.png", "Sprite_Font");
+
 
         texture = assetManager.Get<Rosewood::Texture>("Deferred_Albedo");
         sound = assetManager.Get<Rosewood::Sound>("Sound");
+        fontTexture = assetManager.Get<Rosewood::Texture>("Sprite_Font");
+                
+        font = Rosewood::SpriteFont::Create(fontTexture, ";ABC", 16, 16);
 
         Rosewood::BatchRenderer::Init();
         pos = {0.0f, 0.0f};
@@ -42,6 +51,8 @@ public:
 
 	bool open = true;
     glm::vec4 col = glm::vec4(1.0f);
+    std::string text = "ABC; ABA; BABABA    B";
+    
     void OnUpdate() override
 	{
 		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
@@ -79,6 +90,8 @@ public:
         Rosewood::BatchRenderer::Begin(camera.GetCamera());
         
         Rosewood::BatchRenderer::DrawQuad(glm::vec3(pos.x-150.0f, pos.y-150.0f, 0.0f), glm::vec2(300.0f, 300.0f), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), col);
+        
+        font->DrawString({100, 100}, text, {1.0f, 1.0f, 1.0f, 1.0f});
         
         Rosewood::BatchRenderer::End();
                 
