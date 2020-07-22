@@ -45,7 +45,6 @@ public:
     void OnUpdate() override
 	{
 		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
-        
         {
             Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
             Rosewood::GraphicsCommand::Clear();
