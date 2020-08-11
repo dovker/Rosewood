@@ -28,6 +28,8 @@ struct Light {
     vec3 Position;
     vec3 Color;
     
+    float Intensity;
+    
     float Constant;
     float Linear;
     float Quadratic;
@@ -53,9 +55,9 @@ void main()
     float attenuation = 1.0 / (u_Light.Constant + u_Light.Linear * dist + u_Light.Quadratic * dist * dist);
     
     diffuse *= attenuation;
+    diffuse *= u_Light.Intensity;
     
-    gLight = vec4(attenuation);
-
+    gLight = vec4(diffuse, 1.0f);
     
     //gLight = vec4(attenuation);
     //gLight = vec4(TexCoords, 0.0, 1.0);

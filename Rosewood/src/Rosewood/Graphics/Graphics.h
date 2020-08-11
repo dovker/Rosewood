@@ -17,6 +17,9 @@ namespace Rosewood
         virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
         virtual void SetClearColor(const glm::vec4& color) = 0;
         virtual void Clear() = 0;
+        
+        virtual void ToggleDepthTest(bool toggle) = 0;
+        virtual void ToggleBlending(bool toggle) = 0;
 
         virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
         virtual void BindTexture(uint32_t ID, uint32_t slot) = 0;
@@ -59,6 +62,14 @@ namespace Rosewood
         static void BindTexture(uint32_t ID, uint32_t slot)
         {
             s_Graphics->BindTexture(ID, slot);
+        }
+        static void ToggleDepthTest(bool toggle)
+        {
+            s_Graphics->ToggleDepthTest(toggle);
+        }
+        static void ToggleBlending(bool toggle)
+        {
+            s_Graphics->ToggleBlending(toggle);
         }
     private:
         static Scope<Graphics> s_Graphics;

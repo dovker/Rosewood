@@ -16,7 +16,7 @@ namespace Rosewood
         
         //glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
+        //glBlendFunc(GL_ONE, GL_ONE);
         
         //int major, minor;
         //glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -49,5 +49,13 @@ namespace Rosewood
     {
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, ID);
+    }
+    void OpenGL::ToggleDepthTest(bool toggle)
+    {
+        toggle ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+    }
+    void OpenGL::ToggleBlending(bool toggle)
+    {
+        toggle ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
     }
 }

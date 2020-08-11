@@ -19,7 +19,7 @@ namespace Rosewood {
         Ref<VertexArray> VA;
         // constructor
         RenderMesh() {}
-        RenderMesh(std::vector<float> vertices, std::vector<uint32_t> indices, std::vector<Ref<Texture>> textures)
+        RenderMesh(std::vector<float>& vertices, std::vector<uint32_t>& indices, std::vector<Ref<Texture>>& textures)
         {
             this->vertices = vertices;
             this->indices = indices;
@@ -27,11 +27,14 @@ namespace Rosewood {
             
             VA = VertexArray::Create();
                         
-            Ref<VertexBuffer> VB = VertexBuffer::Create(vertices.data(), sizeof(vertices));
+            Ref<VertexBuffer> VB = VertexBuffer::Create(vertices.data(), sizeof(float)*vertices.size());
             
             BufferLayout layout = {
                 { ShaderDataType::Float3, "a_Position" },
-                { ShaderDataType::Float2, "a_TexCoords" }
+                { ShaderDataType::Float3, "a_Normal" },
+
+                { ShaderDataType::Float2, "a_TexCoords" },
+                
 
             };
             VB->SetLayout(layout);

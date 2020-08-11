@@ -15,12 +15,16 @@ namespace Rosewood
         
         glm::vec3 color;
         
+        float intensity;
+        
         float constant;
         float linear;
         float quadratic;
         
-        PointLight(glm::vec3 pos, glm::vec3 col, float cons, float lin, float quadr)
-        : position(pos), color(col), constant(cons), linear(lin), quadratic(quadr)
+        PointLight() {};
+        
+        PointLight(glm::vec3 pos, glm::vec3 col, float intens,  float cons, float lin, float quadr)
+        : position(pos), color(col), intensity(intens), constant(cons), linear(lin), quadratic(quadr)
         {}
     };
 
@@ -93,7 +97,7 @@ namespace Rosewood
         }
         Ref<VertexArray> VA = VertexArray::Create();
         
-        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices.data(), sizeof(circleVertices));
+        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices.data(), sizeof(float)*circleVertices.size());
         BufferLayout layout = {
             { ShaderDataType::Float3, "a_Position" }
         };
@@ -142,7 +146,7 @@ namespace Rosewood
         }
         Ref<VertexArray> VA = VertexArray::Create();
         
-        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices.data(), sizeof(circleVertices));
+        Ref<VertexBuffer> VB = VertexBuffer::Create(circleVertices.data(), sizeof(float)*circleVertices.size());
         BufferLayout layout = {
             { ShaderDataType::Float3, "a_Position" },
             { ShaderDataType::Float2, "a_TexCoords" }
@@ -171,6 +175,8 @@ namespace Rosewood
         s_Buffer.Light = s_Buffer.FrameLightBuffer->GetColorAttachmentRendererID();
         //TODO: FIX VA generation
         s_Buffer.CircleVA = CreateCircleVAExt(19);
+        
+        s_Buffer.Lights.resize(1);
 
         s_Buffer.QuadVA = VertexArray::Create();
 
@@ -205,8 +211,12 @@ namespace Rosewood
     }
     void DeferredRenderer::Begin(glm::mat4 camera)
     {
+        
         s_Buffer.Camera = camera;
         s_Buffer.FrameGBuffer->Bind();
+        GraphicsCommand::ToggleBlending(false);
+        GraphicsCommand::ToggleDepthTest(true);
+
         GraphicsCommand::SetClearColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
         GraphicsCommand::Clear();
         
@@ -242,6 +252,8 @@ namespace Rosewood
         
         //Light Pass
         s_Buffer.FrameLightBuffer->Bind();
+        GraphicsCommand::ToggleBlending(true);
+        GraphicsCommand::ToggleDepthTest(false);
         GraphicsCommand::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
         GraphicsCommand::Clear();
         
@@ -254,7 +266,7 @@ namespace Rosewood
         GraphicsCommand::BindTexture(s_Buffer.Position, 0);
         GraphicsCommand::BindTexture(s_Buffer.Normal, 1);
 
-        
+        s_Buffer.CircleVA->Bind();
         for (PointLight light : s_Buffer.Lights)
         {
             float radius = CalculateRadius(light);
@@ -265,16 +277,14 @@ namespace Rosewood
         
             s_Buffer.LightBufferShader->setVec3("u_Light.Position", light.position);
             s_Buffer.LightBufferShader->setVec3("u_Light.Color", light.color);
+            s_Buffer.LightBufferShader->setFloat("u_Light.Intensity", light.intensity);
             s_Buffer.LightBufferShader->setFloat("u_Light.Constant", light.constant);
             s_Buffer.LightBufferShader->setFloat("u_Light.Linear", light.linear);
             s_Buffer.LightBufferShader->setFloat("u_Light.Quadratic", light.quadratic);
-//            s_Buffer.CircleVA->Bind();
-//            GraphicsCommand::DrawIndexed(s_Buffer.CircleVA);
-//            s_Buffer.CircleVA->Unbind();
-            s_Buffer.QuadVA->Bind();
-            GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
-            s_Buffer.QuadVA->Unbind();
+            GraphicsCommand::DrawIndexed(s_Buffer.CircleVA);
         }
+        s_Buffer.CircleVA->Unbind();
+
         //RW_CORE_TRACE("light pass done");
         
         s_Buffer.FrameLightBuffer->Unbind();
@@ -305,13 +315,18 @@ namespace Rosewood
 
     }
 
-    void DeferredRenderer::DrawPointLight(glm::vec2 pos, glm::vec3 color, float constant, float linear, float quadratic)
+    void DeferredRenderer::DrawPointLight(glm::vec3 pos, glm::vec3 color, float intensity, float constant, float linear, float quadratic)
     {
         //s_Buffer.Lights.push_back({{pos.x, pos.y, 1.0f-0.00000001}, color, constant, linear, quadratic});
-        s_Buffer.Lights = std::vector<PointLight>
-        {
-            PointLight(glm::vec3(pos.x, pos.y, 1.0f-0.00000001), color, constant, linear, quadratic),
-        };
+        s_Buffer.Lights[0] = PointLight(pos, color, intensity, constant, linear, quadratic);
+        
+        //TODO: Fix This
+    }
+    void DeferredRenderer::AddPointLight(glm::vec3 pos, glm::vec3 color, float intensity, float constant, float linear, float quadratic)
+    {
+        s_Buffer.Lights.push_back(PointLight(pos, color, intensity, constant, linear, quadratic));
+        //s_Buffer.Lights.emplace_back(PointLight(pos, color, intensity, constant, linear, quadratic)); //FIX THISSSS
+        
 
     }
 
