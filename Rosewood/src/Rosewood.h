@@ -23,8 +23,8 @@
 
 #include "Rosewood/Graphics/SpriteFont.h"
 
-//#include "Rosewood/Graphics/DeferredRenderer.h"
-//#include "Rosewood/Graphics/Mesh.h"
+#include "Rosewood/Graphics/DeferredRenderer.h"
+#include "Rosewood/Graphics/Mesh.h"
 
 #include "Rosewood/Assets/Assets.h"
 

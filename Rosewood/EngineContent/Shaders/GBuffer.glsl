@@ -3,7 +3,7 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoords;
 
-out vec3 FragPos;
+out vec4 FragPos;
 out vec2 TexCoords; 
 
 uniform mat4 u_Model;
@@ -12,12 +12,13 @@ uniform mat4 u_ViewProjection;
 void main()
 {
     vec4 worldPos = u_Model * vec4(aPos, 1.0);
-    FragPos = worldPos.xyz;
+    FragPos = worldPos;
     
     TexCoords = aTexCoords;
     
-    //gl_Position = u_ViewProjection * worldPos;
-    gl_Position = vec4(aPos, 1.0);
+    gl_Position = u_ViewProjection * worldPos;
+    //gl_Position = worldPos;
+
 }
 
 
@@ -26,10 +27,10 @@ void main()
 
 
 layout (location = 0) out vec4 gAlbedoSpec;
-layout (location = 1) out vec3 gPosition;
-layout (location = 2) out vec3 gNormal;
+layout (location = 1) out vec4 gPosition;
+layout (location = 2) out vec4 gNormal;
 
-in vec3 FragPos;  
+in vec4 FragPos;
 in vec2 TexCoords; 
 
 uniform sampler2D u_AlbedoTexture;
@@ -39,17 +40,13 @@ uniform sampler2D u_SpecularTexture;
 
 void main()
 {
-//    gAlbedoSpec = texture(u_AlbedoTexture, TexCoords);
-//    if(gAlbedoSpec.a == 0.0)
-//    {
-//        discard;
-//    }
-//    gAlbedoSpec.a = texture(u_SpecularTexture, TexCoords).r;
-//    gPosition = FragPos;
-//
-//    gNormal = texture(u_NormalTexture, TexCoords).rgb;
-    gAlbedoSpec = vec4(1.0);
-    gPosition = vec3(0.0, 1.0, 0.0);
-    gNormal = vec3(1.0, 1.0, 0.0);
+    gAlbedoSpec = texture(u_AlbedoTexture, TexCoords);
+    if(gAlbedoSpec.a == 0.0)
+    {
+        discard;
+    }
+    gAlbedoSpec.a = texture(u_SpecularTexture, TexCoords).r;
+    gPosition.rgba = FragPos;
+    gNormal = texture(u_NormalTexture, TexCoords);
 
 }

@@ -134,8 +134,6 @@ namespace Rosewood
             circleVertices[currentVIndex + 2] = 0.0f;
             circleVertices[currentVIndex + 3] = circleVertices[currentVIndex];
             circleVertices[currentVIndex + 4] = circleVertices[currentVIndex + 1];
-            RW_CORE_TRACE("{0}, {1}", circleVertices[currentVIndex], circleVertices[currentVIndex+1]);
-            
             indices[currentIndex] = 0;
             indices[currentIndex + 1] = i-1;
             indices[currentIndex + 2] = i;
@@ -159,24 +157,19 @@ namespace Rosewood
     }
     void DeferredRenderer::Init()
     {
-        s_Buffer.FrameGBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2});
-        s_Buffer.AlbedoSpec = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID();
+        s_Buffer.FrameGBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, 3});
+        s_Buffer.AlbedoSpec = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(0);
         std::cout<<s_Buffer.AlbedoSpec;
-        s_Buffer.Position = s_Buffer.FrameGBuffer->CreateColorAttachment(1, TexChannelType::RGBA16F, TexChannelType::RGBA, TexChannelType::FLOAT);
+        s_Buffer.Position = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(1);
         std::cout<<s_Buffer.Position;
-
-        s_Buffer.Normal = s_Buffer.FrameGBuffer->CreateColorAttachment(2, TexChannelType::RGBA16F, TexChannelType::RGBA, TexChannelType::FLOAT);
+        s_Buffer.Normal = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(2);
         std::cout<<s_Buffer.Normal;
 
-        const uint32_t attachments[3] = {0, 1, 2};
-        s_Buffer.FrameGBuffer->RenderPrep(attachments, 3);
         
         
-//        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth(), Application::Get().GetWindow().GetHeight()});
-//        s_Buffer.Light = s_Buffer.FrameLightBuffer->GetColorAttachmentRendererID();
-//        const uint32_t attachments2[1] = {0};
-//
-//        s_Buffer.FrameGBuffer->RenderPrep(attachments2, 1);
+        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2});
+        s_Buffer.Light = s_Buffer.FrameLightBuffer->GetColorAttachmentRendererID();
+        //TODO: FIX VA generation
         s_Buffer.CircleVA = CreateCircleVAExt(19);
 
         s_Buffer.QuadVA = VertexArray::Create();
@@ -200,21 +193,21 @@ namespace Rosewood
         uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
         Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
         s_Buffer.QuadVA->SetIndexBuffer(indexBuffer);
-        RW_CORE_TRACE("{0}", s_Buffer.QuadVA->GetIndexBuffer()->GetCount());
         s_Buffer.QuadVA->Unbind();
 
         
         
-        s_Buffer.GBufferShader = Shader::Create("/Users/dovydas/Documents/GitHub/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/GBuffer.glsl");
-        s_Buffer.LightBufferShader = Shader::Create("/Users/dovydas/Documents/GitHub/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/LightBuffer.glsl");
-        s_Buffer.FinalShader = Shader::Create("/Users/dovydas/Documents/GitHub/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/FinalPass.glsl");
-
+        s_Buffer.GBufferShader = Shader::Create("EngineContent/Shaders/GBuffer.glsl");
+        s_Buffer.LightBufferShader = Shader::Create("EngineContent/Shaders/LightBuffer.glsl");
+        s_Buffer.FinalShader = Shader::Create("EngineContent/Shaders/FinalPass.glsl");
+//
 
     }
     void DeferredRenderer::Begin(glm::mat4 camera)
     {
         s_Buffer.Camera = camera;
         s_Buffer.FrameGBuffer->Bind();
+        GraphicsCommand::SetClearColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
         GraphicsCommand::Clear();
         
         s_Buffer.GBufferShader->Bind();
@@ -227,71 +220,78 @@ namespace Rosewood
         model = glm::translate(model, pos);
         model = glm::scale(model, scale);
         s_Buffer.GBufferShader->setMat4("u_Model", model);
+        s_Buffer.GBufferShader->setInt("u_AlbedoTexture", 0);
+        s_Buffer.GBufferShader->setInt("u_NormalTexture", 1);
+        s_Buffer.GBufferShader->setInt("u_SpecularTexture", 2);
         mesh->textures[0]->Bind(0);
-        //s_Buffer.GBufferShader->setInt("u_AlbedoTexture", mesh->textures[0]->GetID());
         mesh->textures[1]->Bind(1);
-
-        //s_Buffer.GBufferShader->setInt("u_NormalTexture", mesh->textures[1]->GetID());
         mesh->textures[2]->Bind(2);
-
-        //s_Buffer.GBufferShader->setInt("u_SpecularTexture", mesh->textures[2]->GetID());
 
 //        mesh->VA->Bind();
 //        GraphicsCommand::DrawIndexed(mesh->VA);
+//        mesh->VA->Unbind();
         s_Buffer.QuadVA->Bind();
         GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
         s_Buffer.QuadVA->Unbind();
     }
     void DeferredRenderer::End()
     {
-        
-        
         //RW_CORE_TRACE("GBuffer done");
         s_Buffer.FrameGBuffer->Unbind();
         
+        
+        //Light Pass
+        s_Buffer.FrameLightBuffer->Bind();
+        GraphicsCommand::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
+        GraphicsCommand::Clear();
+        
+        s_Buffer.LightBufferShader->Bind();
+        
+        s_Buffer.LightBufferShader->setMat4("u_ViewProjection", s_Buffer.Camera);
+        
+        s_Buffer.LightBufferShader->setInt("gPosition", 0);
+        s_Buffer.LightBufferShader->setInt("gNormal", 1);
+        GraphicsCommand::BindTexture(s_Buffer.Position, 0);
+        GraphicsCommand::BindTexture(s_Buffer.Normal, 1);
+
+        
+//        s_Buffer.CircleVA->Bind();
+        s_Buffer.QuadVA->Bind();
+        for (struct PointLight light : s_Buffer.Lights)
+        {
+            float radius = CalculateRadius(light);
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, light.position);
+            model = glm::scale(model, {radius, radius, 1.0f});
+            s_Buffer.LightBufferShader->setMat4("u_Model", model);
+        
+            s_Buffer.LightBufferShader->setVec3("u_Light.Position", light.position);
+            s_Buffer.LightBufferShader->setVec3("u_Light.Color", light.color);
+            s_Buffer.LightBufferShader->setFloat("u_Light.Constant", light.constant);
+            s_Buffer.LightBufferShader->setFloat("u_Light.Linear", light.linear);
+            s_Buffer.LightBufferShader->setFloat("u_Light.Quadratic", light.quadratic);
+            
+            //GraphicsCommand::DrawIndexed(s_Buffer.CircleVA);
+            GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
+        }
+        //RW_CORE_TRACE("light pass done");
+        
+        s_Buffer.FrameLightBuffer->Unbind();
+        
+        
+        
         s_Buffer.FinalShader->Bind();
         
+        s_Buffer.FinalShader->setInt("u_Image", 0);
+
         //s_Buffer.FinalShader->setInt("gLight", s_Buffer.Light);
-        GraphicsCommand::BindTexture(s_Buffer.AlbedoSpec, 0);
-        //s_Buffer.FinalShader->setInt("u_Image", s_Buffer.AlbedoSpec);
+        GraphicsCommand::BindTexture(s_Buffer.Light, 0);
                 //RW_CORE_TRACE("Last pass done");
         s_Buffer.QuadVA->Bind();
         GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
         s_Buffer.QuadVA->Unbind();
 
-//        //Light Pass
-//        s_Buffer.FrameLightBuffer->Bind();
-//        GraphicsCommand::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
-//        GraphicsCommand::Clear();
-//
-//        s_Buffer.LightBufferShader->Bind();
-//
-//        s_Buffer.LightBufferShader->setMat4("u_ViewProjection", s_Buffer.Camera);
-//
-//        s_Buffer.LightBufferShader->setInt("gPosition", s_Buffer.Position);
-//        s_Buffer.LightBufferShader->setInt("gNormal", s_Buffer.Normal);
-//        s_Buffer.LightBufferShader->setInt("gAlbedoSpec", s_Buffer.AlbedoSpec);
-//
-//
-//        for (struct PointLight light : s_Buffer.Lights)
-//        {
-//            float radius = CalculateRadius(light);
-//            glm::mat4 model = glm::mat4(1.0f);
-//            model = glm::translate(model, light.position);
-//            model = glm::scale(model, {radius, radius, 1.0f});
-//            s_Buffer.LightBufferShader->setMat4("u_Model", model);
-//
-//            s_Buffer.LightBufferShader->setVec3("u_Light.Position", light.position);
-//            s_Buffer.LightBufferShader->setVec3("u_Light.Color", light.color);
-//            s_Buffer.LightBufferShader->setFloat("u_Light.Constant", light.constant);
-//            s_Buffer.LightBufferShader->setFloat("u_Light.Linear", light.linear);
-//            s_Buffer.LightBufferShader->setFloat("u_Light.Quadratic", light.quadratic);
-//
-//            GraphicsCommand::DrawIndexed(s_Buffer.CircleVA);
-//        }
-//        //RW_CORE_TRACE("light pass done");
-//
-//        s_Buffer.FrameLightBuffer->Unbind();
+
 //
 //        //Final Pass
 //        s_Buffer.FinalShader->Bind();
@@ -306,7 +306,7 @@ namespace Rosewood
 
     void DeferredRenderer::PointLight(glm::vec2 pos, glm::vec3 color, float constant, float linear, float quadratic)
     {
-        s_Buffer.Lights.push_back({{pos.x, pos.y, 1.0f}, color, constant, linear, quadratic});
+        s_Buffer.Lights.push_back({{pos.x, pos.y, 1.0f-0.00000001}, color, constant, linear, quadratic});
     }
 
     uint32_t DeferredRenderer::GetLightID() {return s_Buffer.Light;}

@@ -23,35 +23,44 @@ public:
     Rosewood::Ref<Rosewood::Sound> sound;
     
     //Rosewood::Sound sound = Rosewood::Audio::LoadAudioSource("/Users/dovydas/Documents/GitHub/Rosewood/assets/sound.mp3");
-    //Rosewood::Ref<Rosewood::RenderMesh> mesh;
+    Rosewood::Ref<Rosewood::RenderMesh> mesh;
 
     Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight));
     
-    glm::vec2 pos, vel;
 	
 	ExampleLayer()
 		: Layer("Example")
 	{
-        assetManager.Load<Rosewood::Texture>("Content/dvd_logo.png", "Deferred_Albedo");
+        Rosewood::Ref<Rosewood::Texture> albedo = assetManager.Load<Rosewood::Texture>("Content/Deferred_Albedo.png", "Deferred_Albedo");
+        Rosewood::Ref<Rosewood::Texture> normal = assetManager.Load<Rosewood::Texture>("Content/Deferred_Normal.png", "Deferred_Normal");
+        Rosewood::Ref<Rosewood::Texture> spec = assetManager.Load<Rosewood::Texture>("Content/Deferred_Specular.png", "Deferred_Specular");
+
+
+        
         assetManager.Load<Rosewood::Sound>("Content/sound.mp3", "Sound");
-        assetManager.Load<Rosewood::Texture>("Content/SpriteFont.png", "Sprite_Font");
+        assetManager.Load<Rosewood::Texture>("Content/Chroma.png", "Sprite_Font");
+        
+        mesh = Rosewood::RenderMesh::Create(
+        std::vector<float>{0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                            0.0f,1.0f, 0.0f, 0.0f, 1.0f,
+                            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+                            1.0f, 0.0f, 0.0f, 1.0f, 0.0f},
+        std::vector<uint32_t>{ 0, 1, 2, 2, 3, 0 },
+        std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
 
-
-        texture = assetManager.Get<Rosewood::Texture>("Deferred_Albedo");
         sound = assetManager.Get<Rosewood::Sound>("Sound");
         fontTexture = assetManager.Get<Rosewood::Texture>("Sprite_Font");
-                
-        font = Rosewood::SpriteFont::Create(fontTexture, ";ABC", 16, 16);
+        
+        font = Rosewood::SpriteFont::Create(fontTexture, "!\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ", 9, 9);
 
-        Rosewood::BatchRenderer::Init();
-        pos = {0.0f, 0.0f};
-        vel = {120.0f, 120.0f};
+        Rosewood::DeferredRenderer::Init();
+        
 
 	}
 
 	bool open = true;
     glm::vec4 col = glm::vec4(1.0f);
-    std::string text = "ABC; ABA; BABABA    B";
+    std::string text = "Help my pp is very hard because this works! :))) XDD ; \nHello love! This should be in a new line! \nHippopotamus!12 Hippopotamus! Hippopotamus!";
     
     void OnUpdate() override
 	{
@@ -60,40 +69,18 @@ public:
             Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
             Rosewood::GraphicsCommand::Clear();
         }
-        if (pos.x + (vel.x * Rosewood::Application::GetDeltaTime()) >= scrWidth || pos.x + (vel.x * Rosewood::Application::GetDeltaTime()) <=0)
-        {
-            vel.x *= -1;
-            col.r = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-            col.g = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-            col.b = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-            
-            float pan = ( pos.x / scrWidth ) - 0.5;
-            sound->SetPan(pan);
-            sound->Play();
+        
+        //Rosewood::BatchRenderer::ResetStats();
+        Rosewood::DeferredRenderer::Begin(camera.GetCamera().GetViewProjectionMatrix());
+        
+        Rosewood::DeferredRenderer::Submit(mesh, {10.0f, 10.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
+        float mouseX = Rosewood::Input::GetMouseX();
+        float mouseY = Rosewood::Input::GetMouseY();
 
-        }
-        if (pos.y + (vel.y * Rosewood::Application::GetDeltaTime())>= scrHeight || pos.y + (vel.y * Rosewood::Application::GetDeltaTime()) <=0)
-        {
-            vel.y *= -1;
-            col.r = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-            col.g = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-            col.b = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-            
-            float pan = ( pos.x / scrWidth ) - 0.5;
-            sound->SetPan(pan);
-            sound->Play();
-            sound->SetSpeed(1.0-static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX)/3);
-        }
-        pos += vel * Rosewood::Application::GetDeltaTime();
-        
-        Rosewood::BatchRenderer::ResetStats();
-        Rosewood::BatchRenderer::Begin(camera.GetCamera());
-        
-        Rosewood::BatchRenderer::DrawQuad(glm::vec3(pos.x-150.0f, pos.y-150.0f, 0.0f), glm::vec2(300.0f, 300.0f), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), col);
-        
-        font->DrawString({100, 100}, text, {1.0f, 1.0f, 1.0f, 1.0f});
-        
-        Rosewood::BatchRenderer::End();
+        Rosewood::DeferredRenderer::PointLight(glm::vec2(mouseX, mouseY), glm::vec3(1.0f), 1.0, 0.014, 0.0007);
+        //Rosewood::BatchRenderer::DrawQuad(glm::vec3(pos.x-150.0f, pos.y-150.0f, 0.0f), glm::vec2(300.0f, 300.0f), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), col);
+                
+        Rosewood::DeferredRenderer::End();
                 
         
     
@@ -113,7 +100,11 @@ public:
 		ImGui::InputInt("px", &w);
         ImGui::InputInt("px", &h);
         //myTexture.Bind(0);
-        //ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), {192, 108});
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetAlbedoID(), {192, 108});
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetPosID(), {192, 108});
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetNormalID(), {192, 108});
+
+
 		
 		ImGui::End();
 	}

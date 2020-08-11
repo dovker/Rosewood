@@ -52,5 +52,6 @@ void main()
     
     diffuse *= attenuation;
     
-    gLight = vec4(diffuse, 1.0);
+    //gLight = vec4(diffuse, 1.0);
+    gLight = vec4(attenuation);
 }

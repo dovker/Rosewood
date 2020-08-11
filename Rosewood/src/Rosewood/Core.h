@@ -52,3 +52,5 @@ namespace Rosewood
 
 
 }
+
+#define Texture2D Ref<Texture>

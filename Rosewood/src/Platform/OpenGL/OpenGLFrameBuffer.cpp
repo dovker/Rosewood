@@ -14,6 +14,7 @@ namespace Rosewood
             case TexChannelType::RGB8:    return GL_RGB8;
             case TexChannelType::RGBA8:   return GL_RGBA8;
             case TexChannelType::RGBA16F: return GL_RGBA16F;
+            case TexChannelType::RGB16F: return GL_RGB16F;
             case TexChannelType::FLOAT:   return GL_FLOAT;
             case TexChannelType::UNSIGNED_BYTE:   return GL_UNSIGNED_BYTE;
         }
@@ -31,7 +32,10 @@ namespace Rosewood
     OpenGLFramebuffer::~OpenGLFramebuffer()
     {
         glDeleteFramebuffers(1, &m_RendererID);
-        glDeleteTextures(1, &m_ColorAttachment);
+        for (int i = 0; i < m_Specification.Attachments; i++)
+        {
+            glDeleteTextures(1, &m_ColorAttachment[i]);
+        }
         glDeleteTextures(1, &m_DepthAttachment);
     }
 
@@ -40,21 +44,46 @@ namespace Rosewood
         if (m_RendererID)
         {
             glDeleteFramebuffers(1, &m_RendererID);
-            glDeleteTextures(1, &m_ColorAttachment);
+            for (int i = 0; i < m_Specification.Attachments; i++)
+            {
+                glDeleteTextures(1, &m_ColorAttachment[i]);
+            }
             glDeleteTextures(1, &m_DepthAttachment);
         }
 
         glGenFramebuffers(1, &m_RendererID);
         glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
         
-        glGenTextures(1, &m_ColorAttachment);
+        uint32_t attach[m_Specification.Attachments];
         
-        glBindTexture(GL_TEXTURE_2D, m_ColorAttachment);
+        glGenTextures(1, &m_ColorAttachment[0]);
+        
+        glBindTexture(GL_TEXTURE_2D, m_ColorAttachment[0]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Specification.Width, m_Specification.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorAttachment, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorAttachment[0], 0);
+        
+        attach[0] = GL_COLOR_ATTACHMENT0;
+        
+        for (int i = 1; i < m_Specification.Attachments; i++)
+        {
+            glGenTextures(1, &m_ColorAttachment[i]);
+            
+            glBindTexture(GL_TEXTURE_2D, m_ColorAttachment[i]);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_Specification.Width, m_Specification.Height, 0, GL_RGBA, GL_FLOAT, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_ColorAttachment[i], 0);
+            
+            attach[i] = GL_COLOR_ATTACHMENT0 + i;
+        }
+        
+        glDrawBuffers(m_Specification.Attachments, attach);
+        
+        
         
         glGenTextures(1, &m_DepthAttachment);
         glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);
@@ -120,5 +149,4 @@ namespace Rosewood
         RW_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete!");
 
     }
-	
 }

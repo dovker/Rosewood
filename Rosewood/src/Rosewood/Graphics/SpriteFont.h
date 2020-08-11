@@ -28,21 +28,20 @@ namespace Rosewood {
         
         //TODO: SCALE
 
-        void DrawString(glm::vec2 pos, std::string& text, glm::vec4 color, uint32_t v_spacing = 0, uint32_t h_spacing = 0, uint32_t max_width = 100)
+        void DrawString(glm::vec2 pos, std::string& text, glm::vec4 color, glm::vec2 scale = {1.0f, 1.0f}, uint32_t h_spacing = 0, uint32_t v_spacing = 0, uint32_t max_width = 250)
         {
+//
+            //TODO: Word Wrapping
+            
             float cursorX = 0;
             float cursorY = 0;
+            glm::vec2 charSize = {m_CharWidth * scale.x, m_CharHeight * scale.y};
             for(char c : text)
             {
-                if (c != " "[0]) BatchRenderer::DrawQuad({pos.x + cursorX, pos.y + cursorY, 0.0f}, {m_CharWidth, m_CharHeight}, m_Texture, CalculateUV(c), color);
-                if (cursorX + m_CharWidth + v_spacing < max_width)
-                {
-                    cursorX += m_CharWidth + v_spacing;
-                }
-                else {
-                    cursorX = 0;
-                    cursorY += m_CharHeight + h_spacing;
-                }
+                if (c == '\n') { cursorY += charSize.y + h_spacing; cursorX = 0;continue; }
+                if (c != " "[0]) BatchRenderer::DrawQuad({pos.x + cursorX, pos.y + cursorY, 0.0f}, charSize, m_Texture, CalculateUV(c), color);
+                cursorX += charSize.x + h_spacing;
+
             }
         }
         
@@ -67,6 +66,10 @@ namespace Rosewood {
             float UV_Height = (float)m_CharHeight / (float)m_Texture->GetHeight();
 
             return glm::vec4((float)sX * UV_Width, ((float)sY * UV_Height) -  UV_Height, ( (float)sX * UV_Width ) + UV_Width, (float)sY * UV_Height );
+        }
+        static std::string WordWrap(std::string& text, glm::vec2 scale, uint32_t h_spacing, uint32_t v_spacing, uint32_t max_width)
+        {
+            return text;
         }
     };
     
