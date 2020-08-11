@@ -41,8 +41,8 @@ public:
         assetManager.Load<Rosewood::Texture>("Content/Chroma.png", "Sprite_Font");
         
         mesh = Rosewood::RenderMesh::Create(
-        std::vector<float>{-1.0f, -1.0f, 0.5f, 0.0f, 0.0f,
-            -1.0f, 1.0f, 0.5f, 0.0f, 1.0f,
+        std::vector<float>{-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+            -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
             1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
             1.0f, -1.0f, 0.0f, 1.0f, 0.0f},
         std::vector<uint32_t>{ 0, 1, 2, 2, 3, 0 },

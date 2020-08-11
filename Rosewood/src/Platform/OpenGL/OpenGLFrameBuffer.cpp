@@ -54,7 +54,8 @@ namespace Rosewood
         glGenFramebuffers(1, &m_RendererID);
         glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
         
-        uint32_t attach[m_Specification.Attachments];
+        const uint32_t att = m_Specification.Attachments;
+        std::vector<uint32_t> attach(m_Specification.Attachments);
         
         glGenTextures(1, &m_ColorAttachment[0]);
         
@@ -81,7 +82,7 @@ namespace Rosewood
             attach[i] = GL_COLOR_ATTACHMENT0 + i;
         }
         
-        glDrawBuffers(m_Specification.Attachments, attach);
+        glDrawBuffers(m_Specification.Attachments, attach.data());
         
         
         

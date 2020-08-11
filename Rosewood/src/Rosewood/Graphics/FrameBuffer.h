@@ -9,7 +9,7 @@ namespace Rosewood
     {
         uint32_t Width, Height;
         // FramebufferFormat Format =
-        uint32_t Attachments = 1;
+        const uint32_t Attachments = 1;
 
         uint32_t Samples = 1;
         
