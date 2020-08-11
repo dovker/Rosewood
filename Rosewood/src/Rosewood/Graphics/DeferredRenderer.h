@@ -15,8 +15,8 @@ namespace Rosewood {
         static void Init();
         static void Begin(glm::mat4 camera);
         static void End();
-        static void PointLight(glm::vec2 pos, glm::vec3 color, float constant, float linear, float quadratic);
-        static void Submit(Ref<RenderMesh> mesh, glm::vec3 pos, glm::vec3 scale);
+        static void DrawPointLight(glm::vec2 pos, glm::vec3 color, float constant, float linear, float quadratic);
+        static void Submit(Ref<RenderMesh>& mesh, glm::vec3 pos, glm::vec3 scale);
 
         static uint32_t GetLightID();
         static uint32_t GetPosID();

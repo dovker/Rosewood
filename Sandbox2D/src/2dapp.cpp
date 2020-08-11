@@ -32,7 +32,7 @@ public:
 		: Layer("Example")
 	{
         Rosewood::Ref<Rosewood::Texture> albedo = assetManager.Load<Rosewood::Texture>("Content/Deferred_Albedo.png", "Deferred_Albedo");
-        Rosewood::Ref<Rosewood::Texture> normal = assetManager.Load<Rosewood::Texture>("Content/Deferred_Normal.png", "Deferred_Normal");
+        Rosewood::Ref<Rosewood::Texture> normal = assetManager.Load<Rosewood::Texture>("Content/normals.png", "Deferred_Normal");
         Rosewood::Ref<Rosewood::Texture> spec = assetManager.Load<Rosewood::Texture>("Content/Deferred_Specular.png", "Deferred_Specular");
 
 
@@ -41,10 +41,10 @@ public:
         assetManager.Load<Rosewood::Texture>("Content/Chroma.png", "Sprite_Font");
         
         mesh = Rosewood::RenderMesh::Create(
-        std::vector<float>{0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-                            0.0f,1.0f, 0.0f, 0.0f, 1.0f,
-                            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-                            1.0f, 0.0f, 0.0f, 1.0f, 0.0f},
+        std::vector<float>{-1.0f, -1.0f, 0.5f, 0.0f, 0.0f,
+            -1.0f, 1.0f, 0.5f, 0.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 0.0f, 1.0f, 0.0f},
         std::vector<uint32_t>{ 0, 1, 2, 2, 3, 0 },
         std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
 
@@ -73,11 +73,16 @@ public:
         //Rosewood::BatchRenderer::ResetStats();
         Rosewood::DeferredRenderer::Begin(camera.GetCamera().GetViewProjectionMatrix());
         
-        Rosewood::DeferredRenderer::Submit(mesh, {10.0f, 10.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
-        float mouseX = Rosewood::Input::GetMouseX();
-        float mouseY = Rosewood::Input::GetMouseY();
+        Rosewood::DeferredRenderer::Submit(mesh, {0.0f, 0.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
+        
+        Rosewood::DeferredRenderer::Submit(mesh, {100.0f, 10.0f, 0.5f}, {128.0f, 128.0f, 1.0f});
 
-        Rosewood::DeferredRenderer::PointLight(glm::vec2(mouseX, mouseY), glm::vec3(1.0f), 1.0, 0.014, 0.0007);
+        Rosewood::DeferredRenderer::Submit(mesh, {10.0f, 400.0f, 0.5f}, {128.0f, 128.0f, 1.0f});
+
+        float mouseX = Rosewood::Input::GetMouseX() + camera.GetCamera().GetPosition().x;
+        float mouseY = Rosewood::Input::GetMouseY() + camera.GetCamera().GetPosition().y;
+
+        Rosewood::DeferredRenderer::DrawPointLight(glm::vec2(mouseX, mouseY), glm::vec3(1.0f), 1.0, 0.014, 0.0007);
         //Rosewood::BatchRenderer::DrawQuad(glm::vec3(pos.x-150.0f, pos.y-150.0f, 0.0f), glm::vec2(300.0f, 300.0f), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), col);
                 
         Rosewood::DeferredRenderer::End();

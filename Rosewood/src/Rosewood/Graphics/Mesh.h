@@ -37,7 +37,7 @@ namespace Rosewood {
             VB->SetLayout(layout);
             VA->AddVertexBuffer(VB);
             
-            Ref<IndexBuffer> IB = IndexBuffer::Create(indices.data(), sizeof(indices) / sizeof(uint32_t));
+            Ref<IndexBuffer> IB = IndexBuffer::Create(indices.data(), indices.size());
             VA->SetIndexBuffer(IB);
             VA->Unbind();
 

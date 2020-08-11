@@ -37,21 +37,26 @@ uniform Light u_Light;
 
 void main()
 {
+    
     // retrieve data from gbuffer
     vec3 FragPos = texture(gPosition, TexCoords).rgb;
-    vec3 Normal = texture(gNormal, vec2(TexCoords.x + 0.5, TexCoords.y)).rgb;
     
+    vec3 Normal = texture(gNormal, TexCoords).rgb;
     
     float dist = length(u_Light.Position - FragPos);
 
         // diffuse
     vec3 lightDir = normalize(u_Light.Position - FragPos);
     vec3 diffuse = max(dot(Normal, lightDir), 0.0) * u_Light.Color;
+
         // attenuation
     float attenuation = 1.0 / (u_Light.Constant + u_Light.Linear * dist + u_Light.Quadratic * dist * dist);
     
     diffuse *= attenuation;
     
-    //gLight = vec4(diffuse, 1.0);
     gLight = vec4(attenuation);
+
+    
+    //gLight = vec4(attenuation);
+    //gLight = vec4(TexCoords, 0.0, 1.0);
 }

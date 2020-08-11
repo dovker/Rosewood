@@ -150,7 +150,7 @@ namespace Rosewood
         VB->SetLayout(layout);
         VA->AddVertexBuffer(VB);
 
-        Ref<IndexBuffer> IB = IndexBuffer::Create(indices.data(), sizeof(indices) / sizeof(uint32_t));
+        Ref<IndexBuffer> IB = IndexBuffer::Create(indices.data(), indices.size());
         VA->SetIndexBuffer(IB);
         VA->Unbind();
         return VA;
@@ -164,7 +164,7 @@ namespace Rosewood
         std::cout<<s_Buffer.Position;
         s_Buffer.Normal = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(2);
         std::cout<<s_Buffer.Normal;
-
+        
         
         
         s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2});
@@ -214,7 +214,8 @@ namespace Rosewood
         s_Buffer.GBufferShader->setMat4("u_ViewProjection", camera);
         
     }
-    void DeferredRenderer::Submit(Ref<RenderMesh> mesh, glm::vec3 pos, glm::vec3 scale)
+
+    void DeferredRenderer::Submit(Ref<RenderMesh>& mesh, glm::vec3 pos, glm::vec3 scale)
     {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, pos);
@@ -227,12 +228,11 @@ namespace Rosewood
         mesh->textures[1]->Bind(1);
         mesh->textures[2]->Bind(2);
 
-//        mesh->VA->Bind();
-//        GraphicsCommand::DrawIndexed(mesh->VA);
-//        mesh->VA->Unbind();
-        s_Buffer.QuadVA->Bind();
-        GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
-        s_Buffer.QuadVA->Unbind();
+        mesh->VA->Bind();
+        GraphicsCommand::DrawIndexed(mesh->VA);
+        mesh->VA->Unbind();
+        
+
     }
     void DeferredRenderer::End()
     {
@@ -255,9 +255,7 @@ namespace Rosewood
         GraphicsCommand::BindTexture(s_Buffer.Normal, 1);
 
         
-//        s_Buffer.CircleVA->Bind();
-        s_Buffer.QuadVA->Bind();
-        for (struct PointLight light : s_Buffer.Lights)
+        for (PointLight light : s_Buffer.Lights)
         {
             float radius = CalculateRadius(light);
             glm::mat4 model = glm::mat4(1.0f);
@@ -270,9 +268,12 @@ namespace Rosewood
             s_Buffer.LightBufferShader->setFloat("u_Light.Constant", light.constant);
             s_Buffer.LightBufferShader->setFloat("u_Light.Linear", light.linear);
             s_Buffer.LightBufferShader->setFloat("u_Light.Quadratic", light.quadratic);
-            
-            //GraphicsCommand::DrawIndexed(s_Buffer.CircleVA);
+//            s_Buffer.CircleVA->Bind();
+//            GraphicsCommand::DrawIndexed(s_Buffer.CircleVA);
+//            s_Buffer.CircleVA->Unbind();
+            s_Buffer.QuadVA->Bind();
             GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
+            s_Buffer.QuadVA->Unbind();
         }
         //RW_CORE_TRACE("light pass done");
         
@@ -304,9 +305,14 @@ namespace Rosewood
 
     }
 
-    void DeferredRenderer::PointLight(glm::vec2 pos, glm::vec3 color, float constant, float linear, float quadratic)
+    void DeferredRenderer::DrawPointLight(glm::vec2 pos, glm::vec3 color, float constant, float linear, float quadratic)
     {
-        s_Buffer.Lights.push_back({{pos.x, pos.y, 1.0f-0.00000001}, color, constant, linear, quadratic});
+        //s_Buffer.Lights.push_back({{pos.x, pos.y, 1.0f-0.00000001}, color, constant, linear, quadratic});
+        s_Buffer.Lights = std::vector<PointLight>
+        {
+            PointLight(glm::vec3(pos.x, pos.y, 1.0f-0.00000001), color, constant, linear, quadratic),
+        };
+
     }
 
     uint32_t DeferredRenderer::GetLightID() {return s_Buffer.Light;}
