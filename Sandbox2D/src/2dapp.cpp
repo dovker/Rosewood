@@ -62,8 +62,10 @@ public:
     std::string text = "Help my pp is very hard because this works! :))) XDD ; \nHello love! This should be in a new line! \nHippopotamus!12 Hippopotamus! Hippopotamus!";
     float scroll = 12.99f;
     float intensity = 1.0f;
+    float gamma = 2.2f;
     float exposure = 1.0f;
     glm::vec3 color = glm::vec3(1.0f);
+    glm::vec3 bcs = glm::vec3(0.0f, 1.0f, 1.0f);
     float linear = 0.014;
     float quadratic = 0.0007;
     
@@ -82,7 +84,11 @@ public:
         
         Rosewood::DeferredRenderer::SetAmbient(ambient);
         
+        Rosewood::DeferredRenderer::SetGamma(gamma);
+
         Rosewood::DeferredRenderer::SetExposure(exposure);
+        
+        Rosewood::DeferredRenderer::SetBCS(bcs);
 
         
         Rosewood::DeferredRenderer::Submit(mesh, {0.0f, 0.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
@@ -108,6 +114,7 @@ public:
     float ambCol[3] {0.1f, 0.1f, 0.1f};
 
 
+
 	void OnImGuiRender() override
 	{
 		auto stats = Rosewood::BatchRenderer::GetStats();
@@ -119,21 +126,33 @@ public:
 		ImGui::Text("FPS:");
 		float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
 		ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, 5, ImGuiInputTextFlags_None);
-        ImGui::InputFloat("Linear", &linear, 0.1f, 0.0f, 16, ImGuiInputTextFlags_None);
-        ImGui::InputFloat("Quadratic", &quadratic, 0.1f, 0.0f, 16, ImGuiInputTextFlags_None);
-        ImGui::InputFloat("Intensity", &intensity, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
+        
+        ImGui::Separator();
+        
+        ImGui::SliderFloat("Exposure", &exposure, 0.0f, 10.0f);
+        ImGui::SliderFloat("Gamma", &gamma, 0.0f, 10.0f);
+
+
+        
+        ImGui::SliderFloat("Brightness", &bcs.x, -1.0f, 1.0f);
+        ImGui::SliderFloat("Contrast", &bcs.y, 0.0f, 10.0f);
+        ImGui::SliderFloat("Saturation", &bcs.z, 0.0f, 10.0f);
         
         if(ImGui::Button("RECOMPILE RENDERER SHADERS")) Rosewood::DeferredRenderer::ReloadShaders();
         
+        ImGui::Separator();
+
         ImGui::ColorPicker3("Light Color", col);
         color = {col[0], col[1], col [2]};
         
         ImGui::ColorPicker3("Ambient Color", ambCol);
         ambient = {ambCol[0], ambCol[1], ambCol[2]};
         
-        ImGui::InputFloat("Exposure", &exposure, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
-
-
+        ImGui::InputFloat("Linear", &linear, 0.1f, 0.0f, 16, ImGuiInputTextFlags_None);
+        ImGui::InputFloat("Quadratic", &quadratic, 0.1f, 0.0f, 16, ImGuiInputTextFlags_None);
+        ImGui::InputFloat("Intensity", &intensity, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
+        
+        ImGui::Separator();
 
 		int w = scrWidth;
 		int h = scrHeight;

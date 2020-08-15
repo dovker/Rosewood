@@ -27,7 +27,11 @@ namespace Rosewood {
         static uint32_t GetNormalID();
         
         static void SetAmbient(glm::vec3 color);
+        static void SetBCS(glm::vec3 bcs);
         static void SetExposure(float exposure);
+        static void SetGamma(float gamma);
+
+
 
     };
 

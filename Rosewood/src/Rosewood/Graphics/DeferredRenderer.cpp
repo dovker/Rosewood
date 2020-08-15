@@ -50,6 +50,8 @@ namespace Rosewood
         
         glm::vec3 Ambient;
         float Exposure;
+        float Gamma;
+        glm::vec3 BCS; //Brightness, contrast, Saturation
         
         std::vector<PointLight> Lights;
         glm::mat4 Camera;
@@ -300,8 +302,13 @@ namespace Rosewood
         
         s_Buffer.FinalShader->setInt("gLight", 0);
         s_Buffer.FinalShader->setInt("gAlbedoSpec", 1);
+        s_Buffer.FinalShader->setFloat("u_Gamma", s_Buffer.Gamma);
         s_Buffer.FinalShader->setVec3("u_Ambient", s_Buffer.Ambient);
         s_Buffer.FinalShader->setFloat("u_Exposure", s_Buffer.Exposure);
+        s_Buffer.FinalShader->setFloat("u_Brightness", s_Buffer.BCS.x);
+        s_Buffer.FinalShader->setFloat("u_Contrast", s_Buffer.BCS.y);
+        s_Buffer.FinalShader->setFloat("u_Saturation", s_Buffer.BCS.z);
+
 
         
         GraphicsCommand::BindTexture(s_Buffer.Light, 0);
@@ -346,7 +353,9 @@ namespace Rosewood
     uint32_t DeferredRenderer::GetAlbedoID() { return s_Buffer.AlbedoSpec;}
     uint32_t DeferredRenderer::GetNormalID() {return s_Buffer.Normal;}
     void DeferredRenderer::SetAmbient(glm::vec3 color) { s_Buffer.Ambient = color; }
-    void DeferredRenderer::SetExposure(float exposure) { s_Buffer.Exposure = exposure; }
+    void DeferredRenderer::SetBCS(glm::vec3 bcs) { s_Buffer.BCS = bcs; }
 
+    void DeferredRenderer::SetExposure(float exposure) { s_Buffer.Exposure = exposure; }
+    void DeferredRenderer::SetGamma(float gamma) { s_Buffer.Gamma = gamma; }
 
 }
