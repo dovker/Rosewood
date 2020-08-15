@@ -7,7 +7,7 @@ layout (location = 2) in vec2 aTexCoords;
 
 out vec4 FragPos;
 out vec3 Normal;
-out vec2 TexCoords; 
+out vec2 TexCoords;
 
 uniform mat4 u_Model;
 uniform mat4 u_ViewProjection;
@@ -61,3 +61,4 @@ void main()
     gNormal = TempNormal;
     //gNormal = vec4(Normal, 1.0);
 }
+
