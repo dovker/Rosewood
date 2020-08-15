@@ -14,6 +14,8 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Simple Asset / content manager and library
 * Event system
 * Audio (SoLoud) support
+* Spritefont support
+* 2D Light Pre-pass renderer with HDR support
 
 # Goals / To-do
 * Serialization
@@ -22,10 +24,10 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Primitive rendering (~~Circle~~, Triangle, ~~Quad~~, Line, Function / curve)
 * Implement ECS
 * Support DX11, Vulkan and Metal
-* Asset importer application
+* Asset importer tool
 * Level editor / IDE
 * Shader cross-compilation
-* Deferred Renderer
+* Deferred Renderer (~~2D~~, 3D)
 * Physics support
 * Multi-threading
 * Networking
