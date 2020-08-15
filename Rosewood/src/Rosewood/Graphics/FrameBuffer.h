@@ -5,23 +5,27 @@
 
 namespace Rosewood
 {
+    enum class TexChannelType
+    {
+        RGB, RGBA, RGB8, RGBA8, RGBA16F, RGB16F, FLOAT, UNSIGNED_BYTE
+    };
+
     struct FramebufferSpecification
     {
         uint32_t Width, Height;
         // FramebufferFormat Format =
         const uint32_t Attachments = 1;
-
-        uint32_t Samples = 1;
         
+        uint32_t Samples = 1;
         
         bool SwapChainTarget = false;
         
+        std::vector<TexChannelType> Types;
+
+        
     };
 
-    enum class TexChannelType
-    {
-        RGB, RGBA, RGB8, RGBA8, RGBA16F, RGB16F, FLOAT, UNSIGNED_BYTE
-    };
+    
 
     class Framebuffer
     {

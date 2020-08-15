@@ -55,6 +55,9 @@ void main()
     }
     gAlbedoSpec.a = texture(u_SpecularTexture, TexCoords).r;
     gPosition = FragPos;
-    //gNormal = texture(u_NormalTexture, TexCoords);
-    gNormal = vec4(Normal, 1.0);
+    
+    vec4 TempNormal = texture(u_NormalTexture, TexCoords);
+    TempNormal = normalize(TempNormal * 2.0 - 1.0);
+    gNormal = TempNormal;
+    //gNormal = vec4(Normal, 1.0);
 }

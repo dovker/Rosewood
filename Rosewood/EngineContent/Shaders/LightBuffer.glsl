@@ -10,7 +10,7 @@ out vec2 TexCoords;
 void main()
 {
     vec4 point = u_ViewProjection * u_Model * vec4(aPos, 1.0);
-    TexCoords = vec2(0.5*(1+point.x), 0.5*(1 + point.y)); //dunno abt this though
+    TexCoords = vec2(0.5*(1+point.x), 0.5*(1 + point.y));
     gl_Position = point;
 }
 
@@ -37,28 +37,36 @@ struct Light {
 
 uniform Light u_Light;
 
+vec3 calculateLight(Light light, vec3 normal, vec3 pos);
+//Pos is fragment position from gBuffer
+
 void main()
 {
     
     // retrieve data from gbuffer
-    vec3 FragPos = texture(gPosition, TexCoords).rgb;
+    vec4 FragPos = texture(gPosition, TexCoords);
+
     
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     
-    float dist = length(u_Light.Position - FragPos);
+    
+    gLight = vec4(calculateLight(u_Light, Normal, FragPos.rgb), 0.0);
+}
+
+vec3 calculateLight(Light light, vec3 normal, vec3 pos)
+{
+    //normal = vec3(0.0, 0.0, 1.0);
+    float dist = length(light.Position - pos);
 
         // diffuse
-    vec3 lightDir = normalize(u_Light.Position - FragPos);
-    vec3 diffuse = max(dot(Normal, lightDir), 0.0) * u_Light.Color;
+    vec3 lightDir = normalize(light.Position - pos);
+    vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.Color;
 
         // attenuation
-    float attenuation = 1.0 / (u_Light.Constant + u_Light.Linear * dist + u_Light.Quadratic * dist * dist);
+    float attenuation = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * dist * dist);
     
     diffuse *= attenuation;
-    diffuse *= u_Light.Intensity;
+    diffuse *= light.Intensity;
     
-    gLight = vec4(diffuse, 1.0f);
-    
-    //gLight = vec4(attenuation);
-    //gLight = vec4(TexCoords, 0.0, 1.0);
+    return diffuse;
 }

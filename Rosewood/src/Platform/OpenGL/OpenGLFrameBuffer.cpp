@@ -54,26 +54,24 @@ namespace Rosewood
         glGenFramebuffers(1, &m_RendererID);
         glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
         
-        const uint32_t att = m_Specification.Attachments;
         std::vector<uint32_t> attach(m_Specification.Attachments);
         
-        glGenTextures(1, &m_ColorAttachment[0]);
         
-        glBindTexture(GL_TEXTURE_2D, m_ColorAttachment[0]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Specification.Width, m_Specification.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorAttachment[0], 0);
-        
-        attach[0] = GL_COLOR_ATTACHMENT0;
-        
-        for (int i = 1; i < m_Specification.Attachments; i++)
+        for (int i = 0; i < m_Specification.Attachments; i++)
         {
             glGenTextures(1, &m_ColorAttachment[i]);
             
             glBindTexture(GL_TEXTURE_2D, m_ColorAttachment[i]);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_Specification.Width, m_Specification.Height, 0, GL_RGBA, GL_FLOAT, NULL);
+            switch (m_Specification.Types[i]) {
+                case TexChannelType::FLOAT:
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_Specification.Width, m_Specification.Height, 0, GL_RGBA, GL_FLOAT, NULL);
+                    break;
+                    
+                case TexChannelType::UNSIGNED_BYTE:
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Specification.Width, m_Specification.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+                    break;
+            }
+            
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

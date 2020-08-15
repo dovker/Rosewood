@@ -17,6 +17,7 @@ namespace Rosewood {
         static void End();
         static void DrawPointLight(glm::vec3 pos, glm::vec3 color, float intensity, float constant, float linear, float quadratic);
         static void AddPointLight(glm::vec3 pos, glm::vec3 color, float intensity, float constant, float linear, float quadratic);
+        static void ReloadShaders();
 
         static void Submit(Ref<RenderMesh>& mesh, glm::vec3 pos, glm::vec3 scale);
 
@@ -24,7 +25,9 @@ namespace Rosewood {
         static uint32_t GetPosID();
         static uint32_t GetAlbedoID();
         static uint32_t GetNormalID();
-
+        
+        static void SetAmbient(glm::vec3 color);
+        static void SetExposure(float exposure);
 
     };
 

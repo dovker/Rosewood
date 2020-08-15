@@ -48,7 +48,8 @@ namespace Rosewood
         
         Ref<VertexArray> CircleVA;
         
-        glm::vec4 Ambient;
+        glm::vec3 Ambient;
+        float Exposure;
         
         std::vector<PointLight> Lights;
         glm::mat4 Camera;
@@ -59,7 +60,7 @@ namespace Rosewood
 
     float CalculateRadius(const PointLight &light)
     {
-        float lightMax  = std::fmaxf(std::fmaxf(light.color.r, light.color.g), light.color.b);
+        float lightMax  = std::fmaxf(std::fmaxf(light.color.r * light.intensity, light.color.g * light.intensity), light.color.b * light.intensity);
         return (-light.linear +  std::sqrtf(light.linear * light.linear - 4 * light.quadratic * (light.constant - (256.0 / 5.0) * lightMax)))
         / (2 * light.quadratic);  ;
     }
@@ -161,7 +162,8 @@ namespace Rosewood
     }
     void DeferredRenderer::Init()
     {
-        s_Buffer.FrameGBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, 3});
+        
+        s_Buffer.FrameGBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, 3, 1, false, {TexChannelType::UNSIGNED_BYTE, TexChannelType::FLOAT, TexChannelType::FLOAT, TexChannelType::FLOAT}});
         s_Buffer.AlbedoSpec = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(0);
         std::cout<<s_Buffer.AlbedoSpec;
         s_Buffer.Position = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(1);
@@ -169,15 +171,13 @@ namespace Rosewood
         s_Buffer.Normal = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(2);
         std::cout<<s_Buffer.Normal;
         
+        s_Buffer.Lights.resize(1);
         
-        
-        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2});
+        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, 1, 1, false, {TexChannelType::FLOAT}});
         s_Buffer.Light = s_Buffer.FrameLightBuffer->GetColorAttachmentRendererID();
-        //TODO: FIX VA generation
+
         s_Buffer.CircleVA = CreateCircleVAExt(19);
         
-        s_Buffer.Lights.resize(1);
-
         s_Buffer.QuadVA = VertexArray::Create();
 
         float vertices[4 * 5] = {
@@ -252,28 +252,30 @@ namespace Rosewood
         
         //Light Pass
         s_Buffer.FrameLightBuffer->Bind();
-        GraphicsCommand::ToggleBlending(true);
-        GraphicsCommand::ToggleDepthTest(false);
         GraphicsCommand::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
         GraphicsCommand::Clear();
+        GraphicsCommand::ToggleBlending(true);
+        GraphicsCommand::ToggleDepthTest(false);
         
         s_Buffer.LightBufferShader->Bind();
         
         s_Buffer.LightBufferShader->setMat4("u_ViewProjection", s_Buffer.Camera);
-        
         s_Buffer.LightBufferShader->setInt("gPosition", 0);
         s_Buffer.LightBufferShader->setInt("gNormal", 1);
-        GraphicsCommand::BindTexture(s_Buffer.Position, 0);
-        GraphicsCommand::BindTexture(s_Buffer.Normal, 1);
+        
 
         s_Buffer.CircleVA->Bind();
-        for (PointLight light : s_Buffer.Lights)
+        for (auto& light : s_Buffer.Lights)
         {
             float radius = CalculateRadius(light);
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, light.position);
             model = glm::scale(model, {radius, radius, 1.0f});
             s_Buffer.LightBufferShader->setMat4("u_Model", model);
+            
+            
+            GraphicsCommand::BindTexture(s_Buffer.Position, 0);
+            GraphicsCommand::BindTexture(s_Buffer.Normal, 1);
         
             s_Buffer.LightBufferShader->setVec3("u_Light.Position", light.position);
             s_Buffer.LightBufferShader->setVec3("u_Light.Color", light.color);
@@ -289,29 +291,31 @@ namespace Rosewood
         
         s_Buffer.FrameLightBuffer->Unbind();
         
-        
-        
         s_Buffer.FinalShader->Bind();
+        GraphicsCommand::ToggleBlending(false);
+        GraphicsCommand::ToggleDepthTest(true);
         
-        s_Buffer.FinalShader->setInt("u_Image", 0);
+        GraphicsCommand::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
+        GraphicsCommand::Clear();
+        
+        s_Buffer.FinalShader->setInt("gLight", 0);
+        s_Buffer.FinalShader->setInt("gAlbedoSpec", 1);
+        s_Buffer.FinalShader->setVec3("u_Ambient", s_Buffer.Ambient);
+        s_Buffer.FinalShader->setFloat("u_Exposure", s_Buffer.Exposure);
 
-        //s_Buffer.FinalShader->setInt("gLight", s_Buffer.Light);
+        
         GraphicsCommand::BindTexture(s_Buffer.Light, 0);
-                //RW_CORE_TRACE("Last pass done");
+        GraphicsCommand::BindTexture(s_Buffer.AlbedoSpec, 1);
+
+        
         s_Buffer.QuadVA->Bind();
         GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
         s_Buffer.QuadVA->Unbind();
+        
+        s_Buffer.FinalShader->Unbind();
 
-
-//
-//        //Final Pass
-//        s_Buffer.FinalShader->Bind();
-//
-//        s_Buffer.FinalShader->setInt("gLight", s_Buffer.Light);
-//        s_Buffer.FinalShader->setInt("gAlbedoSpec", s_Buffer.AlbedoSpec);
-//        s_Buffer.FinalShader->setVec3("u_Ambient", s_Buffer.Ambient);
-//        //RW_CORE_TRACE("Last pass done");
-//        //GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
+        //RW_CORE_TRACE("Last pass done");
+        //GraphicsCommand::DrawIndexed(s_Buffer.QuadVA);
 
     }
 
@@ -319,8 +323,8 @@ namespace Rosewood
     {
         //s_Buffer.Lights.push_back({{pos.x, pos.y, 1.0f-0.00000001}, color, constant, linear, quadratic});
         s_Buffer.Lights[0] = PointLight(pos, color, intensity, constant, linear, quadratic);
-        
-        //TODO: Fix This
+
+        //TODO: Fix this, maybe do a batcher thingie?
     }
     void DeferredRenderer::AddPointLight(glm::vec3 pos, glm::vec3 color, float intensity, float constant, float linear, float quadratic)
     {
@@ -330,8 +334,19 @@ namespace Rosewood
 
     }
 
+    void DeferredRenderer::ReloadShaders()
+    {
+        s_Buffer.GBufferShader->Recompile("EngineContent/Shaders/GBuffer.glsl");
+        s_Buffer.LightBufferShader->Recompile("EngineContent/Shaders/LightBuffer.glsl");
+        s_Buffer.FinalShader->Recompile("EngineContent/Shaders/FinalPass.glsl");
+    }
+
     uint32_t DeferredRenderer::GetLightID() {return s_Buffer.Light;}
     uint32_t DeferredRenderer::GetPosID() { return s_Buffer.Position;}
     uint32_t DeferredRenderer::GetAlbedoID() { return s_Buffer.AlbedoSpec;}
     uint32_t DeferredRenderer::GetNormalID() {return s_Buffer.Normal;}
+    void DeferredRenderer::SetAmbient(glm::vec3 color) { s_Buffer.Ambient = color; }
+    void DeferredRenderer::SetExposure(float exposure) { s_Buffer.Exposure = exposure; }
+
+
 }

@@ -60,12 +60,14 @@ public:
 
 	bool open = true;
     std::string text = "Help my pp is very hard because this works! :))) XDD ; \nHello love! This should be in a new line! \nHippopotamus!12 Hippopotamus! Hippopotamus!";
-    float scroll = 0.99f;
-    float intensity = 10.0f;
+    float scroll = 12.99f;
+    float intensity = 1.0f;
+    float exposure = 1.0f;
     glm::vec3 color = glm::vec3(1.0f);
     float linear = 0.014;
     float quadratic = 0.0007;
     
+    glm::vec3 ambient = glm::vec3(0.1f);
     
     void OnUpdate() override
 	{
@@ -78,9 +80,14 @@ public:
         //Rosewood::BatchRenderer::ResetStats();
         Rosewood::DeferredRenderer::Begin(camera.GetCamera().GetViewProjectionMatrix());
         
+        Rosewood::DeferredRenderer::SetAmbient(ambient);
+        
+        Rosewood::DeferredRenderer::SetExposure(exposure);
+
+        
         Rosewood::DeferredRenderer::Submit(mesh, {0.0f, 0.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
         
-        Rosewood::DeferredRenderer::Submit(mesh, {100.0f, 10.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
+        Rosewood::DeferredRenderer::Submit(mesh, {100.0f, 10.0f, -1.0}, {128.0f, 128.0f, 1.0f});
 
         Rosewood::DeferredRenderer::Submit(mesh, {10.0f, 400.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
 
@@ -98,6 +105,8 @@ public:
     
 	}
     float col[3] {1.0f, 1.0f, 1.0f};
+    float ambCol[3] {0.1f, 0.1f, 0.1f};
+
 
 	void OnImGuiRender() override
 	{
@@ -114,8 +123,16 @@ public:
         ImGui::InputFloat("Quadratic", &quadratic, 0.1f, 0.0f, 16, ImGuiInputTextFlags_None);
         ImGui::InputFloat("Intensity", &intensity, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
         
-        ImGui::ColorPicker3("Color Picker", col);
+        if(ImGui::Button("RECOMPILE RENDERER SHADERS")) Rosewood::DeferredRenderer::ReloadShaders();
+        
+        ImGui::ColorPicker3("Light Color", col);
         color = {col[0], col[1], col [2]};
+        
+        ImGui::ColorPicker3("Ambient Color", ambCol);
+        ambient = {ambCol[0], ambCol[1], ambCol[2]};
+        
+        ImGui::InputFloat("Exposure", &exposure, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
+
 
 
 		int w = scrWidth;
@@ -126,6 +143,8 @@ public:
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetAlbedoID(), {192, 108});
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetPosID(), {192, 108});
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetNormalID(), {192, 108});
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetLightID(), {576, 324});
+
 
 
 		
@@ -145,12 +164,12 @@ public:
 
 	bool OnMouseButtonPressedEvent(Rosewood::MouseButtonPressedEvent& e)
 	{
-        RW_TRACE(e.ToString());
+        //RW_TRACE(e.ToString());
         if(e.GetMouseButton() == MOUSE_BUTTON_LEFT)
         {
             float mouseX = Rosewood::Input::GetMouseX() + camera.GetCamera().GetPosition().x;
             float mouseY = Rosewood::Input::GetMouseY() + camera.GetCamera().GetPosition().y;
-            //Rosewood::DeferredRenderer::AddPointLight(glm::vec3(mouseX, mouseY, scroll), color, intensity, 1.0, linear, quadratic);
+            Rosewood::DeferredRenderer::AddPointLight(glm::vec3(mouseX, mouseY, scroll), color, intensity, 1.0, linear, quadratic);
         }
             //e.GetMouseButton()
 		return false;
