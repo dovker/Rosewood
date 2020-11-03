@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "BatchRenderer.h"
+#include "Rosewood/Graphics/2D/BatchRenderer.h"
 
 namespace Rosewood {
     

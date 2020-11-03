@@ -1,9 +1,9 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "Camera.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "Rosewood/Graphics/API/Camera.h"
+#include "Rosewood/Graphics/API/Shader.h"
+#include "Rosewood/Graphics/API/Texture.h"
 #include "Rosewood/Core.h"
 
 namespace Rosewood
@@ -21,10 +21,6 @@ namespace Rosewood
     class BatchRenderer
     {
     public:
-        
-        //C:/dev/Rosewood/Rosewood/src/Platform/OpenGL/Shaders/Default2D.glsl
-        
-        //Rosewood::Shader defaultShader = Rosewood::Shader("Platform/OpengGL/Shaders/Default2D.glsl");
         
         static void Init();
         static void Begin(const OrthographicCamera& camera);

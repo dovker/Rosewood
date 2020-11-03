@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "Rosewood/Graphics/Texture.h"
+#include "Rosewood/Graphics/API/Texture.h"
 #include <glad/glad.h>
 
 namespace Rosewood

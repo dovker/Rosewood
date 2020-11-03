@@ -1,6 +1,6 @@
 #include "rwpch.h"
 #include "Texture.h"
-#include "Graphics.h"
+#include "Rosewood/Graphics/Graphics.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
 

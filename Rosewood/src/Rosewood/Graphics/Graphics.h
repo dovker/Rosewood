@@ -1,6 +1,6 @@
 #pragma once
 #include <rwpch.h>
-#include "VertexArray.h"
+#include "API/VertexArray.h"
 #include <glm/glm.hpp>
 
 namespace Rosewood

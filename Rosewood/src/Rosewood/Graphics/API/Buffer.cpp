@@ -1,6 +1,6 @@
 #include "rwpch.h"
 #include "Buffer.h"
-#include "Graphics.h"
+#include "Rosewood/Graphics/Graphics.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 

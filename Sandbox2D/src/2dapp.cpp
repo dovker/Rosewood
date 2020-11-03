@@ -1,5 +1,6 @@
 #include "Rosewood.h"
 #include "imgui.h"
+#include "Sofa.h"
 #include "2DCameraController.h"
 
 
@@ -13,7 +14,8 @@ public:
 	
     Rosewood::Ref<Rosewood::Texture> texture;
     Rosewood::Ref<Rosewood::Texture> fontTexture;
-
+    
+    Sofa sofa;
     
     Rosewood::Ref<Rosewood::SpriteFont> font;
     
@@ -24,53 +26,75 @@ public:
     
     //Rosewood::Sound sound = Rosewood::Audio::LoadAudioSource("/Users/dovydas/Documents/GitHub/Rosewood/assets/sound.mp3");
     Rosewood::Ref<Rosewood::RenderMesh> mesh;
+    Rosewood::Ref<Rosewood::RenderMesh> flatMesh;
+    Rosewood::Ref<Rosewood::RenderMesh> planeMesh;
+    
+    Rosewood::Ref<Rosewood::DecalLight> decal;
+
 
     Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight));
     
+    bool open = true;
+    std::string text = "Help my pp is very hard because this works! :))) XDD ; \nHello love! This should be in a new line! \nHippopotamus!12 Hippopotamus! Hippopotamus!";
+    float scroll = 0.0f;
+    float intensity = 1.0f;
+    float intensityDecal = 1.0f;
+
+    float gamma = 2.2f;
+    float exposure = 1.0f;
+    glm::vec3 color = glm::vec3(1.0f);
+    glm::vec3 colorDecal = glm::vec3(1.0f);
+
+    glm::vec3 bcs = glm::vec3(0.0f, 1.0f, 1.0f);
+    glm::vec2 bwpoint = glm::vec2(0.0f, 1.0f);
+    float linear = 0.014;
+    float quadratic = 0.0007;
+    
+    glm::vec3 direction = {0.0f, 0.0f, -1.0f};
+    
+    glm::vec3 ambient = glm::vec3(0.1f);
+    float mouseX = 0.0f;
+    float mouseY = 0.0f;
 	
 	ExampleLayer()
 		: Layer("Example")
 	{
-        Rosewood::Ref<Rosewood::Texture> albedo = assetManager.Load<Rosewood::Texture>("Content/Deferred_Albedo.png", "Deferred_Albedo");
-        Rosewood::Ref<Rosewood::Texture> normal = assetManager.Load<Rosewood::Texture>("Content/normals.png", "Deferred_Normal");
+        Rosewood::Ref<Rosewood::Texture> albedo = assetManager.Load<Rosewood::Texture>("Content/TestBox.png", "Deferred_Albedo");
+        Rosewood::Ref<Rosewood::Texture> normal = assetManager.Load<Rosewood::Texture>("Content/Deferred_Normal.png", "Deferred_Normal");
         Rosewood::Ref<Rosewood::Texture> spec = assetManager.Load<Rosewood::Texture>("Content/Deferred_Specular.png", "Deferred_Specular");
+        Rosewood::Ref<Rosewood::Texture> lightTex = assetManager.Load<Rosewood::Texture>("Content/awesomeface.png", "DecalLight");
+        
+        sofa.Load(assetManager);
 
+        texture = lightTex;
 
         
         assetManager.Load<Rosewood::Sound>("Content/sound.mp3", "Sound");
         assetManager.Load<Rosewood::Texture>("Content/Chroma.png", "Sprite_Font");
         
-        mesh = Rosewood::RenderMesh::Create(
-        std::vector<float>{-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                           -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-                            1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-                            1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f},
-        std::vector<uint32_t>{ 0, 1, 2, 2, 3, 0 },
-        std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
+//        mesh = Rosewood::RenderMesh::Create(
+//        std::vector<float>{-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+//                           -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+//                            1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+//                            1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f},
+//        std::vector<uint32_t>{ 0, 1, 2, 2, 3, 0 },
+//        std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
+        mesh = Rosewood::RenderMesh::CreateFoldedQuad(std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec}, 0.5f);
+        flatMesh = Rosewood::RenderMesh::CreateFlatQuad(std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
+        planeMesh= Rosewood::RenderMesh::CreatePerpendicularQuad(std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
 
         sound = assetManager.Get<Rosewood::Sound>("Sound");
         fontTexture = assetManager.Get<Rosewood::Texture>("Sprite_Font");
         
+        decal = Rosewood::DecalLight::Create(texture, {mouseX, mouseY, 0.0f}, direction, color * intensityDecal, {texture->GetWidth(), texture->GetHeight()});
+        
         font = Rosewood::SpriteFont::Create(fontTexture, "!\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ", 9, 9);
 
         Rosewood::DeferredRenderer::Init();
-        
 
 	}
 
-	bool open = true;
-    std::string text = "Help my pp is very hard because this works! :))) XDD ; \nHello love! This should be in a new line! \nHippopotamus!12 Hippopotamus! Hippopotamus!";
-    float scroll = 12.99f;
-    float intensity = 1.0f;
-    float gamma = 2.2f;
-    float exposure = 1.0f;
-    glm::vec3 color = glm::vec3(1.0f);
-    glm::vec3 bcs = glm::vec3(0.0f, 1.0f, 1.0f);
-    float linear = 0.014;
-    float quadratic = 0.0007;
-    
-    glm::vec3 ambient = glm::vec3(0.1f);
-    
+	
     void OnUpdate() override
 	{
 		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
@@ -79,9 +103,7 @@ public:
             Rosewood::GraphicsCommand::Clear();
         }
         
-        //Rosewood::BatchRenderer::ResetStats();
-        Rosewood::DeferredRenderer::Begin(camera.GetCamera().GetViewProjectionMatrix());
-        
+        //POST PROCESSING
         Rosewood::DeferredRenderer::SetAmbient(ambient);
         
         Rosewood::DeferredRenderer::SetGamma(gamma);
@@ -89,29 +111,51 @@ public:
         Rosewood::DeferredRenderer::SetExposure(exposure);
         
         Rosewood::DeferredRenderer::SetBCS(bcs);
+        
+        Rosewood::DeferredRenderer::SetBWPoint(bwpoint);
+        
+        
+        
+        Rosewood::DeferredRenderer::Begin(camera.GetCamera());
+
+        //Rosewood::DeferredRenderer::Submit(planeMesh, {200.0f, -200.0f, -200.0f}, {200, 200, 200});
+//
+        //
+        //Rosewood::DeferredRenderer::Submit(flatMesh, {200.0f, 0.0f, 0.0f}, {200, 200, 200});
+        //
+        //Rosewood::DeferredRenderer::Submit(planeMesh, {200.0f, 200.0f, 0.0f}, {200, 200, 200});
+        
+        sofa.Draw(glm::vec3(0.0f, 0.0f, 0.0f));
+        
+        mouseX = Rosewood::Input::GetMouseX() + camera.GetCamera().GetPosition().x;
+        mouseY = Rosewood::Input::GetMouseY() + camera.GetCamera().GetPosition().y;
+        
+        decal->SetPosRot(glm::vec3(mouseX, mouseY, scroll), direction);
+        decal->color = colorDecal * intensityDecal;
+        
+        Rosewood::DeferredRenderer::SubmitDecalLight(decal);
 
         
-        Rosewood::DeferredRenderer::Submit(mesh, {0.0f, 0.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
+        Rosewood::DeferredRenderer::BeginLights();
+
         
-        Rosewood::DeferredRenderer::Submit(mesh, {100.0f, 10.0f, -1.0}, {128.0f, 128.0f, 1.0f});
 
-        Rosewood::DeferredRenderer::Submit(mesh, {10.0f, 400.0f, 0.0f}, {128.0f, 128.0f, 1.0f});
-
-        float mouseX = Rosewood::Input::GetMouseX() + camera.GetCamera().GetPosition().x;
-        float mouseY = Rosewood::Input::GetMouseY() + camera.GetCamera().GetPosition().y;
-
+        
         Rosewood::DeferredRenderer::DrawPointLight(glm::vec3(mouseX, mouseY, scroll), color, intensity, 1.0, linear, quadratic);
-        //Rosewood::DeferredRenderer::AddPointLight(glm::vec3(mouseX, mouseY, scroll), color, intensity, 1.0, linear, quadratic);
+        
+        Rosewood::DeferredRenderer::DrawDecals();
 
-        //Rosewood::BatchRenderer::DrawQuad(glm::vec3(pos.x-150.0f, pos.y-150.0f, 0.0f), glm::vec2(300.0f, 300.0f), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), col);
-                
+
         Rosewood::DeferredRenderer::End();
                 
         
     
 	}
     float col[3] {1.0f, 1.0f, 1.0f};
+    float colDec[3] {1.0f, 1.0f, 1.0f};
+
     float ambCol[3] {0.1f, 0.1f, 0.1f};
+    float dir[3] {0.0f, 0.0f, -1.0f};
 
 
 
@@ -128,6 +172,10 @@ public:
 		ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, 5, ImGuiInputTextFlags_None);
         
         ImGui::Separator();
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetDepthID(), {576, 324});
+
+        ImGui::SliderFloat3("Direction", dir, -1.0f, 1.0f);
+        direction = glm::normalize(glm::vec3(dir[0], dir[1], dir[2]));
         
         ImGui::SliderFloat("Exposure", &exposure, 0.0f, 10.0f);
         ImGui::SliderFloat("Gamma", &gamma, 0.0f, 10.0f);
@@ -138,10 +186,20 @@ public:
         ImGui::SliderFloat("Contrast", &bcs.y, 0.0f, 10.0f);
         ImGui::SliderFloat("Saturation", &bcs.z, 0.0f, 10.0f);
         
+        ImGui::SliderFloat("Black Point", &bwpoint.x, 0.0f, 1.0f);
+        ImGui::SliderFloat("White Point", &bwpoint.y, -1.0f, 1.0f);
+
+        
         if(ImGui::Button("RECOMPILE RENDERER SHADERS")) Rosewood::DeferredRenderer::ReloadShaders();
         
         ImGui::Separator();
+        
+        
+        ImGui::ColorPicker3("Decal Color", colDec);
+        colorDecal = {colDec[0], colDec[1], colDec [2]};
+        ImGui::InputFloat("Decal Intensity", &intensityDecal, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
 
+        
         ImGui::ColorPicker3("Light Color", col);
         color = {col[0], col[1], col [2]};
         
@@ -159,10 +217,11 @@ public:
 		ImGui::InputInt("px", &w);
         ImGui::InputInt("px", &h);
         //myTexture.Bind(0);
-        ImGui::Image((void*)Rosewood::DeferredRenderer::GetAlbedoID(), {192, 108});
-        ImGui::Image((void*)Rosewood::DeferredRenderer::GetPosID(), {192, 108});
-        ImGui::Image((void*)Rosewood::DeferredRenderer::GetNormalID(), {192, 108});
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetAlbedoID(), {576, 324});
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetPosID(), {576, 324});
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetNormalID(), {576, 324});
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetLightID(), {576, 324});
+
 
 
 
@@ -188,7 +247,6 @@ public:
         {
             float mouseX = Rosewood::Input::GetMouseX() + camera.GetCamera().GetPosition().x;
             float mouseY = Rosewood::Input::GetMouseY() + camera.GetCamera().GetPosition().y;
-            Rosewood::DeferredRenderer::AddPointLight(glm::vec3(mouseX, mouseY, scroll), color, intensity, 1.0, linear, quadratic);
         }
             //e.GetMouseButton()
 		return false;

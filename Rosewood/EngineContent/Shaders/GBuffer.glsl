@@ -1,12 +1,10 @@
 #shader vertex
 #version 330 core
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec2 aTexCoords;
+layout (location = 1) in vec2 aTexCoords;
 
 
 out vec4 FragPos;
-out vec3 Normal;
 out vec2 TexCoords;
 
 uniform mat4 u_Model;
@@ -17,9 +15,8 @@ void main()
     vec4 worldPos = u_Model * vec4(aPos, 1.0);
     FragPos = worldPos;
     
-    Normal = mat3(transpose(inverse(u_Model))) * aNormal;
     
-    TexCoords = aTexCoords;
+    TexCoords = vec2(aTexCoords.x, 1 - aTexCoords.y);
     
     gl_Position = u_ViewProjection * worldPos;
     //gl_Position = worldPos;
@@ -38,7 +35,6 @@ layout (location = 1) out vec4 gPosition;
 layout (location = 2) out vec4 gNormal;
 
 in vec4 FragPos;
-in vec3 Normal;
 in vec2 TexCoords;
 
 uniform sampler2D u_AlbedoTexture;

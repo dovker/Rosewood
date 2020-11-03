@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Rosewood/Graphics/Shader.h"
+#include "Rosewood/Graphics/API/Shader.h"
 
 namespace Rosewood
 {

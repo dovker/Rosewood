@@ -1,6 +1,6 @@
 #include "rwpch.h"
 #include "OpenGLVertexArray.h"
-#include "Rosewood/Graphics/Buffer.h"
+#include "Rosewood/Graphics/API/Buffer.h"
 #include "glad/glad.h"
 #include "OpenGL.h"
 

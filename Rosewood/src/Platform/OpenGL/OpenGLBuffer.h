@@ -1,7 +1,7 @@
 #pragma once
 #include <rwpch.h>
 
-#include "Rosewood/Graphics/Buffer.h"
+#include "Rosewood/Graphics/API/Buffer.h"
 
 namespace Rosewood
 {

@@ -36,9 +36,14 @@ namespace Rosewood
         virtual void Unbind() = 0;
 
         virtual void Resize(uint32_t width, uint32_t height) = 0;
+        
+        virtual glm::vec2 GetSize() const = 0;
 
         virtual uint32_t GetColorAttachmentRendererID(uint32_t attachment = 0) const = 0;
         virtual uint32_t CreateColorAttachment(uint32_t slot, TexChannelType channeType, TexChannelType format, TexChannelType dataType) = 0;
+        
+        virtual uint32_t GetDepthAttachmentRendererID() const = 0;
+        
         virtual void RenderPrep(const uint32_t attachments[], const uint32_t count) = 0; // {0, 1, 2, 3, 4, ..}
 
         virtual const FramebufferSpecification& GetSpecification() const = 0;

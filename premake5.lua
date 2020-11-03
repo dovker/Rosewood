@@ -1,5 +1,6 @@
 workspace "Rosewood"
     architecture "x86_64"
+    startproject "TestGame"
 
     configurations
     {
@@ -166,6 +167,121 @@ workspace "Rosewood"
             runtime "Release"
             optimize "On"
 
+        filter "configurations.Dist"
+            defines "RW_DIST"
+            runtime "Release"
+            optimize "On"
+
+    project "TestGame"
+        location "TestGame"
+        kind "ConsoleApp"
+        language "C++"
+        cppdialect "C++17"
+        staticruntime "On"
+
+        targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+        objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+        
+        files
+        {
+            "%{prj.name}/src/**.cpp",
+            "%{prj.name}/src/**.h",
+            "%{prj.name}/src/**.hpp",
+            "%{prj.name}/src/**.c",
+        }
+        
+        includedirs
+        {
+            "Rosewood/vendor/spdlog/include",
+            "Rosewood/src",
+            "%{IncludeDir.Glad}",
+            "%{IncludeDir.ImGui}",
+            "%{IncludeDir.glm}",
+            "%{IncludeDir.SoLoud}"
+        }
+
+        links
+        {
+            "Rosewood"
+        }
+        
+
+        filter "action:xcode4"
+            xcodebuildsettings = { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
+            sysincludedirs
+            {
+                "Rosewood/src",
+                    "Rosewood/vendor/spdlog/include",
+                    "Rosewood/vendor/Glad/include",
+                    "Rosewood/vendor/imgui",
+                    "Rosewood/vendor/glm",
+                    "Rosewood/vendor/soloud"
+            }
+        
+        
+        filter "system:macosx"
+            links
+            {
+                "Cocoa.framework",
+                "IOKit.framework",
+                "QuartzCore.framework",
+                "AudioToolbox.framework",
+                "AudioUnit.framework",
+                "CoreAudio.framework",
+                "CoreFoundation.framework"
+            }
+            postbuildcommands 
+            {
+                "{COPY} Content %{cfg.targetdir}",
+                "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}" --For some fucking reason folder copying is different on different platforms... FOR FUCKS SAKE
+            }
+        
+        filter "system:windows"
+            
+            systemversion "latest"
+        
+            defines
+            {
+                "RW_PLATFORM_WINDOWS"
+            }
+            postbuildcommands 
+            {
+                "{COPY} Content %{cfg.targetdir}/Content",
+                "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}/EngineContent"
+            }
+        filter "system:linux"
+            
+            systemversion "latest"
+        
+            defines
+            {
+                "RW_PLATFORM_LINUX"
+            }
+            postbuildcommands 
+            {
+                "{COPY} Content %{cfg.targetdir}",
+                "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}"
+            }
+        filter "system:macosx"
+                
+            systemversion "latest"
+
+            defines
+            {
+                "RW_PLATFORM_MACOS"
+            }
+    --["RW_WORKSPACE_DIR=%{wks.location}"]
+        
+        filter "configurations.Debug"
+            defines "RW_DEBUG"
+            runtime "Debug"
+            symbols "On"
+        
+        filter "configurations.Release"
+            defines "RW_RELEASE"
+            runtime "Release"            
+            optimize "On"
+        
         filter "configurations.Dist"
             defines "RW_DIST"
             runtime "Release"

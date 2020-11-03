@@ -1,7 +1,7 @@
 #pragma once
 #include "rwpch.h"
-#include "Rosewood/Graphics/Texture.h"
-#include "Rosewood/Graphics/Shader.h"
+#include "Rosewood/Graphics/API/Texture.h"
+#include "Rosewood/Graphics/API/Shader.h"
 #include "Rosewood/Audio/Audio.h"
 
 

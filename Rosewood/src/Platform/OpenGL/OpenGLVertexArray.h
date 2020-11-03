@@ -1,8 +1,8 @@
 #pragma once
 #include <rwpch.h>
 
-#include "Rosewood/Graphics/VertexArray.h"
-#include "Rosewood/Graphics/Buffer.h"
+#include "Rosewood/Graphics/API/VertexArray.h"
+#include "Rosewood/Graphics/API/Buffer.h"
 
 
 namespace Rosewood
