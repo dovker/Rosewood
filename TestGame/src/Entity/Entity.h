@@ -1,16 +1,21 @@
-#include <Rosewood.h>
+#include "Rosewood.h"
 
 #ifndef Entity_h
 #define Entity_h
 
-public class Entity
+namespace TestGame
 {
-public:
-    Entity();
-    ~Entity();
-    virtual void Load();
-    virtual void Update();
-    virtual void Draw();
+    class Entity
+    {
+    public:
+        Entity(){};
+        ~Entity(){};
+        virtual void OnLoad()   {};
+        virtual void OnUpdate() {};
+        virtual void OnDraw()   {};
+        virtual void OnUnload() {};
+    private:
+        bool m_Visible;
+    };
 }
-
-#endif /* Entity_h */
+#endif

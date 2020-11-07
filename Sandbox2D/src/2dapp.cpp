@@ -172,7 +172,6 @@ public:
 		ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, 5, ImGuiInputTextFlags_None);
         
         ImGui::Separator();
-        ImGui::Image((void*)Rosewood::DeferredRenderer::GetDepthID(), {576, 324});
 
         ImGui::SliderFloat3("Direction", dir, -1.0f, 1.0f);
         direction = glm::normalize(glm::vec3(dir[0], dir[1], dir[2]));
@@ -221,10 +220,7 @@ public:
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetPosID(), {576, 324});
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetNormalID(), {576, 324});
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetLightID(), {576, 324});
-
-
-
-
+        ImGui::Image((void*)Rosewood::DeferredRenderer::GetDepthID(), {576, 324});
 		
 		ImGui::End();
 	}

@@ -185,5 +185,9 @@ namespace Rosewood {
 	{
 		return m_Data.VSync;
 	}
+    void WindowsWindow::SetTitle(const std::string& name)
+    {
+        glfwSetWindowTitle(m_Window, name.data());
+    }
 
 }

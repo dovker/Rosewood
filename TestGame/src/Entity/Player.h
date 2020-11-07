@@ -1,21 +1,23 @@
+#include "Rosewood.h"
 #include "Entity.h"
 #include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 #ifndef Player_h
 #define Player_h
-
-public class Player : Entity
+namespace TestGame
 {
-public:
-    Entity();
-    ~Entity();
-    virtual void Load() override;
-    virtual void Update() override;
-    virtual void Draw() override;
-private:
-    
-}
+    class Player : public Entity
+    {
+    public:
+        Player();
+        ~Player();
+        void OnLoad() override;
+        void OnUpdate() override;
+        void OnDraw() override;
+        void OnUnload() override;
 
+    private:
+        glm::vec3 m_Position;
+    };
+}
 #endif /* Player_h */

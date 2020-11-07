@@ -29,6 +29,7 @@ namespace Rosewood {
 		// Window attributes
 		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
+        virtual void SetTitle(const std::string& name) override;
 		bool IsVSync() const override;
 		void* GetWindowPtr() override { return m_Window; }
 	private:
