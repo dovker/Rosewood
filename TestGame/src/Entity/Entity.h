@@ -10,10 +10,10 @@ namespace TestGame
     public:
         Entity(){};
         ~Entity(){};
-        virtual void OnLoad()   {};
-        virtual void OnUpdate() {};
-        virtual void OnDraw()   {};
-        virtual void OnUnload() {};
+        virtual void OnLoad() = 0;
+        virtual void OnUpdate() = 0;
+        virtual void OnDraw() = 0;
+        virtual void OnUnload() = 0;
     private:
         bool m_Visible;
     };

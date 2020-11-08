@@ -16,10 +16,6 @@ namespace TestGame {
         m_ScreenHeight = Rosewood::Application::Get().GetWindow().GetHeight();
         m_Camera = new Camera(glm::vec2(m_ScreenWidth, m_ScreenHeight));
         
-        m_Entities = std::vector<Entity>
-        {
-            Player(),
-        };
         
         Rosewood::BatchRenderer::Init();
     }
@@ -33,17 +29,11 @@ namespace TestGame {
     }
     void Game::OnLoad()
     {
-        for(auto& entity : m_Entities)
-        {
-            entity.OnLoad();
-        }
+        
     }
     void Game::OnUpdate()
     {
-        for(auto& entity : m_Entities)
-        {
-            entity.OnUpdate();
-        }
+        
     }
     void Game::OnDraw()
     {
@@ -54,19 +44,13 @@ namespace TestGame {
         
         Rosewood::BatchRenderer::Begin(m_Camera->GetCamera());
         
-        for(auto& entity : m_Entities)
-        {
-            entity.OnDraw();
-        }
+        
         
         Rosewood::BatchRenderer::End();
     }
     void Game::OnUnload()
     {
-        for(auto& entity : m_Entities)
-        {
-            entity.OnUnload();
-        }
+        
     }
 
     

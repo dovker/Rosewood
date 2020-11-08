@@ -11,10 +11,10 @@ namespace TestGame
     public:
         Player();
         ~Player();
-        void OnLoad() override;
-        void OnUpdate() override;
-        void OnDraw() override;
-        void OnUnload() override;
+        virtual void OnLoad()   override;
+        virtual void OnUpdate() override;
+        virtual void OnDraw()   override;
+        virtual void OnUnload() override;
 
     private:
         glm::vec3 m_Position;

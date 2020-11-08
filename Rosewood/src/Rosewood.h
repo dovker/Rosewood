@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Entity_h
+#define Entity_h
 
 #include "Rosewood/Application.h"
 #include "Rosewood/Layer.h"
@@ -37,3 +38,5 @@
 
 // ---Entry Point---------------------
 #include "Rosewood/EntryPoint.h"
+
+#endif

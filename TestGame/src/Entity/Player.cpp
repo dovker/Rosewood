@@ -13,17 +13,19 @@ namespace TestGame
     void Player::OnLoad()
     {
         
+        RW_TRACE("");
+        
     }
     void Player::OnUpdate()
     {
-        
+        RW_TRACE("");
     }
     void Player::OnDraw()
     {
-        
+        RW_TRACE("");
     }
     void Player::OnUnload()
     {
-        
+        RW_TRACE("");
     }
 }
