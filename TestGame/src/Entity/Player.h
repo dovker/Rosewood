@@ -1,9 +1,8 @@
-#include "Rosewood.h"
-#include "Entity.h"
-#include "glm/glm.hpp"
+#pragma once
 
-#ifndef Player_h
-#define Player_h
+#include "Entity.h"
+#include "../Game.h"
+
 namespace TestGame
 {
     class Player : public Entity
@@ -20,4 +19,3 @@ namespace TestGame
         glm::vec3 m_Position;
     };
 }
-#endif /* Player_h */

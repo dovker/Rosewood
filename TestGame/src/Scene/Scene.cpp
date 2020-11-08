@@ -4,9 +4,11 @@
 namespace TestGame {
 
     Game* Game::s_Instance = nullptr;
+    std::vector<Entity> Game::m_Entities = std::vector<Entity>();
     int Game::m_ScreenWidth = 0;
     int Game::m_ScreenHeight = 0;
     Rosewood::AssetManager* Game::m_AssetManager = nullptr;
+    Camera* Game::m_Camera = nullptr;
     Game::Game()
     {
         Rosewood::Application::Get().GetWindow().SetTitle("TestGame");
@@ -14,6 +16,12 @@ namespace TestGame {
         m_AssetManager = new Rosewood::AssetManager();
         m_ScreenWidth = Rosewood::Application::Get().GetWindow().GetWidth();
         m_ScreenHeight = Rosewood::Application::Get().GetWindow().GetHeight();
+        m_Camera = new Camera(glm::vec2(m_ScreenWidth, m_ScreenHeight));
+        
+        m_Entities = std::vector<Entity>
+        {
+            Player(),
+        };
         
         Rosewood::BatchRenderer::Init();
     }

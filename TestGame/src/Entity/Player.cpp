@@ -4,7 +4,7 @@ namespace TestGame
 {
     Player::Player()
     {
-        
+        m_Position = glm::vec3(0.0f, 0.0f, 0.0f);
     }
     Player::~Player()
     {

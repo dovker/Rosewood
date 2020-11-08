@@ -1,14 +1,13 @@
-#include "Rosewood.h"
+#pragma once
 
-#ifndef Entity_h
-#define Entity_h
+#include "../Game.h"
 
 namespace TestGame
 {
     class Entity
     {
     public:
-        Entity(){};
+        Entity() { m_Visible = true; };
         ~Entity(){};
         virtual void OnLoad()   {};
         virtual void OnUpdate() {};
@@ -18,4 +17,3 @@ namespace TestGame
         bool m_Visible;
     };
 }
-#endif
