@@ -293,7 +293,24 @@ namespace Rosewood
     }
     void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::ivec2 fromPix, glm::ivec2 toPix, glm::vec4 color)
     {
-        BatchRenderer::DrawQuad(pos, size, texture, glm::vec4((float)fromPix.x/size.x, (float)fromPix.y/size.y, (float)toPix.x/size.x, (float)toPix.y/size.y), color);
+        float xFrom = 1-(float)fromPix.x/texture->GetWidth();
+        float yFrom = 1-(float)fromPix.y/texture->GetHeight();
+        float xTo = 1-(float)toPix.x/texture->GetWidth();
+        float yTo = 1-(float)toPix.y/texture->GetHeight();
+
+        BatchRenderer::DrawQuad(pos, size, texture, glm::vec4(xFrom, yTo, xTo, yFrom), color);
+    }
+    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 color)
+    {
+        BatchRenderer::DrawQuad(pos, size, texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
+    }
+    void BatchRenderer::DrawQuad(glm::vec3 pos, Ref<Texture>& texture, glm::vec4 color)
+    {
+        BatchRenderer::DrawQuad(pos, glm::vec2(texture->GetWidth(), texture->GetHeight()), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
+    }
+    void BatchRenderer::DrawQuad(glm::vec3 pos, Ref<Texture>& texture)
+    {
+        BatchRenderer::DrawQuad(pos, glm::vec2(texture->GetWidth(), texture->GetHeight()), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f));
     }
 
 

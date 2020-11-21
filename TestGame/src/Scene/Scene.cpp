@@ -1,88 +1,89 @@
-#include "Game.h"
-
+#include "Scene.h"
+#include "cmath"
 
 namespace TestGame {
+extern const uint32_t ChunkSize = 16;
+extern const uint32_t ChunkArea = 256;
+extern uint32_t TileSize = 16;
 
-    Game* Game::s_Instance = nullptr;
-    std::vector<Entity> Game::m_Entities = std::vector<Entity>();
-    int Game::m_ScreenWidth = 0;
-    int Game::m_ScreenHeight = 0;
-    Rosewood::AssetManager* Game::m_AssetManager = nullptr;
-    Camera* Game::m_Camera = nullptr;
-    Game::Game()
-    {
-        Rosewood::Application::Get().GetWindow().SetTitle("TestGame");
+    Scene::Scene()
+    {        
         
-        m_AssetManager = new Rosewood::AssetManager();
-        m_ScreenWidth = Rosewood::Application::Get().GetWindow().GetWidth();
-        m_ScreenHeight = Rosewood::Application::Get().GetWindow().GetHeight();
-        m_Camera = new Camera(glm::vec2(m_ScreenWidth, m_ScreenHeight));
+        m_Camera = new Camera(glm::vec2(Rosewood::Application::Get().GetWindow().GetWidth() / 4, Rosewood::Application::Get().GetWindow().GetHeight() / 4));
         
-        m_Entities = std::vector<Entity>
+        m_Entities = std::vector<Entity*>
         {
-            Player(),
+            new Player(),
         };
+        m_Map = new Map(100, 100);
+        
+        for (int i = 0; i<100; i++)
+        {
+            for (int j = 0; j<100; j++)
+            {
+                m_Map->Set(i, j, 17); //TODO: TEST THIS
+            }
+        }
+        RW_TRACE("{0}", m_Map->Get(31, 31));
         
         Rosewood::BatchRenderer::Init();
     }
-    Game* Game::Get()
-    {
-        if (s_Instance == nullptr)
-        {
-            s_Instance = new Game();
-        }
-        return s_Instance;
-    }
-    void Game::OnLoad()
+    void Scene::OnLoad(Rosewood::AssetManager &assetManager)
     {
         for(auto& entity : m_Entities)
         {
-            entity.OnLoad();
+            entity->OnLoad(assetManager);
         }
+        Rosewood::Ref<Rosewood::Texture> mapTexture = assetManager.Load<Rosewood::Texture>("Content/Tileset.png", "Tileset");
+        m_Map->SetTexture(mapTexture);
     }
-    void Game::OnUpdate()
+    void Scene::OnUpdate()
     {
         for(auto& entity : m_Entities)
         {
-            entity.OnUpdate();
+            entity->OnUpdate();
+            
+            float xPos = glm::mix(m_Camera->GetCamera().GetPosition().x, entity->GetPosition().x - 1280.0f/2/4 + 8, 0.1);
+            float yPos = glm::mix(m_Camera->GetCamera().GetPosition().y, entity->GetPosition().y - 720.0f/2/4 + 8, 0.1);
+            
+            m_Camera->SetPosition(glm::vec3(xPos, yPos, 0.0f));
+
         }
     }
-    void Game::OnDraw()
+    void Scene::OnDraw()
     {
         {
             Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
             Rosewood::GraphicsCommand::Clear();
         }
+        Rosewood::BatchRenderer::ResetStats();
+
         
         Rosewood::BatchRenderer::Begin(m_Camera->GetCamera());
         
+        m_Map->Draw();
+        
         for(auto& entity : m_Entities)
         {
-            entity.OnDraw();
+            entity->OnDraw();
         }
         
         Rosewood::BatchRenderer::End();
     }
-    void Game::OnUnload()
+    void Scene::OnUnload(Rosewood::AssetManager &assetManager)
     {
         for(auto& entity : m_Entities)
         {
-            entity.OnUnload();
+            entity->OnUnload(assetManager);
+        }
+    }
+    void Scene::OnEvent(Rosewood::Event &e)
+    {
+        m_Camera->OnEvent(e);
+        for(auto& entity : m_Entities)
+        {
+            entity->OnEvent(e);
         }
     }
 
-    
-    void Game::OnWindowResize(int w, int h)
-    {
-        m_Camera->ProcessScreenResize(glm::vec2(w, h));
-        Rosewood::GraphicsCommand::SetViewport(0, 0, w, h);
-    }
-
-    void Game::OnImGuiRender(){}
-    void Game::OnMouseButtonPressed(int button){}
-    void Game::OnMouseButtonReleased(int button){}
-    void Game::OnMouseMoved(float x, float y){}
-    void Game::OnMouseScrolled(float xOffset, float yOffset){}
-    void Game::OnKeyPressed(int button){}
-    void Game::OnKeyReleased(int button){}
 }

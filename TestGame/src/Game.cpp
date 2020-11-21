@@ -1,70 +1,62 @@
+#include "Rosewood.h"
+#include "imgui.h"
+#include "Scene.h"
 #include "Game.h"
-
 
 namespace TestGame {
 
-    Game* Game::s_Instance = nullptr;
-    int Game::m_ScreenWidth = 0;
-    int Game::m_ScreenHeight = 0;
-    Rosewood::AssetManager* Game::m_AssetManager = nullptr;
+
     Game::Game()
+        : Layer("Example") {}
+
+    void Game::OnAttach()
     {
-        Rosewood::Application::Get().GetWindow().SetTitle("TestGame");
-
-        m_AssetManager = new Rosewood::AssetManager();
-        m_ScreenWidth = Rosewood::Application::Get().GetWindow().GetWidth();
-        m_ScreenHeight = Rosewood::Application::Get().GetWindow().GetHeight();
-        m_Camera = new Camera(glm::vec2(m_ScreenWidth, m_ScreenHeight));
-
+        m_AssetManager = Rosewood::AssetManager();
+        Rosewood::GraphicsCommand::ToggleBlending(true);
+        Rosewood::GraphicsCommand::ToggleDepthTest(false);
 
         Rosewood::BatchRenderer::Init();
-    }
-    Game* Game::Get()
-    {
-        if (s_Instance == nullptr)
-        {
-            s_Instance = new Game();
-        }
-        return s_Instance;
-    }
-    void Game::OnLoad()
-    {
 
+        m_Scene = Rosewood::CreateRef<Scene>();
+        
+        m_Scene->OnLoad(m_AssetManager);
     }
+
     void Game::OnUpdate()
     {
-
+        m_Scene->OnUpdate();
+        
+        m_Scene->OnDraw();
     }
-    void Game::OnDraw()
+    
+    void Game::OnDetach()
     {
-        {
-            Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
-            Rosewood::GraphicsCommand::Clear();
-        }
-
-        Rosewood::BatchRenderer::Begin(m_Camera->GetCamera());
-
-
-
-        Rosewood::BatchRenderer::End();
+        m_Scene->OnUnload(m_AssetManager);
     }
-    void Game::OnUnload()
+    
+    
+    bool open = true;
+    void Game::OnImGuiRender()
     {
+        auto stats = Rosewood::BatchRenderer::GetStats();
+        ImGui::Begin("This is 2D Spritebatch System", &open, 0);
+        ImGui::Text("Batch stats: %i, %i", stats.DrawCount, stats.QuadCount);
 
+        ImGui::Text("FPS:");
+        float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
+        ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, nullptr, ImGuiInputTextFlags_None);
+        
+        ImGui::Separator();
+                    
+        ImGui::End();
     }
 
-
-    void Game::OnWindowResize(int w, int h)
+    void Game::OnEvent(Rosewood::Event& e)
     {
-        m_Camera->ProcessScreenResize(glm::vec2(w, h));
-        Rosewood::GraphicsCommand::SetViewport(0, 0, w, h);
+        m_Scene->OnEvent(e);
     }
 
-    void Game::OnImGuiRender(){}
-    void Game::OnMouseButtonPressed(int button){}
-    void Game::OnMouseButtonReleased(int button){}
-    void Game::OnMouseMoved(float x, float y){}
-    void Game::OnMouseScrolled(float xOffset, float yOffset){}
-    void Game::OnKeyPressed(int button){}
-    void Game::OnKeyReleased(int button){}
+
 }
+
+

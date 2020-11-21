@@ -36,7 +36,6 @@
 
 #include "Rosewood/ImGui/ImGuiLayer.h"
 
-// ---Entry Point---------------------
-#include "Rosewood/EntryPoint.h"
+//#include "Rosewood/EntryPoint.h"
 
 #endif

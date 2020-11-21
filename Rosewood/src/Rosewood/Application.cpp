@@ -41,9 +41,9 @@ namespace Rosewood
 
         while (m_Running)
 		{
-			m_DeltaTime = lateTime- m_Time;
-			m_Time = m_Window->GetTime();
-			
+
+            m_Time = m_Window->GetTime();
+
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate();
 			}
@@ -55,6 +55,7 @@ namespace Rosewood
 
 			m_Window->OnUpdate();
 			lateTime = m_Window->GetTime();
+            m_DeltaTime = lateTime- m_Time;
 		}
         Audio::Deinit();
 	}

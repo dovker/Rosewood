@@ -1,4 +1,5 @@
 #include "Rosewood.h"
+#include "Rosewood/EntryPoint.h"
 #include "imgui.h"
 #include "Sofa.h"
 #include "2DCameraController.h"
@@ -290,7 +291,6 @@ public:
 	}
 	bool OnWindowResizeEvent(Rosewood::WindowResizeEvent& e)
 	{
-		
 		scrWidth = e.GetWidth();
 		scrHeight = e.GetHeight();
 		camera.ProcessScreenResize(glm::vec2(scrWidth, scrHeight));
