@@ -1,6 +1,6 @@
 workspace "Rosewood"
     architecture "x86_64"
-    startproject "TestGame"
+    startproject "Sandbox3D"
 
     configurations
     {
@@ -17,6 +17,7 @@ workspace "Rosewood"
 
     IncludeDir = {}
 
+    IncludeDir["assimp"]="Rosewood/vendor/assimp/include"
     IncludeDir["GLFW"] = "Rosewood/vendor/GLFW/include"
     IncludeDir["spdlog"] = "Rosewood/vendor/spdlog/include"
     IncludeDir["Glad"] = "Rosewood/vendor/Glad/include"
@@ -31,6 +32,7 @@ workspace "Rosewood"
         include "Rosewood/vendor/soloud/build"
         include "Rosewood/vendor/Glad"
         include "Rosewood/vendor/imgui"
+        include "Rosewood/vendor/assimp"
     group ""
 
     
@@ -62,14 +64,15 @@ workspace "Rosewood"
             {
                 "%{prj.name}/src",
                 "%{prj.name}/vendor/spdlog/include",
-                "%{prj.name}/vendor/GLFW/include",
-                "%{prj.name}/vendor/Glad/include",
-                "%{prj.name}/vendor/imgui",
-                "%{prj.name}/vendor/glm",
-                "%{prj.name}/vendor/stb_image",
-                "%{prj.name}/vendor/soloud"
+                "%{IncludeDir.GLFW}",
+                "%{IncludeDir.Glad}",
+                "%{IncludeDir.ImGui}",
+                "%{IncludeDir.glm}",
+                "%{IncludeDir.stb_image}",
+                "%{IncludeDir.assimp}",
+                "%{IncludeDir.SoLoud}"
             }
-
+            
         filter "action:gmake"
             pchheader "../src/rwpch.h"
             pchsource "Rosewood/src/rwpch.cpp"
@@ -96,6 +99,7 @@ workspace "Rosewood"
             "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}",
             "%{IncludeDir.stb_image}",
+            "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}"
         }
         
@@ -121,6 +125,7 @@ workspace "Rosewood"
             "Glad",
             "ImGui",
             "SoloudStatic",
+            "assimp",
             "opengl32.lib"
         }
         defines
@@ -197,7 +202,8 @@ workspace "Rosewood"
             "%{IncludeDir.Glad}",
             "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}",
-            "%{IncludeDir.SoLoud}"
+            "%{IncludeDir.SoLoud}",
+            "%{IncludeDir.assimp}"
         }
 
         links
@@ -215,7 +221,8 @@ workspace "Rosewood"
                     "Rosewood/vendor/Glad/include",
                     "Rosewood/vendor/imgui",
                     "Rosewood/vendor/glm",
-                    "Rosewood/vendor/soloud"
+                    "Rosewood/vendor/soloud",
+                    "%{IncludeDir.assimp}",
             }
         
         
@@ -287,6 +294,123 @@ workspace "Rosewood"
             runtime "Release"
             optimize "On"
 
+    project "Sandbox3D"
+            location "Sandbox3D"
+            kind "ConsoleApp"
+            language "C++"
+            cppdialect "C++17"
+            staticruntime "On"
+    
+            targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+            objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+            
+            files
+            {
+                "%{prj.name}/src/**.cpp",
+                "%{prj.name}/src/**.h",
+                "%{prj.name}/src/**.hpp",
+                "%{prj.name}/src/**.c",
+            }
+            
+            includedirs
+            {
+                "Rosewood/vendor/spdlog/include",
+                "Rosewood/src",
+                "%{IncludeDir.Glad}",
+                "%{IncludeDir.ImGui}",
+                "%{IncludeDir.glm}",
+                "%{IncludeDir.assimp}",
+                "%{IncludeDir.SoLoud}"
+            }
+    
+            links
+            {
+                "Rosewood"
+            }
+            
+    
+            filter "action:xcode4"
+                xcodebuildsettings = { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
+                sysincludedirs
+                {
+                    "Rosewood/src",
+                        "Rosewood/vendor/spdlog/include",
+                        "Rosewood/vendor/Glad/include",
+                        "Rosewood/vendor/imgui",
+                        "Rosewood/vendor/glm",
+                        "%{IncludeDir.assimp}",
+                        "Rosewood/vendor/soloud"
+                }
+            
+            
+            filter "system:macosx"
+                links
+                {
+                    "Cocoa.framework",
+                    "IOKit.framework",
+                    "QuartzCore.framework",
+                    "AudioToolbox.framework",
+                    "AudioUnit.framework",
+                    "CoreAudio.framework",
+                    "CoreFoundation.framework"
+                }
+                postbuildcommands 
+                {
+                    "{COPY} Content %{cfg.targetdir}",
+                    "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}" --For some fucking reason folder copying is different on different platforms... FOR FUCKS SAKE
+                }
+            
+            filter "system:windows"
+                
+                systemversion "latest"
+            
+                defines
+                {
+                    "RW_PLATFORM_WINDOWS"
+                }
+                postbuildcommands 
+                {
+                    "{COPY} Content %{cfg.targetdir}/Content",
+                    "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}/EngineContent"
+                }
+            filter "system:linux"
+                
+                systemversion "latest"
+            
+                defines
+                {
+                    "RW_PLATFORM_LINUX"
+                }
+                postbuildcommands 
+                {
+                    "{COPY} Content %{cfg.targetdir}",
+                    "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}"
+                }
+            filter "system:macosx"
+                    
+                systemversion "latest"
+    
+                defines
+                {
+                    "RW_PLATFORM_MACOS"
+                }
+        --["RW_WORKSPACE_DIR=%{wks.location}"]
+            
+            filter "configurations.Debug"
+                defines "RW_DEBUG"
+                runtime "Debug"
+                symbols "On"
+            
+            filter "configurations.Release"
+                defines "RW_RELEASE"
+                runtime "Release"            
+                optimize "On"
+            
+            filter "configurations.Dist"
+                defines "RW_DIST"
+                runtime "Release"
+                optimize "On"
+
     project "Sandbox2D"
         location "Sandbox2D"
         kind "ConsoleApp"
@@ -312,6 +436,7 @@ workspace "Rosewood"
             "%{IncludeDir.Glad}",
             "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}",
+            "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}"
         }
 
@@ -330,6 +455,7 @@ workspace "Rosewood"
                     "Rosewood/vendor/Glad/include",
                     "Rosewood/vendor/imgui",
                     "Rosewood/vendor/glm",
+                    "%{IncludeDir.assimp}",
                     "Rosewood/vendor/soloud"
             }
         

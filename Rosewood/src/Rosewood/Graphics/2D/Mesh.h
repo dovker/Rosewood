@@ -8,13 +8,7 @@
 
 
 namespace Rosewood {
-    /////////////////////////////
-    //MESH GENERATION
-    /////////////////////////////
-
-
     
-
     class RenderMesh {
     public:
         // mesh Data

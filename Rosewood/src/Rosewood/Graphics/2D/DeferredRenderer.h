@@ -54,7 +54,7 @@ namespace Rosewood {
     {
     public:
         static void Init();
-        static void Begin(OrthographicCamera camera);
+        static void Begin(OrthographicCamera& camera);
         static void DrawDecals();
         static void BeginLights();
         static void End();

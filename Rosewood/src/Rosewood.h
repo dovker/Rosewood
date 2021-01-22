@@ -30,6 +30,11 @@
 #include "Rosewood/Graphics/2D/DeferredRenderer.h"
 #include "Rosewood/Graphics/2D/Mesh.h"
 
+#include "Rosewood/Graphics/3D/Renderer.h"
+#include "Rosewood/Graphics/3D/Mesh.h"
+#include "Rosewood/Graphics/3D/Model.h"
+
+
 #include "Rosewood/Assets/Assets.h"
 
 #include "Rosewood/Audio/Audio.h"

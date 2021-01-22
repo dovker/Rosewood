@@ -34,6 +34,13 @@ namespace Rosewood
         m_Sounds[name] = ptr;
         return ptr;
     }
+    template <>
+    Ref<Model> AssetManager::Load<Model>(const std::string path, const std::string name)
+    {
+        auto ptr = Model::Create(path);
+        m_Models[name] = ptr;
+        return ptr;
+    }
 // // // // //
 // // // // //    UNLOAD
 // // // // //
@@ -84,6 +91,11 @@ namespace Rosewood
     {
         m_Sounds[name] = Asset;
     }
+    template <>
+    void AssetManager::Add<Model>(const Ref<Model>& Asset, std::string name)
+    {
+        m_Models[name] = Asset;
+    }
 // // // // //
 // // // // //    EXISTS
 // // // // //
@@ -109,6 +121,11 @@ namespace Rosewood
     bool AssetManager::Exists<Sound>(const std::string name)
     {
         return m_Sounds.find(name) != m_Sounds.end();
+    }
+    template <>
+    bool AssetManager::Exists<Model>(const std::string name)
+    {
+        return m_Models.find(name) != m_Models.end();
     }
 // // // // //
 // // // // //    GET
@@ -138,5 +155,11 @@ namespace Rosewood
     {
         RW_CORE_ASSERT(Exists<Sound>(name), "Shader {0} not found", name);
         return m_Sounds[name];
+    }
+    template <>
+    Ref<Model> AssetManager::Get<Model>(const std::string name)
+    {
+        RW_CORE_ASSERT(Exists<Model>(name), "Shader {0} not found", name);
+        return m_Models[name];
     }
 }

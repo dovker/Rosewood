@@ -170,7 +170,7 @@ public:
 
 		ImGui::Text("FPS:");
 		float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
-		ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, 5, ImGuiInputTextFlags_None);
+		ImGui::InputFloat("hz", &deltaTime);
         
         ImGui::Separator();
 
@@ -197,7 +197,7 @@ public:
         
         ImGui::ColorPicker3("Decal Color", colDec);
         colorDecal = {colDec[0], colDec[1], colDec [2]};
-        ImGui::InputFloat("Decal Intensity", &intensityDecal, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
+        ImGui::InputFloat("Decal Intensity", &intensityDecal);
 
         
         ImGui::ColorPicker3("Light Color", col);
@@ -206,10 +206,9 @@ public:
         ImGui::ColorPicker3("Ambient Color", ambCol);
         ambient = {ambCol[0], ambCol[1], ambCol[2]};
         
-        ImGui::InputFloat("Linear", &linear, 0.1f, 0.0f, 16, ImGuiInputTextFlags_None);
-        ImGui::InputFloat("Quadratic", &quadratic, 0.1f, 0.0f, 16, ImGuiInputTextFlags_None);
-        ImGui::InputFloat("Intensity", &intensity, 1.0f, 0.0f, 3, ImGuiInputTextFlags_None);
-        
+        ImGui::InputFloat("Linear", &linear, 0.1f, 0.0f, "%.19f");
+        ImGui::InputFloat("Quadratic", &quadratic, 0.1f, 0.0f, "%.19f");
+        ImGui::InputFloat("Intensity", &intensity);
         ImGui::Separator();
 
 		int w = scrWidth;

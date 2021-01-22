@@ -97,7 +97,7 @@ namespace Rosewood
     void BatchRenderer::Begin(const OrthographicCamera& camera)
     {
         s_Data.CurrentShader->Bind();
-        s_Data.CurrentShader->setMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+        s_Data.CurrentShader->setMat4("u_ViewProjection", camera.GetViewProjection());
         s_Data.Camera = camera;
         int Samplers[MAX_TEXTURES];
         for (int i = 0; i<MAX_TEXTURES; i++)

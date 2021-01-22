@@ -110,7 +110,7 @@ namespace Rosewood
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
             -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
             1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 0.0f, 1.0f, 0.0f
+            1.0f, -1.0f, 0.0f, 1.0f, 0.0f 
         };
 
         Ref<VertexBuffer> vertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
@@ -129,11 +129,11 @@ namespace Rosewood
 
         
         
-        s_Buffer.GBufferShader = Shader::Create("EngineContent/Shaders/GBuffer.glsl");
-        s_Buffer.LightBufferShader = Shader::Create("EngineContent/Shaders/LightBuffer.glsl");
-        s_Buffer.FinalShader = Shader::Create("EngineContent/Shaders/FinalPass.glsl");
-        s_Buffer.DecalShader = Shader::Create("EngineContent/Shaders/DecalLight.glsl");
-        s_Buffer.DepthRenderShader = Shader::Create("EngineContent/Shaders/DepthDrawing.glsl");
+        s_Buffer.GBufferShader = Shader::Create("EngineContent/Shaders/GBuffer2D.glsl");
+        s_Buffer.LightBufferShader = Shader::Create("EngineContent/Shaders/LightBuffer2D.glsl");
+        s_Buffer.FinalShader = Shader::Create("EngineContent/Shaders/FinalPass2D.glsl");
+        s_Buffer.DecalShader = Shader::Create("EngineContent/Shaders/DecalLight2D.glsl");
+        s_Buffer.DepthRenderShader = Shader::Create("EngineContent/Shaders/DepthDrawing2D.glsl");
 
         
         s_Buffer.DecalQueue = std::vector<Ref<DecalLight>>();
@@ -141,10 +141,10 @@ namespace Rosewood
 
 
     }
-    void DeferredRenderer::Begin(OrthographicCamera camera)
+    void DeferredRenderer::Begin(OrthographicCamera& camera)
     {
         
-        s_Buffer.Camera = camera.GetViewProjectionMatrix();
+        s_Buffer.Camera = camera.GetViewProjection();
         s_Buffer.CameraPtr = camera;
         s_Buffer.FrameGBuffer->Bind();
         GraphicsCommand::ToggleBlending(false);
@@ -277,7 +277,7 @@ namespace Rosewood
             GraphicsCommand::BindTexture(light->texture->GetID(), 2);
                         
             s_Buffer.DecalShader->setMat4("u_InvView", glm::inverse(s_Buffer.CameraPtr.GetViewMatrix()));
-            s_Buffer.DecalShader->setMat4("u_InvProj", glm::inverse(s_Buffer.CameraPtr.GetProjectionMatrix()));
+            s_Buffer.DecalShader->setMat4("u_InvProj", glm::inverse(s_Buffer.CameraPtr.GetProjection()));
             s_Buffer.DecalShader->setMat4("u_DecalViewProj", light->camera.GetViewProjectionMatrix());
 
             s_Buffer.DecalShader->setInt("gDepth", 0);
@@ -340,11 +340,11 @@ namespace Rosewood
 
     void DeferredRenderer::ReloadShaders()
     {
-        s_Buffer.GBufferShader->Recompile("EngineContent/Shaders/GBuffer.glsl");
-        s_Buffer.LightBufferShader->Recompile("EngineContent/Shaders/LightBuffer.glsl");
-        s_Buffer.FinalShader->Recompile("EngineContent/Shaders/FinalPass.glsl");
-        s_Buffer.DecalShader->Recompile("EngineContent/Shaders/DecalLight.glsl");
-        s_Buffer.DepthRenderShader->Recompile("EngineContent/Shaders/DepthDrawing.glsl");
+        s_Buffer.GBufferShader->Recompile("EngineContent/Shaders/GBuffer2D.glsl");
+        s_Buffer.LightBufferShader->Recompile("EngineContent/Shaders/LightBuffer2D.glsl");
+        s_Buffer.FinalShader->Recompile("EngineContent/Shaders/FinalPass2D.glsl");
+        s_Buffer.DecalShader->Recompile("EngineContent/Shaders/DecalLight2D.glsl");
+        s_Buffer.DepthRenderShader->Recompile("EngineContent/Shaders/DepthDrawing2D.glsl");
 
     }
 
