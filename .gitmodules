@@ -1,2 +1,5 @@
 [submodule "Submod"]
 	branch = docking
+[submodule "Rosewood/vendor/assimp"]
+	path = Rosewood/vendor/assimp
+	url = https://github.com/AminAliari/assimp
