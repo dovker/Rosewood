@@ -24,7 +24,6 @@ extern uint32_t TileSize = 16;
                 m_Map->Set(i, j, 17); //TODO: TEST THIS
             }
         }
-        RW_TRACE("{0}", m_Map->Get(31, 31));
         
         Rosewood::BatchRenderer::Init();
     }
@@ -37,7 +36,7 @@ extern uint32_t TileSize = 16;
         Rosewood::Ref<Rosewood::Texture> mapTexture = assetManager.Load<Rosewood::Texture>("Content/Tileset.png", "Tileset");
         m_Map->SetTexture(mapTexture);
     }
-    void Scene::OnUpdate()
+    void Scene::OnUpdate(Rosewood::Timestep timestep)
     {
         for(auto& entity : m_Entities)
         {

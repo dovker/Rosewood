@@ -20,6 +20,8 @@ namespace Rosewood
         
         virtual void ToggleDepthTest(bool toggle) = 0;
         virtual void ToggleBlending(bool toggle) = 0;
+        virtual void ToggleBackfaceCulling(bool toggle) = 0;
+
 
         virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
         virtual void BindTexture(uint32_t ID, uint32_t slot) = 0;
@@ -70,6 +72,10 @@ namespace Rosewood
         static void ToggleBlending(bool toggle)
         {
             s_Graphics->ToggleBlending(toggle);
+        }
+        static void ToggleBackfaceCulling(bool toggle)
+        {
+            s_Graphics->ToggleBackfaceCulling(toggle);
         }
     private:
         static Scope<Graphics> s_Graphics;

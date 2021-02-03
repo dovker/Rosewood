@@ -36,15 +36,16 @@ namespace TestGame
     void Player::OnDraw()
     {
         AABB b = AABB({0.0f, 0.0f}, {10.0f, 10.0f});
-        Rosewood::BatchRenderer::DrawQuad({0.0f, 0.0f, 1.0f}, {10.0f, 10.0f}, glm::vec4(1.0f));
+        Rosewood::BatchRenderer::DrawQuad({0.0f, 0.0f, 1.0f}, {10.0f, 10.0f}, glm::vec4(0.5f));
 
         if (Collision::Check(collider, b))
         {
-            Rosewood::BatchRenderer::DrawQuad(m_Position, m_Texture, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+            Rosewood::BatchRenderer::DrawQuad(m_Position, m_Texture, glm::vec4(1.0f, 0.0f, 0.0f, 0.5f));
         } else
         {
             Rosewood::BatchRenderer::DrawQuad(m_Position, m_Texture);
         }
+
     }
     void Player::OnUnload(Rosewood::AssetManager &assetManager)
     {

@@ -25,6 +25,8 @@ workspace "Rosewood"
     IncludeDir["glm"] = "Rosewood/vendor/glm"
     IncludeDir["stb_image"] = "Rosewood/vendor/stb_image"
     IncludeDir["SoLoud"] = "Rosewood/vendor/soloud/include"
+    IncludeDir["zlib"] = "Rosewood/vendor/zlib"
+
 
 
     group "Dependencies"
@@ -33,6 +35,7 @@ workspace "Rosewood"
         include "Rosewood/vendor/Glad"
         include "Rosewood/vendor/imgui"
         include "Rosewood/vendor/assimp"
+        include "Rosewood/vendor/zlib"
     group ""
 
     
@@ -70,7 +73,9 @@ workspace "Rosewood"
                 "%{IncludeDir.glm}",
                 "%{IncludeDir.stb_image}",
                 "%{IncludeDir.assimp}",
-                "%{IncludeDir.SoLoud}"
+                "%{IncludeDir.SoLoud}",
+                "%{IncludeDir.zlib}"
+
             }
             
         filter "action:gmake"
@@ -100,7 +105,8 @@ workspace "Rosewood"
             "%{IncludeDir.glm}",
             "%{IncludeDir.stb_image}",
             "%{IncludeDir.assimp}",
-            "%{IncludeDir.SoLoud}"
+            "%{IncludeDir.SoLoud}",
+            "%{IncludeDir.zlib}"
         }
         
 
@@ -126,6 +132,7 @@ workspace "Rosewood"
             "ImGui",
             "SoloudStatic",
             "assimp",
+            "zlib",
             "opengl32.lib"
         }
         defines
@@ -203,7 +210,8 @@ workspace "Rosewood"
             "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}",
             "%{IncludeDir.SoLoud}",
-            "%{IncludeDir.assimp}"
+            "%{IncludeDir.assimp}",
+            "%{IncludeDir.zlib}"
         }
 
         links
@@ -223,6 +231,7 @@ workspace "Rosewood"
                     "Rosewood/vendor/glm",
                     "Rosewood/vendor/soloud",
                     "%{IncludeDir.assimp}",
+                    "%{IncludeDir.zlib}"
             }
         
         
@@ -320,7 +329,8 @@ workspace "Rosewood"
                 "%{IncludeDir.ImGui}",
                 "%{IncludeDir.glm}",
                 "%{IncludeDir.assimp}",
-                "%{IncludeDir.SoLoud}"
+                "%{IncludeDir.SoLoud}",
+                "%{IncludeDir.zlib}"
             }
     
             links
@@ -339,7 +349,8 @@ workspace "Rosewood"
                         "Rosewood/vendor/imgui",
                         "Rosewood/vendor/glm",
                         "%{IncludeDir.assimp}",
-                        "Rosewood/vendor/soloud"
+                        "Rosewood/vendor/soloud",
+                        "%{IncludeDir.zlib}"
                 }
             
             
@@ -437,7 +448,8 @@ workspace "Rosewood"
             "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}",
             "%{IncludeDir.assimp}",
-            "%{IncludeDir.SoLoud}"
+            "%{IncludeDir.SoLoud}",
+            "%{IncludeDir.zlib}"
         }
 
         links
@@ -456,7 +468,8 @@ workspace "Rosewood"
                     "Rosewood/vendor/imgui",
                     "Rosewood/vendor/glm",
                     "%{IncludeDir.assimp}",
-                    "Rosewood/vendor/soloud"
+                    "Rosewood/vendor/soloud",
+                    "%{IncludeDir.zlib}"
             }
         
         

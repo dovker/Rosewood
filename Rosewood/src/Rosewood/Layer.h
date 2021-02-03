@@ -2,6 +2,7 @@
 
 #include "Rosewood/Core.h"
 #include "Rosewood/Events/Event.h"
+#include "Rosewood/Timestep.h"
 
 namespace Rosewood {
 
@@ -13,7 +14,7 @@ namespace Rosewood {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep timestep) {}
 		virtual void OnEvent(Event& event) {}
 		virtual void OnImGuiRender() {}
 

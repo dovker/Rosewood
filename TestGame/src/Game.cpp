@@ -13,7 +13,7 @@ namespace TestGame {
     {
         m_AssetManager = Rosewood::AssetManager();
         Rosewood::GraphicsCommand::ToggleBlending(true);
-        Rosewood::GraphicsCommand::ToggleDepthTest(false);
+        Rosewood::GraphicsCommand::ToggleDepthTest(true);
 
         Rosewood::BatchRenderer::Init();
 
@@ -22,9 +22,11 @@ namespace TestGame {
         m_Scene->OnLoad(m_AssetManager);
     }
 
-    void Game::OnUpdate()
+    void Game::OnUpdate(Rosewood::Timestep timestep)
     {
-        m_Scene->OnUpdate();
+        m_Scene->OnUpdate(timestep);
+        
+        //std::cout<<1.0/timestep.GetSeconds()<<std::endl;
         
         m_Scene->OnDraw();
     }
@@ -43,8 +45,8 @@ namespace TestGame {
         ImGui::Text("Batch stats: %i, %i", stats.DrawCount, stats.QuadCount);
 
         ImGui::Text("FPS:");
-        float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
-        ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, nullptr, ImGuiInputTextFlags_None);
+        //float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
+        //ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, nullptr, ImGuiInputTextFlags_None);
         
         ImGui::Separator();
                     

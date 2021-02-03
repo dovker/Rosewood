@@ -14,7 +14,7 @@ namespace TestGame {
     public:
         Scene();
         void OnLoad(Rosewood::AssetManager &assetManager);
-        void OnUpdate();
+        void OnUpdate(Rosewood::Timestep timestep);
         void OnDraw();
         void OnUnload(Rosewood::AssetManager &assetManager);
         void OnEvent(Rosewood::Event &e);

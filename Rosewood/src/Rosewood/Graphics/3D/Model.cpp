@@ -13,7 +13,7 @@ namespace Rosewood
     void Model::loadModel(const std::string &path)
     {
         Assimp::Importer import;
-        const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+        const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_CalcTangentSpace);
         
         if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {
@@ -21,7 +21,7 @@ namespace Rosewood
             return;
         }
         
-        m_Path = path;
+        m_Path = path.substr(0, path.find_last_of('/'));
 
         processNode(scene->mRootNode, scene);
         
@@ -90,7 +90,7 @@ namespace Rosewood
         std::vector<Ref<Texture>> diffuseMaps = loadMaterialTextures(materialA, aiTextureType_DIFFUSE);
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
         
-        std::vector<Ref<Texture>> normalMaps = loadMaterialTextures(materialA, aiTextureType_HEIGHT);
+        std::vector<Ref<Texture>> normalMaps = loadMaterialTextures(materialA, aiTextureType_NORMALS);
         textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
         
         std::vector<Ref<Texture>> specularMaps = loadMaterialTextures(materialA, aiTextureType_SPECULAR);
@@ -104,7 +104,7 @@ namespace Rosewood
         std::vector<Ref<Texture>> emissiveMaps = loadMaterialTextures(materialA, aiTextureType_EMISSIVE);
         textures.insert(textures.end(), emissiveMaps.begin(), emissiveMaps.end());
         
-        
+        m_Material = Material::Create(nullptr);
         return Mesh::Create(vertices, indices, textures);
     }
 
@@ -122,15 +122,25 @@ namespace Rosewood
                 if(std::strcmp(m_LoadedTextures[j]->GetPath().data(), str.C_Str()) == 0)
                 {
                     textures.push_back(m_LoadedTextures[j]);
-                    skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+                    skip = true; 
                     break;
                 }
             }
             if(!skip)
-            {   // if texture hasn't been loaded already, load it
-                m_LoadedTextures.push_back(Texture::Create(str.C_Str()));
+            {
+                std::string fixedPath =  std::string(str.C_Str());
+                for (int i = 0; i < fixedPath.length(); ++i) {
+                  if (fixedPath[i] == '\\')
+                      fixedPath[i] = '/';
+                }
+                
+                Ref<Texture> tex =Texture::Create(m_Path + "/" + fixedPath);
+                textures.push_back(tex);
+                m_LoadedTextures.push_back(tex);
             }
         }
+        if(mat->GetTextureCount(type) == 0)
+            textures.push_back(nullptr);
         return textures;
     }
 

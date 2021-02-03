@@ -13,7 +13,7 @@ namespace TestGame
         virtual void OnAttach() override;
         virtual void OnDetach() override;
 
-        void OnUpdate() override;
+        void OnUpdate(Rosewood::Timestep timestep) override;
         virtual void OnImGuiRender() override;
         void OnEvent(Rosewood::Event& e) override;
     private:

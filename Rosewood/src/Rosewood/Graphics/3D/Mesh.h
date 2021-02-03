@@ -21,6 +21,8 @@ namespace Rosewood {
         std::vector<uint32_t> indices;
         std::vector<Ref<Texture>> textures;
         Ref<VertexArray> VA;
+        
+        bool HasTextures() {return textures.size() > 0;}
         // constructor
         Mesh() {}
         Mesh(std::vector<float>& vertices, std::vector<uint32_t>& indices, std::vector<Ref<Texture>> textures)

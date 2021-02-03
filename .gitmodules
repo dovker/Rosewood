@@ -15,3 +15,9 @@
 [submodule "Rosewood/vendor/imgui"]
 	path = Rosewood/vendor/imgui
 	url = https://github.com/ocornut/imgui/
+[submodule "Rosewood/vendor/spdlog"]
+	path = Rosewood/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Rosewood/vendor/zlib"]
+	path = Rosewood/vendor/zlib
+	url = https://github.com/madler/zlib

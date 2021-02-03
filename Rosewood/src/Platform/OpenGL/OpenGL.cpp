@@ -13,7 +13,6 @@ namespace Rosewood
         glEnable(GL_DEPTH_TEST);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-        
         //glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         //glBlendFunc(GL_ONE, GL_ONE);
@@ -59,5 +58,12 @@ namespace Rosewood
     void OpenGL::ToggleBlending(bool toggle)
     {
         toggle ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
+    }
+    void OpenGL::ToggleBackfaceCulling(bool toggle)
+    {
+        toggle ?         glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+
+        glCullFace(GL_BACK);
     }
 }

@@ -19,7 +19,7 @@ public:
     Rosewood::AssetManager assetManager;
     Rosewood::Ref<Rosewood::Sound> sound;
     
-    Rosewood::EditorCamera camera = Rosewood::EditorCamera(45.0f, 16.0f/9.0f, 0.00001f, 1000000.0f);
+    Rosewood::EditorCamera camera = Rosewood::EditorCamera(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
         
     bool open = true;
     
@@ -29,21 +29,22 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{
+        model = Rosewood::Model::Create("Content/globe.fbx");
+
         Rosewood::Renderer::Init();
-        model = Rosewood::Model::Create("Content/nanosuit/nanosuit.mtl");
         
 	}
 
 	
-    void OnUpdate() override
+    void OnUpdate(Rosewood::Timestep timestep) override
 	{
-        {
-            Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
-            Rosewood::GraphicsCommand::Clear();
-        }
-        camera.OnUpdate(Rosewood::Application::GetDeltaTime());
+        
+        camera.OnUpdate(timestep);
+        
         Rosewood::Renderer::Begin(camera);
         glm::mat4 modelMat = glm::mat4(1.0f);
+        modelMat = glm::scale(modelMat, {0.1, 0.1, 0.1});
+        modelMat = glm::translate(modelMat, {0.0f, 0.0f, -100.0f});
         Rosewood::Renderer::Submit(model, modelMat);
         Rosewood::Renderer::End();
 
@@ -56,10 +57,7 @@ public:
 	{
 		ImGui::Begin("This is 3D Renderer", &open, 0);
 
-		ImGui::Text("FPS:");
-		float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
-		ImGui::InputFloat("hz", &deltaTime);
-        
+		        
         ImGui::Separator();
 
         
@@ -140,10 +138,8 @@ public:
 
 	~Sandbox()
 	{
-		//Rosewood::DeferredRenderer::Shutdown();
-        Rosewood::BatchRenderer::Shutdown();
 
-	}
+    }
 };
 
 Rosewood::Application* Rosewood::CreateApplication()

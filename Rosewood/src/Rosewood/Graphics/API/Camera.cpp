@@ -59,7 +59,7 @@ namespace Rosewood {
         return speed;
     }
 
-    void EditorCamera::OnUpdate(double ts)
+    void EditorCamera::OnUpdate(Timestep ts)
     {
         
         if (Input::IsKeyPressed(KEY_LEFT_ALT))
@@ -67,6 +67,8 @@ namespace Rosewood {
             const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
             glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
             m_InitialMousePosition = mouse;
+            
+
 
             if (Input::IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE))
                 MousePan(delta);

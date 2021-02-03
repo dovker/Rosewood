@@ -16,14 +16,15 @@ namespace Rosewood {
     {
     public:
         Ref<Shader> shader;
-        glm::vec4 Albedo = {1.0f, 1.0f, 1.0f, 1.0f};
+        glm::vec3 Albedo = {1.0f, 1.0f, 1.0f};
         float Metalicness = 1.0f;
         float Roughness = 1.0f;
-        glm::vec4 Emissive = {0.0f, 0.0f, 0.0f, 0.0f};//Do something about HDR colors and Physical intensity. ALSO, ACES TONE THING
+        glm::vec3 Emissive = {1.0f, 1.0f, 1.0f};//Do something about HDR colors and Physical intensity. ALSO, ACES TONE THING
         
         //Add Custom Textures that are specific to material that cannot be overriden such as procedural texturing
         //Also add some kind of scripting material-shader-property thing
         
+        void SetShader(Ref<Shader> shd) { shader = shd; }
         Material ();
         Material (Ref<Shader> shader)
             : shader(shader)
@@ -37,27 +38,25 @@ namespace Rosewood {
         }
         void Bind()
         {
-            shader->Bind();
-            shader->setVec4("u_Albedo", Albedo);
+            shader->setVec3("u_Albedo", Albedo);
             shader->setFloat("u_Metalic", Metalicness);
             shader->setFloat("u_Roughness", Roughness);
-            shader->setVec4("u_Emissive", Emissive);
+            shader->setVec3("u_Emissive", Emissive);
         }
         void BindPBRMaps(std::vector<Ref<Texture>> textures)
         {
-            GraphicsCommand::BindTexture(textures.at(0)->GetID(), 0);
-            GraphicsCommand::BindTexture(textures.at(1)->GetID(), 1);
-            GraphicsCommand::BindTexture(textures.at(2)->GetID(), 2);
-            GraphicsCommand::BindTexture(textures.at(3)->GetID(), 3);
-            GraphicsCommand::BindTexture(textures.at(4)->GetID(), 4);
-            GraphicsCommand::BindTexture(textures.at(5)->GetID(), 5);
-            
+            Bind();
             shader->setInt("u_AlbedoTexture", 0);
             shader->setInt("u_NormalTexture", 1);
             shader->setInt("u_MetalicTexture", 2);
             shader->setInt("u_RoughnessTexture", 3);
             shader->setInt("u_AmbientTexture", 4);
             shader->setInt("u_EmissiveTexture", 5);//UNBINDING TEXTURES???????
+            
+            for (int i = 0; i < 6; i++)
+            {
+                GraphicsCommand::BindTexture(textures.at(i) != nullptr ? textures.at(0)->GetID() : 0, i); //Change this
+            }
         }
     };
     class Model
@@ -72,7 +71,7 @@ namespace Rosewood {
         {
             return CreateRef<Model>(path);
         }
-        void SetShader(Ref<Shader> shader) { m_Material->shader = shader; }
+        void SetShader(Ref<Shader> shader) { m_Material->SetShader(shader); }
         Ref<Shader> GetShader() { return m_Material->shader; }
         
         std::vector<Ref<Mesh>> GetMeshes() { return m_Meshes; }
@@ -80,6 +79,7 @@ namespace Rosewood {
         void SetMaterial(Ref<Material> material) { m_Material = material; }
         void BindMaterial() { m_Material->Bind(); }
         void BindMeshTextures(Ref<Mesh> mesh) { m_Material->BindPBRMaps(mesh->textures); }
+        
     private:
         std::vector<Ref<Mesh>> m_Meshes;
         Ref<Material> m_Material;

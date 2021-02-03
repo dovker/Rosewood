@@ -89,7 +89,7 @@ namespace Rosewood
     void DeferredRenderer::Init()
     {
         
-        s_Buffer.FrameGBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, 3, 1, false, {TexChannelType::UNSIGNED_BYTE, TexChannelType::FLOAT, TexChannelType::FLOAT, TexChannelType::FLOAT}});
+        s_Buffer.FrameGBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA16F, FramebufferTextureFormat::RGBA16F, FramebufferTextureFormat::RGBA16F, FramebufferTextureFormat::DEPTH24STENCIL8}, 1, false});
         s_Buffer.AlbedoSpec = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(0);
         s_Buffer.Position = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(1);
         s_Buffer.Normal = s_Buffer.FrameGBuffer->GetColorAttachmentRendererID(2);
@@ -97,7 +97,7 @@ namespace Rosewood
         s_Buffer.Depth = s_Buffer.FrameGBuffer->GetDepthAttachmentRendererID();
         
         
-        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, 1, 1, false, {TexChannelType::FLOAT}});
+        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, {FramebufferTextureFormat::RGBA16F}, 1, false});
         s_Buffer.Light = s_Buffer.FrameLightBuffer->GetColorAttachmentRendererID();
 
         s_Buffer.CircleVA = RenderMesh::CreateCircleVAExt(19);

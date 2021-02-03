@@ -7,14 +7,17 @@
 
 namespace Rosewood
 {
+    
 	OpenGLTexture::OpenGLTexture(const std::string& path)
 		: m_Path(path)
 	{
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
+
 		unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 	
-		RW_CORE_ASSERT(data, "Failed to load image!");
+		RW_CORE_ASSERT(data, "Failed to load image!" + path + " stb_image: " + stbi_failure_reason());
+
 		m_Width = width;
 		m_Height = height;
 
@@ -29,6 +32,11 @@ namespace Rosewood
 			internalFormat = GL_RGB8;
 			dataFormat = GL_RGB;
 		}
+        else if (channels == 1)
+        {
+            internalFormat = GL_R8;
+            dataFormat = GL_RED;
+        }
 
 		m_InternalFormat = internalFormat;
 		m_DataFormat = dataFormat;

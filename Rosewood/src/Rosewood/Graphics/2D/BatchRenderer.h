@@ -36,6 +36,8 @@ namespace Rosewood
         
         //Others
         static void DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::ivec2 fromPix, glm::ivec2 toPix, glm::vec4 color);
+        static void DrawQuad(glm::vec3 pos, glm::vec2 size, glm::vec2 scale, Ref<Texture>& texture);
+
         static void DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 color);
         static void DrawQuad(glm::vec3 pos, Ref<Texture>& texture, glm::vec4 color);
         static void DrawQuad(glm::vec3 pos, Ref<Texture>& texture);

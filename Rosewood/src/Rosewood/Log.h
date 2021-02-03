@@ -2,7 +2,6 @@
 #include "Core.h"
 
 #include "spdlog/spdlog.h"
-#include "spdlog/sinks/file_sinks.h"
 #include "spdlog/fmt/ostr.h"
 
 

@@ -81,7 +81,7 @@ namespace Rosewood
 			glDeleteShader(id);
 			return 0;
 		}
-        std::cout << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "Shader compiled successfully" << std::endl;
+        //std::cout << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "Shader compiled successfully" << std::endl;
 		return id;
 	}
 

@@ -9,7 +9,7 @@ const float SENSITIVITY = 0.1f;
 const float ZOOM = 1.0f;
 
 
-class Camera
+class CameraControl
 {
 public:
     
@@ -18,13 +18,13 @@ public:
     {
         m_Position = camera.GetPosition();
     }*/
-    Camera(glm::vec2 scrSize) : m_MovementSpeed(SPEED), m_Zoom(ZOOM), m_ScrSize(scrSize), m_Position(glm::vec3(0.0f, 0.0f, 0.0f)),
+    CameraControl(glm::vec2 scrSize) : m_MovementSpeed(SPEED), m_Zoom(ZOOM), m_ScrSize(scrSize), m_Position(glm::vec3(0.0f, 0.0f, 0.0f)),
         m_Camera(Rosewood::OrthographicCamera(0, m_ScrSize.x / m_Zoom, m_ScrSize.y / m_Zoom, 0))
     {
         
     }
 
-    Rosewood::OrthographicCamera GetCamera()
+    Rosewood::OrthographicCamera &GetCamera()
     {
         return m_Camera;
     }

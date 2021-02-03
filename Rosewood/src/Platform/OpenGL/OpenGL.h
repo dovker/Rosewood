@@ -18,6 +18,7 @@ namespace Rosewood
         
         virtual void ToggleDepthTest(bool toggle) override;
         virtual void ToggleBlending(bool toggle) override;
+        virtual void ToggleBackfaceCulling(bool toggle) override;
 
 
         virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;

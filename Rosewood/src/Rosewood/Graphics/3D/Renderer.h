@@ -18,6 +18,8 @@ namespace Rosewood {
         static void End();
         
         static void Submit(Ref<Model>& model, glm::mat4 transform);
+        static void Submit(Ref<Mesh>& mesh, glm::mat4 transform);
+
         static void Submit(Ref<Mesh>& mesh, glm::mat4 transform, Ref<Shader> shader);
         
     };

@@ -34,7 +34,7 @@ namespace Rosewood {
             camera = DecalCamera(-size.x/2, size.x/2, size.y/2, -size.y/2);
             camera.SetLookat(lookat);
             camera.SetPosition(position);
-            depth = Framebuffer::Create({(uint32_t)size.x, (uint32_t)size.y, 0, 1, false, {}});
+            depth = Framebuffer::Create({(uint32_t)size.x, (uint32_t)size.y, {FramebufferTextureFormat::DEPTH24STENCIL8}, 1, false});
             
         }
         void SetPosRot(glm::vec3 pos, glm::vec3 look)

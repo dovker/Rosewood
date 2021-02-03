@@ -33,7 +33,7 @@ public:
     Rosewood::Ref<Rosewood::DecalLight> decal;
 
 
-    Camera camera = Camera(glm::vec2( (float)scrWidth, (float)scrHeight));
+    CameraControl camera = CameraControl(glm::vec2( (float)scrWidth, (float)scrHeight));
     
     bool open = true;
     std::string text = "Help my pp is very hard because this works! :))) XDD ; \nHello love! This should be in a new line! \nHippopotamus!12 Hippopotamus! Hippopotamus!";
@@ -96,9 +96,9 @@ public:
 	}
 
 	
-    void OnUpdate() override
+    void OnUpdate(Rosewood::Timestep timestep) override
 	{
-		camera.ProcessKeyboard(Rosewood::Application::GetDeltaTime());
+		camera.ProcessKeyboard(timestep.GetSeconds());
         {
             Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
             Rosewood::GraphicsCommand::Clear();
@@ -168,9 +168,6 @@ public:
         ImGui::Text("Batch stats: %i, %i", stats.DrawCount, stats.QuadCount);
         ImGui::Text("Scroll: %f", scroll);
 
-		ImGui::Text("FPS:");
-		float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
-		ImGui::InputFloat("hz", &deltaTime);
         
         ImGui::Separator();
 

@@ -13,7 +13,6 @@ namespace Rosewood
 #define BIND_EVENT_FUNCTION(x) std::bind(&x, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
-	float Application::m_DeltaTime = 0.0f;
 	float Application::m_Time = 0.0f;
 	Application::Application()
 	{
@@ -32,20 +31,19 @@ namespace Rosewood
 	}
 	void Application::Run()
 	{
-    
-		float lateTime = 0;
-        
+            
         GraphicsCommand::Init();
         Audio::Init();
-
+        
 
         while (m_Running)
 		{
-
             m_Time = m_Window->GetTime();
+            Timestep timestep = m_Time - m_LastFrameTime;
+            m_LastFrameTime = m_Time;
 
 			for (Layer* layer : m_LayerStack) {
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 			}
 
 			m_ImGuiLayer->Begin();
@@ -54,8 +52,6 @@ namespace Rosewood
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
-			lateTime = m_Window->GetTime();
-            m_DeltaTime = lateTime- m_Time;
 		}
         Audio::Deinit();
 	}

@@ -4,6 +4,7 @@
 #include "Rosewood/Events/MouseEvent.h"
 #include "Rosewood/Events/KeyEvent.h"
 #include "Rosewood/Events/ApplicationEvent.h"
+#include "Rosewood/Timestep.h"
 
 
 #include <glm/glm.hpp>
@@ -32,7 +33,7 @@ namespace Rosewood
         EditorCamera() = default;
         EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 
-        void OnUpdate(double ts);
+        void OnUpdate(Timestep ts);
         void OnEvent(Event& e);
 
         inline float GetDistance() const { return m_Distance; }
