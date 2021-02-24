@@ -246,3 +246,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+*.o
+*.d
+*.gch
+*.cmake
+*.vcxproj
