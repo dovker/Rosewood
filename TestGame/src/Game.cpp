@@ -1,6 +1,6 @@
 #include "Rosewood.h"
 #include "imgui.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
 #include "Game.h"
 
 namespace TestGame {
@@ -11,29 +11,25 @@ namespace TestGame {
 
     void Game::OnAttach()
     {
-        m_AssetManager = Rosewood::AssetManager();
-        Rosewood::GraphicsCommand::ToggleBlending(true);
-        Rosewood::GraphicsCommand::ToggleDepthTest(true);
 
-        Rosewood::BatchRenderer::Init();
+        Rosewood::Renderer2D::Init();
 
-        m_Scene = Rosewood::CreateRef<Scene>();
+        m_Scene = new Scene();
         
-        m_Scene->OnLoad(m_AssetManager);
+        m_Scene->OnLoad();
     }
 
     void Game::OnUpdate(Rosewood::Timestep timestep)
     {
         m_Scene->OnUpdate(timestep);
-        
-        //std::cout<<1.0/timestep.GetSeconds()<<std::endl;
-        
+                
         m_Scene->OnDraw();
     }
     
     void Game::OnDetach()
     {
-        m_Scene->OnUnload(m_AssetManager);
+        m_Scene->OnUnload();
+        delete m_Scene;
     }
     
     
@@ -57,7 +53,7 @@ namespace TestGame {
     {
         m_Scene->OnEvent(e);
     }
-
+    
 
 }
 

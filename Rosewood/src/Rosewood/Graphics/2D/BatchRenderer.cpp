@@ -1,8 +1,8 @@
 #include <rwpch.h>
 
-#include "Graphics.h"
+#include "Rosewood/Graphics/Graphics.h"
 #include "BatchRenderer.h"
-#include "VertexArray.h"
+#include "Rosewood/Graphics/API/VertexArray.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Rosewood
@@ -291,7 +291,29 @@ namespace Rosewood
         s_Data.RenderStats.QuadCount++;
         s_Data.IndexCount += 6;
     }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::ivec2 fromPix, glm::ivec2 toPix, glm::vec4 color)
+    void BatchRenderer::DrawQuad(glm::vec2 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec2 fromPix, glm::vec2 toPix, glm::vec4 color)
+    {
+        BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), size, texture, fromPix, toPix, color);
+    }
+    void BatchRenderer::DrawQuad(glm::vec2 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 color)
+    {
+        BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), size, texture, color);
+    }
+    void BatchRenderer::DrawQuad(glm::vec2 pos, Ref<Texture>& texture, glm::vec4 color)
+    {
+        BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), texture, color);
+    }
+    void BatchRenderer::DrawQuad(glm::vec2 pos, Ref<Texture>& texture)
+    {
+        BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), texture);
+    }
+    void BatchRenderer::DrawQuad(glm::vec2 pos, glm::vec2 size, glm::vec4 color)
+    {
+        BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), size, color);
+    }
+
+
+    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec2 fromPix, glm::vec2 toPix, glm::vec4 color)
     {
         float xFrom = 1-(float)fromPix.x/texture->GetWidth();
         float yFrom = 1-(float)fromPix.y/texture->GetHeight();
@@ -299,6 +321,15 @@ namespace Rosewood
         float yTo = 1-(float)toPix.y/texture->GetHeight();
 
         BatchRenderer::DrawQuad(pos, size, texture, glm::vec4(xFrom, yTo, xTo, yFrom), color);
+    }
+    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, float rotation, glm::vec2 fromPix, glm::vec2 toPix, glm::vec4 color)
+    {
+        float xFrom = 1-(float)fromPix.x/texture->GetWidth();
+        float yFrom = 1-(float)fromPix.y/texture->GetHeight();
+        float xTo = 1-(float)toPix.x/texture->GetWidth();
+        float yTo = 1-(float)toPix.y/texture->GetHeight();
+
+        BatchRenderer::DrawQuad(pos, size, texture, rotation, glm::vec4(xFrom, yTo, xTo, yFrom), color);
     }
     void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 color)
     {

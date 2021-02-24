@@ -29,6 +29,12 @@
 #include "Rosewood/Graphics/2D/BatchRenderer.h"
 #include "Rosewood/Graphics/2D/DeferredRenderer.h"
 #include "Rosewood/Graphics/2D/Mesh.h"
+#include "Rosewood/Graphics/2D/Sprite.h"
+#include "Rosewood/Graphics/2D/Renderer2D.h"
+#include "Rosewood/Graphics/2D/Mesh.h"
+
+#include "Rosewood/Graphics/Structs.h"
+
 
 #include "Rosewood/Graphics/3D/Renderer.h"
 #include "Rosewood/Graphics/3D/Mesh.h"

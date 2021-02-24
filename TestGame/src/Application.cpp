@@ -15,7 +15,7 @@ public:
 
     ~Sandbox()
     {
-        Rosewood::BatchRenderer::Shutdown();
+        Rosewood::Renderer2D::Shutdown();
 
     }
 };

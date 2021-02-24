@@ -31,6 +31,8 @@ namespace Rosewood
 		inline Window& GetWindow() { return *m_Window; }
 		
 		inline static float GetTime() { return m_Time;  };
+        inline static float GetDeltaTime() { return m_DeltaTime;  };
+
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 
@@ -42,6 +44,8 @@ namespace Rosewood
 	private:
 		static Application* s_Instance;
 		static float m_Time;
+        static float m_DeltaTime;
+
         float m_LastFrameTime = 0.0f;
 
 	};

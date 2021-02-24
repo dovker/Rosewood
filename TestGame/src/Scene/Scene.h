@@ -1,22 +1,20 @@
 #pragma once
 #include "Rosewood.h"
-#include "CameraController.h"
+#include "../Camera/CameraController.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Player.h"
 #include "../Map/Map.h"
 
-
-
-
 namespace TestGame {
+
     class Scene
     {
     public:
         Scene();
-        void OnLoad(Rosewood::AssetManager &assetManager);
+        void OnLoad();
         void OnUpdate(Rosewood::Timestep timestep);
         void OnDraw();
-        void OnUnload(Rosewood::AssetManager &assetManager);
+        void OnUnload();
         void OnEvent(Rosewood::Event &e);
         void OnWindowResize(int w, int h);
         

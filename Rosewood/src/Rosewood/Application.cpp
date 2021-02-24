@@ -14,6 +14,8 @@ namespace Rosewood
 
 	Application* Application::s_Instance = nullptr;
 	float Application::m_Time = 0.0f;
+    float Application::m_DeltaTime = 0.0f;
+
 	Application::Application()
 	{
 		RW_CORE_ASSERT(!s_Instance, "Why are you trying to make two applications? There is one already dumbass!");
@@ -41,6 +43,7 @@ namespace Rosewood
             m_Time = m_Window->GetTime();
             Timestep timestep = m_Time - m_LastFrameTime;
             m_LastFrameTime = m_Time;
+            m_DeltaTime = timestep;
 
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate(timestep);

@@ -14,6 +14,7 @@ workspace "Rosewood"
 	}
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+    require "/vendor/cmake"
 
     IncludeDir = {}
 

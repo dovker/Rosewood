@@ -1,7 +1,8 @@
 #pragma once
 #include "Rosewood.h"
-#include "Entity.h"
-#include "Collision.h"
+#include "../Entity/Entity.h"
+#include "../Collision/Collision.h"
+#include "../Scene/Scene.h"
 #include <glm/glm.hpp>
 
 
@@ -11,17 +12,14 @@ namespace TestGame
     {
     public:
         Player();
-        void OnLoad(Rosewood::AssetManager &assetManager)   override;
-        void OnUpdate() override;
-        void OnDraw()   override;
-        void OnUnload(Rosewood::AssetManager &assetManager) override;
-        void OnEvent(Rosewood::Event &e) override;
-        glm::vec3 GetPosition() override {return m_Position;}
-
+        virtual void OnLoad()   override;
+        virtual void OnUpdate(float dt, std::vector<Entity*> entities) override;
+        virtual void OnDraw()   override;
+        virtual void OnUnload() override;
+        virtual void OnEvent(Rosewood::Event &e) override;
 
     private:
-        glm::vec3 m_Position;
-        Rosewood::Ref<Rosewood::Texture> m_Texture;
-        AABB collider;
+        Rosewood::Ref<Rosewood::Sprite> m_SpriteAnim;
+        Rosewood::Rect m_Collider;
     };
 }

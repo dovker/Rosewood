@@ -1,9 +1,9 @@
   
 #include "rwpch.h"
 #include "Camera.h"
-#include "Input.h"
-#include "KeyCodes.h"
-#include "MouseButtonCodes.h"
+#include "Rosewood/Input/Input.h"
+#include "Rosewood/Input/KeyCodes.h"
+#include "Rosewood/Input/MouseButtonCodes.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -163,14 +163,14 @@ namespace Rosewood {
         m_ViewMatrix = rot * glm::lookAt(m_Position, m_Position + glm::normalize(glm::vec3(0.0f, 0.0f, -1.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
     }
     DecalCamera::DecalCamera(float left, float right, float bottom, float top)
-        : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, 10000.0f, -10000.0f)), m_ViewMatrix(1.0f)
+        : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, 1000.0f, -1000.0f)), m_ViewMatrix(1.0f)
     {
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
     void DecalCamera::SetProjection(float left, float right, float bottom, float top)
     {
-        m_ProjectionMatrix = glm::ortho(left, right, bottom, top, 10000.0f, -10000.0f);
+        m_ProjectionMatrix = glm::ortho(left, right, bottom, top, 1000.0f, -1000.0f);
         
     }
 

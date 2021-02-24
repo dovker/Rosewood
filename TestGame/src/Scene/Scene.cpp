@@ -8,13 +8,15 @@ extern uint32_t TileSize = 16;
 
     Scene::Scene()
     {        
-        
         m_Camera = new Camera(glm::vec2(Rosewood::Application::Get().GetWindow().GetWidth() / 4, Rosewood::Application::Get().GetWindow().GetHeight() / 4));
         
+        Entity* m_Player = new Player();
         m_Entities = std::vector<Entity*>
         {
-            new Player(),
+            m_Player,
         };
+        m_Camera->SetTarget(m_Player);
+        
         m_Map = new Map(100, 100);
         
         for (int i = 0; i<100; i++)
@@ -27,25 +29,21 @@ extern uint32_t TileSize = 16;
         
         Rosewood::BatchRenderer::Init();
     }
-    void Scene::OnLoad(Rosewood::AssetManager &assetManager)
+    void Scene::OnLoad()
     {
         for(auto& entity : m_Entities)
         {
-            entity->OnLoad(assetManager);
+            entity->OnLoad();
         }
-        Rosewood::Ref<Rosewood::Texture> mapTexture = assetManager.Load<Rosewood::Texture>("Content/Tileset.png", "Tileset");
+        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Load<Rosewood::Texture>("Content/Tileset.png", "Tileset");
         m_Map->SetTexture(mapTexture);
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)
     {
+        m_Camera->OnUpdate(timestep);
         for(auto& entity : m_Entities)
         {
-            entity->OnUpdate();
-            
-            float xPos = glm::mix(m_Camera->GetCamera().GetPosition().x, entity->GetPosition().x - 1280.0f/2/4 + 8, 0.1);
-            float yPos = glm::mix(m_Camera->GetCamera().GetPosition().y, entity->GetPosition().y - 720.0f/2/4 + 8, 0.1);
-            
-            m_Camera->SetPosition(glm::vec3(xPos, yPos, 0.0f));
+            entity->OnUpdate(timestep, m_Entities);
 
         }
     }
@@ -58,7 +56,7 @@ extern uint32_t TileSize = 16;
         Rosewood::BatchRenderer::ResetStats();
 
         
-        Rosewood::BatchRenderer::Begin(m_Camera->GetCamera());
+        Rosewood::Renderer2D::Begin(m_Camera->GetCamera());
         
         m_Map->Draw();
         
@@ -67,13 +65,13 @@ extern uint32_t TileSize = 16;
             entity->OnDraw();
         }
         
-        Rosewood::BatchRenderer::End();
+        Rosewood::Renderer2D::End();
     }
-    void Scene::OnUnload(Rosewood::AssetManager &assetManager)
+    void Scene::OnUnload()
     {
         for(auto& entity : m_Entities)
         {
-            entity->OnUnload(assetManager);
+            entity->OnUnload();
         }
     }
     void Scene::OnEvent(Rosewood::Event &e)

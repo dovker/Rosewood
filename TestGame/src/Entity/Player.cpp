@@ -2,54 +2,61 @@
 
 namespace TestGame
 {
-    Player::Player()
+    Player::Player() : m_Collider(0.0f)
     {
-        m_Position = glm::vec3(1.0f, 0.0f, 0.0f);
-        collider = AABB();
+        m_Transform.Position = glm::vec3(1.0f, 0.0f, 0.0f);
     }
     
-    void Player::OnLoad(Rosewood::AssetManager &assetManager)
+    void Player::OnLoad()
     {
-        m_Texture = assetManager.Load<Rosewood::Texture>("Content/Player.png", "Player.png");
-        collider = AABB(glm::vec2(0.0f), glm::vec2(m_Texture->GetWidth(), m_Texture->GetHeight()));
+        Rosewood::AssetManager::Load<Rosewood::Texture>("Content/Player.png", "Player.png");
+
+        m_Sprite = Rosewood::Sprite::Create(Rosewood::AssetManager::Get<Rosewood::Texture>("Player.png"));
+        m_Collider = Rosewood::Rect(m_Transform.Position.x, m_Transform.Position.y, m_Sprite->Texture->GetWidth(), m_Sprite->Texture->GetHeight());
     }
-    void Player::OnUpdate()
+    void Player::OnUpdate(float dt, std::vector<Entity*> entities)
     {
-        if(Rosewood::Input::IsKeyPressed(KEY_W))
+        glm::vec2 vel = glm::vec2(0.0f);
+        int inputX = Rosewood::Input::IsKeyPressed(KEY_D) - Rosewood::Input::IsKeyPressed(KEY_A);
+        int inputY = Rosewood::Input::IsKeyPressed(KEY_S) - Rosewood::Input::IsKeyPressed(KEY_W);
+
+        vel.x = inputX*60.0f*dt;
+        vel.y = inputY*60.0f*dt;
+
+        if(inputX != 0 || inputY != 0) vel = glm::normalize(vel);
+        
+        m_Transform.Position.x += vel.x * 2.0f;
+        m_Transform.Position.y += vel.y * 2.0f;
+
+        m_Transform.Position.x = glm::clamp(m_Transform.Position.x, 0.0f, 400.0f);
+        m_Transform.Position.x = glm::clamp(m_Transform.Position.x, 0.0f, 400.0f);
+
+        
+        for(auto e : entities)
         {
-            m_Position.y -= 1;
+            if(Collision::Check(m_Collider, e->GetBounds()))
+            {
+                if(e->GetSolid())
+                {
+                    
+                } else
+                {
+                    
+                }
+            }
         }
-        if(Rosewood::Input::IsKeyPressed(KEY_S))
-        {
-            m_Position.y += 1;
-        }
-        if(Rosewood::Input::IsKeyPressed(KEY_A))
-        {
-            m_Position.x -= 1;
-        }
-        if(Rosewood::Input::IsKeyPressed(KEY_D))
-        {
-            m_Position.x += 1;
-        }
-        collider.Position = m_Position;
+
+        
+    
+        m_Collider.SetPosition(m_Transform.Position);
     }
     void Player::OnDraw()
     {
-        AABB b = AABB({0.0f, 0.0f}, {10.0f, 10.0f});
-        Rosewood::BatchRenderer::DrawQuad({0.0f, 0.0f, 1.0f}, {10.0f, 10.0f}, glm::vec4(0.5f));
-
-        if (Collision::Check(collider, b))
-        {
-            Rosewood::BatchRenderer::DrawQuad(m_Position, m_Texture, glm::vec4(1.0f, 0.0f, 0.0f, 0.5f));
-        } else
-        {
-            Rosewood::BatchRenderer::DrawQuad(m_Position, m_Texture);
-        }
-
+        Rosewood::Renderer2D::Draw(m_Sprite, m_Transform);
     }
-    void Player::OnUnload(Rosewood::AssetManager &assetManager)
+    void Player::OnUnload()
     {
-        assetManager.Unload<Rosewood::Texture>("Player.png");
+        Rosewood::AssetManager::Unload<Rosewood::Texture>("Player.png");
     }
     void Player::OnEvent(Rosewood::Event &e)
     {

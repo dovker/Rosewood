@@ -1,6 +1,6 @@
 #pragma once
 #include "Rosewood.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
 
 namespace TestGame
 {
@@ -17,9 +17,8 @@ namespace TestGame
         virtual void OnImGuiRender() override;
         void OnEvent(Rosewood::Event& e) override;
     private:
-        Rosewood::Ref<Scene> m_Scene;
-        Rosewood::AssetManager m_AssetManager;
-
+        Scene* m_Scene;
     };
 
 }
+

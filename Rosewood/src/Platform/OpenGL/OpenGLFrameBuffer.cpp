@@ -54,12 +54,14 @@ namespace Rosewood
             }
             else
             {
-                glGenTextures(1, &id);
-                glBindTexture(GL_TEXTURE_2D, id);
                 glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
-                
+
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                
                 
             }
 
@@ -83,14 +85,14 @@ namespace Rosewood
         : m_Specification(spec)
     {
         for (auto spec : m_Specification.Attachments.Attachments)
-                {
-                    if (!Utils::IsDepthFormat(spec.TextureFormat))
-                        m_ColorAttachmentSpecifications.emplace_back(spec);
-                    else
-                        m_DepthAttachmentSpecification = spec;
-                }
+        {
+            if (!Utils::IsDepthFormat(spec.TextureFormat))
+                m_ColorAttachmentSpecifications.emplace_back(spec);
+            else
+                m_DepthAttachmentSpecification = spec;
+        }
 
-                Invalidate();
+        Invalidate();
     }
 
     OpenGLFramebuffer::~OpenGLFramebuffer()
@@ -117,64 +119,56 @@ namespace Rosewood
         
         bool multisample = m_Specification.Samples > 1;
 
-                // Attachments
-                if (m_ColorAttachmentSpecifications.size())
-                {
-                    m_ColorAttachments.resize(m_ColorAttachmentSpecifications.size());
-                    Utils::CreateTextures(multisample, m_ColorAttachments.data(), m_ColorAttachments.size());
+        // Attachments
+        if (m_ColorAttachmentSpecifications.size())
+        {
+            m_ColorAttachments.resize(m_ColorAttachmentSpecifications.size());
+            Utils::CreateTextures(multisample, m_ColorAttachments.data(), m_ColorAttachments.size());
 
-                    for (size_t i = 0; i < m_ColorAttachments.size(); i++)
-                    {
-                        Utils::BindTexture(multisample, m_ColorAttachments[i]);
-                        switch (m_ColorAttachmentSpecifications[i].TextureFormat)
-                        {
-                            case FramebufferTextureFormat::RGBA8:
-                                Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, m_Specification.Width, m_Specification.Height, i);
-                                break;
-                            case FramebufferTextureFormat::RGB8:
-                                Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, m_Specification.Width, m_Specification.Height, i);
-                                break;
-                            case FramebufferTextureFormat::RGBA16F:
-                                Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGBA16F, GL_RGBA, GL_FLOAT, m_Specification.Width, m_Specification.Height, i);
-                                break;
-                            case FramebufferTextureFormat::RGB16F:
-                                Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGB16F, GL_RGB, GL_FLOAT, m_Specification.Width, m_Specification.Height, i);
-                                break;
-                        }
-                    }
-                }
-//        RGBA8,
-//        RGB8,
-//        RGBA16F,
-//        RGB16F,
-
-                if (m_DepthAttachmentSpecification.TextureFormat != FramebufferTextureFormat::None)
+            for (size_t i = 0; i < m_ColorAttachments.size(); i++)
+            {
+                Utils::BindTexture(multisample, m_ColorAttachments[i]);
+                switch (m_ColorAttachmentSpecifications[i].TextureFormat)
                 {
-                    Utils::CreateTextures(multisample, &m_DepthAttachment, 1);
-                    Utils::BindTexture(multisample, m_DepthAttachment);
-                    switch (m_DepthAttachmentSpecification.TextureFormat)
-                    {
-                        case FramebufferTextureFormat::DEPTH24STENCIL8:
-                            Utils::AttachDepthTexture(m_DepthAttachment, m_Specification.Samples, GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, m_Specification.Width, m_Specification.Height);
-                            break;
-                    }
+                    case FramebufferTextureFormat::RGBA8:
+                        Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, m_Specification.Width, m_Specification.Height, i);
+                        break;
+                    case FramebufferTextureFormat::RGB8:
+                        Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, m_Specification.Width, m_Specification.Height, i);
+                        break;
+                    case FramebufferTextureFormat::RGBA16F:
+                        Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGBA16F, GL_RGBA, GL_FLOAT, m_Specification.Width, m_Specification.Height, i);
+                        break;
+                    case FramebufferTextureFormat::RGB16F:
+                        Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGB16F, GL_RGB, GL_FLOAT, m_Specification.Width, m_Specification.Height, i);
+                        break;
                 }
+            }
+        }
 
-                if (m_ColorAttachments.size() > 1)
-                {
-                    //RW_CORE_ASSERT(m_ColorAttachments.size() <= 4);
-                    GLenum buffers[8] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7 };
-                    glDrawBuffers(m_ColorAttachments.size(), buffers);
-                }
-                else if (m_ColorAttachments.empty())
-                {
-                    // Only depth-pass
-                    glDrawBuffer(GL_NONE);
-                }
-        
-        
-        
+        if (m_DepthAttachmentSpecification.TextureFormat != FramebufferTextureFormat::None)
+        {
+            glGenTextures(1, &m_DepthAttachment);
+            Utils::BindTexture(multisample, m_DepthAttachment);
+            switch (m_DepthAttachmentSpecification.TextureFormat)
+            {
+                case FramebufferTextureFormat::DEPTH24STENCIL8:
+                    Utils::AttachDepthTexture(m_DepthAttachment, m_Specification.Samples, GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, m_Specification.Width, m_Specification.Height);
+                    break;
+            }
+        }
 
+        if (m_ColorAttachments.size() > 1)
+        {
+            //RW_CORE_ASSERT(m_ColorAttachments.size() <= 4);
+            GLenum buffers[8] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7 };
+            glDrawBuffers(m_ColorAttachments.size(), buffers);
+        }
+        else if (m_ColorAttachments.empty())
+        {
+            // Only depth-pass
+            glDrawBuffer(GL_NONE);
+        }
         
         RW_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete!");
 

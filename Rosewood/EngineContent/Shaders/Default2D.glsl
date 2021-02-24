@@ -53,7 +53,10 @@ void main()
         FragColor = Color;
     } else
     {
-        FragColor = texture(u_Textures[int(TexIndex)], TexCoords) * Color;
+        vec4 color = texture(u_Textures[int(TexIndex)], TexCoords) * Color;
+        if (color.a == 0.0)
+        {discard;}
+        FragColor = color;
         //FragColor = texture(u_Textures[0], TexCoords) * Color;
         //FragColor = vec4(TexCoords.x, TexCoords.y, 0.0, 1.0);
     }

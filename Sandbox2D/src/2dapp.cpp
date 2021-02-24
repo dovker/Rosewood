@@ -218,7 +218,8 @@ public:
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetNormalID(), {576, 324});
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetLightID(), {576, 324});
         ImGui::Image((void*)Rosewood::DeferredRenderer::GetDepthID(), {576, 324});
-		
+        ImGui::Image((void*)decal->depth->GetDepthAttachmentRendererID(), {576, 324});
+
 		ImGui::End();
 	}
 	void OnEvent(Rosewood::Event& event) override

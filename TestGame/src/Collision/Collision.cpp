@@ -2,12 +2,12 @@
 
 namespace TestGame
 {
-    bool Collision::Check(AABB &a, AABB &b)
+    bool Collision::Check(Rosewood::Rect a, Rosewood::Rect b)
     {
         return
-        a.Position.x + a.Size.x > b.Position.x &&
-        a.Position.x < b.Position.x + b.Size.x &&
-        a.Position.y < b.Position.y + b.Size.y &&
-        a.Position.y + a.Size.y > b.Position.y;
+        a.Left < b.Right &&
+        a.Right > b.Left &&
+        a.Bottom > b.Top &&
+        a.Top < b.Bottom;
     }
 }

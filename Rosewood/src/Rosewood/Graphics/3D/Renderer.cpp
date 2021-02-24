@@ -60,7 +60,6 @@ namespace Rosewood
         
         s_Buffer.QuadVA = VertexArray::Create();
 
-
         float vertices[4 * 5] = {
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
             -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,

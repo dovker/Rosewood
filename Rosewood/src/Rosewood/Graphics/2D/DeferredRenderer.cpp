@@ -97,7 +97,7 @@ namespace Rosewood
         s_Buffer.Depth = s_Buffer.FrameGBuffer->GetDepthAttachmentRendererID();
         
         
-        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, {FramebufferTextureFormat::RGBA16F}, 1, false});
+        s_Buffer.FrameLightBuffer = Framebuffer::Create({Application::Get().GetWindow().GetWidth()*2, Application::Get().GetWindow().GetHeight()*2, {FramebufferTextureFormat::RGBA16F, FramebufferTextureFormat::DEPTH24STENCIL8}, 1, false});
         s_Buffer.Light = s_Buffer.FrameLightBuffer->GetColorAttachmentRendererID();
 
         s_Buffer.CircleVA = RenderMesh::CreateCircleVAExt(19);
@@ -127,7 +127,7 @@ namespace Rosewood
         s_Buffer.QuadVA->SetIndexBuffer(indexBuffer);
         s_Buffer.QuadVA->Unbind();
 
-        
+        GraphicsCommand::ToggleBackfaceCulling(false);
         
         s_Buffer.GBufferShader = Shader::Create("EngineContent/Shaders/GBuffer2D.glsl");
         s_Buffer.LightBufferShader = Shader::Create("EngineContent/Shaders/LightBuffer2D.glsl");

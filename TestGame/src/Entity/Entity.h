@@ -8,18 +8,24 @@ namespace TestGame
     class Entity
     {
     public:
-        Entity() { m_Visible = true; m_Position = glm::vec3(0.0f); };
+        Entity() { m_Visible = true; m_Transform.Position = glm::vec3(0.0f); };
         ~Entity(){};
-        virtual void OnLoad(Rosewood::AssetManager &assetManager) {};
-        virtual void OnUpdate() {};
+        virtual void OnLoad() {};
+        virtual void OnUpdate(float dt, std::vector<Entity*> entities) {};
         virtual void OnDraw() {};
-        virtual void OnUnload(Rosewood::AssetManager &assetManager) {};
+        virtual void OnUnload() {};
+        virtual void Collide(Entity* entity) {};
         virtual void OnEvent(Rosewood::Event &e) {};
-        virtual glm::vec3 GetPosition() {return m_Position;}
+        virtual glm::vec3 GetPosition() {return m_Transform.Position;}
+        virtual Rosewood::Ref<Rosewood::Sprite> GetSprite() {return m_Sprite;}
+        virtual Rosewood::Rect GetBounds() { return m_Sprite->GetBounds(m_Transform); }
+        virtual bool GetSolid() { return m_IsSolid; }
 
 
-    private:
+    protected:
         bool m_Visible;
-        glm::vec3 m_Position;
+        bool m_IsSolid = true;
+        Rosewood::Ref<Rosewood::Sprite> m_Sprite;
+        Rosewood::Transform m_Transform;
     };
 }
