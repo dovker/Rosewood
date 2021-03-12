@@ -1,8 +1,8 @@
 workspace "Rosewood"
     architecture "x86_64"
 
-    disablewarnings { "switch" }
-    disablewarnings { "#warnings" }
+    --disablewarnings { "switch" }
+    --disablewarnings { "#warnings" }
 
     configurations
     {

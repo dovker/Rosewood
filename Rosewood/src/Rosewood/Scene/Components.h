@@ -4,6 +4,7 @@
 #include "ScriptableEntity.h"
 
 #include <glm/glm.hpp>
+#include <Rosewood\Scene\SceneCamera.h>
 
 
 namespace Rosewood
@@ -20,26 +21,26 @@ namespace Rosewood
 
     struct TransformComponent
     {
-        Transform Transform;
+        Transform TransformData;
 
         TransformComponent() = default;
         TransformComponent(const TransformComponent&) = default;
         TransformComponent(const Transform transform)
-            : Transform(transform) {}
+            : TransformData(transform) {}
 
-        operator const Transform&() { return Transform; }
-        glm::mat4 GetTransform() { return Transform.GetTransform(); }
+        operator const Transform&() { return TransformData; }
+        glm::mat4 GetTransform() { return TransformData.GetTransform(); }
 
     };
 
     struct SpriteRenderComponent
     {
-        Ref<Sprite> Sprite;
+        Ref<Sprite> SpriteData;
 
         SpriteRenderComponent() = default;
         SpriteRenderComponent(const SpriteRenderComponent&) = default;
-        SpriteRenderComponent(const Sprite sprite)
-            : Sprite(sprite) {}
+        SpriteRenderComponent(const Ref<Sprite> sprite)
+            : SpriteData(sprite) {}
 
     };
 

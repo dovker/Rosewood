@@ -1,3 +1,4 @@
+#include "rwpch.h"
 #include "Benchmark.h"
 
 namespace Rosewood

@@ -14,7 +14,7 @@ namespace Rosewood {
         {
             st *= glm::uvec2(NOISE_M1, NOISE_M2); 
             
-            uint n = (st.x ^ st.y ^ seed) * NOISE_M1 ;
+            uint32_t n = (st.x ^ st.y ^ seed) * NOISE_M1 ;
             
             return float(n) * (1.0f/float(0xffffffffU));
         }

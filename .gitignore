@@ -255,3 +255,7 @@ Rosewood/Makefile
 Makefile
 .vscode/settings.json
 .vscode/c_cpp_properties.json
+*.tlog
+*.filters
+*.idb
+*.sln

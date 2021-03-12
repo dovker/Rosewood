@@ -1,17 +1,17 @@
 
 #include "rwpch.h"
-#include "GameCamera.h"
+#include "SceneCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Rosewood {
 
-	GameCamera::GameCamera()
+	SceneCamera::SceneCamera()
 	{
 		RecalculateProjection();
 	}
 
-	void GameCamera::SetPerspective(float verticalFOV, float nearClip, float farClip)
+	void SceneCamera::SetPerspective(float verticalFOV, float nearClip, float farClip)
 	{
 		m_ProjectionType = ProjectionType::Perspective;
 		m_PerspectiveFOV = verticalFOV;
@@ -20,7 +20,7 @@ namespace Rosewood {
 		RecalculateProjection();
 	}
 
-	void GameCamera::SetOrthographic(float size, float nearClip, float farClip)
+	void SceneCamera::SetOrthographic(float size, float nearClip, float farClip)
 	{
 		m_ProjectionType = ProjectionType::Orthographic;
 		m_OrthographicSize = size;
@@ -29,13 +29,13 @@ namespace Rosewood {
 		RecalculateProjection();
 	}
 
-	void GameCamera::SetViewportSize(uint32_t width, uint32_t height)
+	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
 		m_AspectRatio = (float)width / (float)height;
 		RecalculateProjection();
 	}
 
-	void GameCamera::RecalculateProjection()
+	void SceneCamera::RecalculateProjection()
 	{
 		if (m_ProjectionType == ProjectionType::Perspective)
 		{
