@@ -1,7 +1,7 @@
 # Rosewood
 Rosewood Game Engine
 
-**Rosewood Engine** is a game engine created for learning purposes. The base of the engine loosely is based of [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although is highly customized to my own interests, needs.
+**Rosewood Engine** is a game engine created for learning purposes. The core and ECS of the engine are based of [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although is highly customized to my own interests, needs.
 
 # Plan
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.

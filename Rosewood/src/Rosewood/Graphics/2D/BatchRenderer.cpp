@@ -19,8 +19,6 @@ namespace Rosewood
         Ref<VertexBuffer> QuadVertexBuffer;
         Ref<Shader> DefaultShader;
         
-        OrthographicCamera Camera;
-
         uint32_t IndexCount = 0;
 
         QuadVertex* QuadBuffer = nullptr;
@@ -72,9 +70,8 @@ namespace Rosewood
         s_Data.QuadVertexArray->SetIndexBuffer(indexBuffer);
         
         delete[] indices;
+
         
-
-
         s_Data.DefaultShader = Shader::Create("EngineContent/Shaders/Default2D.glsl");
         s_Data.CurrentShader = s_Data.DefaultShader;
         
@@ -98,17 +95,32 @@ namespace Rosewood
     {
         s_Data.CurrentShader->Bind();
         s_Data.CurrentShader->setMat4("u_ViewProjection", camera.GetViewProjection());
-        s_Data.Camera = camera;
+        BeginBatch();
+    }
+    void BatchRenderer::Begin(const EditorCamera& camera)
+    {
+        s_Data.CurrentShader->Bind();
+        s_Data.CurrentShader->setMat4("u_ViewProjection", camera.GetViewProjection());
+        BeginBatch();
+    }
+    void BatchRenderer::Begin(const Camera& camera, const glm::mat4& transform)
+    {
+        s_Data.CurrentShader->Bind();
+        s_Data.CurrentShader->setMat4("u_ViewProjection", camera.GetProjection() * glm::inverse(transform));
+        BeginBatch();
+    }
+    
+    void BatchRenderer::BeginBatch()
+    {
+        s_Data.IndexCount = 0;
+        s_Data.QuadPointer = s_Data.QuadBuffer;
+        s_Data.CurrentTexIndex = 1;
         int Samplers[MAX_TEXTURES];
         for (int i = 0; i<MAX_TEXTURES; i++)
         {
             Samplers[i] = i;
         }
         s_Data.CurrentShader->setIntPtr("u_Textures", MAX_TEXTURES, Samplers);
-
-        s_Data.IndexCount = 0;
-        s_Data.QuadPointer = s_Data.QuadBuffer;
-        s_Data.CurrentTexIndex = 1;
     }
     void BatchRenderer::End()
     {
@@ -136,19 +148,48 @@ namespace Rosewood
     {
         End();
 
-        s_Data.IndexCount = 0;
-        s_Data.QuadPointer = s_Data.QuadBuffer;
-
-        s_Data.CurrentTexIndex = 1;
+        BeginBatch();
     }
-    
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, float rotation, glm::vec4 uv, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
     {
         if (s_Data.IndexCount >= MAX_INDICES)
         {
             FlushAndReset();
         }
 
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
+        s_Data.QuadPointer->TexIndex = 0.0f;
+        s_Data.QuadPointer++;
+
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
+        s_Data.QuadPointer->TexIndex = 0.0f;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
+        s_Data.QuadPointer->TexIndex = 0.0f;
+        s_Data.QuadPointer++;
+        
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        s_Data.QuadPointer->Color = color;
+        s_Data.QuadPointer->TexCoords = glm::vec2(0.0f);
+        s_Data.QuadPointer->TexIndex = 0.0f;
+        s_Data.QuadPointer++;
+        
+        s_Data.RenderStats.QuadCount++;
+        s_Data.IndexCount += 6;
+    }
+    void BatchRenderer::DrawQuad(const glm::mat4& transform, Ref<Texture>& texture, const glm::vec4& uv, const glm::vec4& color)
+    {
+        if (s_Data.IndexCount >= MAX_INDICES)
+        {
+            FlushAndReset();
+        }
 
         float textureIndex = 0.0f;
         for (uint32_t i = 1; i < s_Data.CurrentTexIndex; i++)
@@ -169,29 +210,26 @@ namespace Rosewood
             s_Data.TextureSlots[s_Data.CurrentTexIndex] = texture;
             s_Data.CurrentTexIndex++;
         }
-        
-        glm::mat4 transform = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f });
-        
 
-        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x, pos.y, pos.z, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
 
-        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x + size.x, pos.y, pos.z, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
     
-        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x + size.x, pos.y + size.y, pos.z, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.z, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
         
-        s_Data.QuadPointer->Position = transform * glm::vec4(pos.x, pos.y + size.y, pos.z, 1.0f);
+        s_Data.QuadPointer->Position = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
         s_Data.QuadPointer->Color = color;
         s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.y);
         s_Data.QuadPointer->TexIndex = textureIndex;
@@ -200,12 +238,28 @@ namespace Rosewood
         s_Data.RenderStats.QuadCount++;
         s_Data.IndexCount += 6;
     }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 uv, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::mat4& transform, Ref<Texture>& texture, const glm::vec2& fromPix, const glm::vec2& toPix, const glm::vec4& color)
+    {
+        float xFrom = (float)fromPix.x/texture->GetWidth();
+        float yFrom = 1-(float)fromPix.y/texture->GetHeight();
+        float xTo = (float)toPix.x/texture->GetWidth();
+        float yTo = 1-(float)toPix.y/texture->GetHeight();
+        DrawQuad(transform, texture, glm::vec4(xFrom, yTo, xTo, yFrom), color);
+    }
+    
+    void BatchRenderer::DrawRotatedQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, float rotation, const glm::vec4&& uv, const glm::vec4& color)
+    {
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+        DrawQuad(transform, texture, uv, color);
+    }
+    void BatchRenderer::DrawQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, const glm::vec4& uv, const glm::vec4& color)
     {
         if (s_Data.IndexCount >= MAX_INDICES)
         {
-            End();
-            Begin(s_Data.Camera);
+            FlushAndReset();
         }
 
 
@@ -257,7 +311,7 @@ namespace Rosewood
                 
         s_Data.IndexCount += 6;
     }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec3& pos, const glm::vec2& size, const glm::vec4& color)
     {
         if (s_Data.IndexCount >= MAX_INDICES)
         {
@@ -291,55 +345,55 @@ namespace Rosewood
         s_Data.RenderStats.QuadCount++;
         s_Data.IndexCount += 6;
     }
-    void BatchRenderer::DrawQuad(glm::vec2 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec2 fromPix, glm::vec2 toPix, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec2& pos, const glm::vec2& size, Ref<Texture>& texture, const glm::vec2& fromPix, const glm::vec2& toPix, const glm::vec4& color)
     {
         BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), size, texture, fromPix, toPix, color);
     }
-    void BatchRenderer::DrawQuad(glm::vec2 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec2& pos, const glm::vec2& size, Ref<Texture>& texture, const glm::vec4& color)
     {
         BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), size, texture, color);
     }
-    void BatchRenderer::DrawQuad(glm::vec2 pos, Ref<Texture>& texture, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec2& pos, Ref<Texture>& texture, const glm::vec4& color)
     {
         BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), texture, color);
     }
-    void BatchRenderer::DrawQuad(glm::vec2 pos, Ref<Texture>& texture)
+    void BatchRenderer::DrawQuad(const glm::vec2& pos, Ref<Texture>& texture)
     {
         BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), texture);
     }
-    void BatchRenderer::DrawQuad(glm::vec2 pos, glm::vec2 size, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec2& pos, const glm::vec2& size, const glm::vec4& color)
     {
         BatchRenderer::DrawQuad(glm::vec3(pos, 0.0f), size, color);
     }
 
 
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec2 fromPix, glm::vec2 toPix, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, const glm::vec2& fromPix, const glm::vec2& toPix, const glm::vec4& color)
     {
-        float xFrom = 1-(float)fromPix.x/texture->GetWidth();
+        float xFrom = (float)fromPix.x/texture->GetWidth();
         float yFrom = 1-(float)fromPix.y/texture->GetHeight();
-        float xTo = 1-(float)toPix.x/texture->GetWidth();
+        float xTo = (float)toPix.x/texture->GetWidth();
         float yTo = 1-(float)toPix.y/texture->GetHeight();
 
         BatchRenderer::DrawQuad(pos, size, texture, glm::vec4(xFrom, yTo, xTo, yFrom), color);
     }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, float rotation, glm::vec2 fromPix, glm::vec2 toPix, glm::vec4 color)
+    void BatchRenderer::DrawRotatedQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, float rotation, const glm::vec2& fromPix, const glm::vec2& toPix, const glm::vec4& color)
     {
         float xFrom = 1-(float)fromPix.x/texture->GetWidth();
         float yFrom = 1-(float)fromPix.y/texture->GetHeight();
         float xTo = 1-(float)toPix.x/texture->GetWidth();
         float yTo = 1-(float)toPix.y/texture->GetHeight();
 
-        BatchRenderer::DrawQuad(pos, size, texture, rotation, glm::vec4(xFrom, yTo, xTo, yFrom), color);
+        BatchRenderer::DrawRotatedQuad(pos, size, texture, rotation, glm::vec4(xFrom, yTo, xTo, yFrom), color);
     }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, glm::vec2 size, Ref<Texture>& texture, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, const glm::vec4& color)
     {
         BatchRenderer::DrawQuad(pos, size, texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
     }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, Ref<Texture>& texture, glm::vec4 color)
+    void BatchRenderer::DrawQuad(const glm::vec3& pos, Ref<Texture>& texture, const glm::vec4& color)
     {
         BatchRenderer::DrawQuad(pos, glm::vec2(texture->GetWidth(), texture->GetHeight()), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), color);
     }
-    void BatchRenderer::DrawQuad(glm::vec3 pos, Ref<Texture>& texture)
+    void BatchRenderer::DrawQuad(const glm::vec3& pos, Ref<Texture>& texture)
     {
         BatchRenderer::DrawQuad(pos, glm::vec2(texture->GetWidth(), texture->GetHeight()), texture, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(1.0f));
     }

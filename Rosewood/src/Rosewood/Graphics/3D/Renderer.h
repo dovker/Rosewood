@@ -1,6 +1,6 @@
 #pragma once
 #include "rwpch.h"
-#include "Rosewood/Core.h"
+#include "Rosewood/Core/Core.h"
 #include "Model.h"
 #include "Rosewood/Graphics/API/Shader.h"
 #include "Rosewood/Graphics/API/Camera.h"

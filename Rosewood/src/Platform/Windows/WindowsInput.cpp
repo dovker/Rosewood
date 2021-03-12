@@ -1,27 +1,26 @@
 #include "rwpch.h"
 #include "WindowsInput.h"
 #include "GLFW/glfw3.h"
-#include "Rosewood/Application.h"
+#include "Rosewood/Core/Application.h"
 
 namespace Rosewood
 {
-	Input* Input::s_Instance = new WindowsInput();
 
-	bool WindowsInput::IsKeyPressedPlatform(int keycode)
+	bool Input::IsKeyPressed(int keycode)
 	{
 		auto window = (GLFWwindow*)Application::Get().GetWindow().GetWindowPtr();
 		auto state = glfwGetKey(window, keycode);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedPlatform(int button)
+	bool Input::IsMouseButtonPressed(int button)
 	{
 		auto window = (GLFWwindow*)Application::Get().GetWindow().GetWindowPtr();
 		auto state = glfwGetMouseButton(window, button);
 		return state == GLFW_PRESS;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePosPlatform()
+	std::pair<float, float> Input::GetMousePos()
 	{
 		auto window = (GLFWwindow*)Application::Get().GetWindow().GetWindowPtr();
 		double x, y;
@@ -29,15 +28,15 @@ namespace Rosewood
 		return {(float)x, (float)y };
 	}
 
-	float WindowsInput::GetMouseXPlatform()
+	float Input::GetMouseX()
 	{
-		auto[x,y] = GetMousePosPlatform();
+		auto[x,y] = GetMousePos();
 		return x;
 	}
 
-	float WindowsInput::GetMouseYPlatform()
+	float Input::GetMouseY()
 	{
-		auto [x, y] = GetMousePosPlatform();
+		auto [x, y] = GetMousePos();
 		return y;
 	}
 

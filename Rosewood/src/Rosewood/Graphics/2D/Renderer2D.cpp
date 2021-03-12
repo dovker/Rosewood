@@ -7,7 +7,8 @@ namespace Rosewood
 {
     struct RendererData2D
     {
-        std::vector<std::pair<Ref<Sprite>, Transform>> TransparentSprites;
+        std::vector<std::pair<Ref<RenderItem2D>, Transform>> TransparentSprites;
+        Ref<Texture> CircleTexture;
     };
 
     static RendererData2D s_Data;
@@ -16,11 +17,12 @@ namespace Rosewood
     {
         Rosewood::GraphicsCommand::ToggleBlending(true);
         Rosewood::GraphicsCommand::ToggleDepthTest(true);
+
         
-        AssetManager::Load<Texture>("EngineContent/Textures/Circle.png", "Circle");
+        s_Data.CircleTexture = AssetManager::Load<Texture>("EngineContent/Textures/Circle.png", "Circle");
+
         
-        
-        s_Data.TransparentSprites = std::vector<std::pair<Ref<Sprite>, Transform>>();
+        s_Data.TransparentSprites = std::vector<std::pair<Ref<RenderItem2D>, Transform>>();
         s_Data.TransparentSprites.reserve(100);
         BatchRenderer::Init();
     }
@@ -37,7 +39,7 @@ namespace Rosewood
     {
         BatchRenderer::Begin(camera);
     }
-    bool compareSprites(std::pair<Ref<Sprite>, Transform> s1, std::pair<Ref<Sprite>, Transform> s2)
+    bool compareSprites(std::pair<Ref<RenderItem2D>, Transform> s1, std::pair<Ref<RenderItem2D>, Transform> s2)
     {
         return (s1.second.Position.z > s2.second.Position.z);
     }
@@ -60,7 +62,35 @@ namespace Rosewood
         }
         else
         {
-            s_Data.TransparentSprites.push_back(std::pair<Ref<Sprite>, Transform>(sprite, transform));
+            s_Data.TransparentSprites.push_back(std::pair<Ref<RenderItem2D>, Transform>(sprite, transform));
+        }
+    }
+    void Renderer2D::DrawCircle(Rosewood::Circle circle, glm::vec4 color, float depth)
+    {
+        Ref<RenderCircle> s = RenderCircle::Create(color, s_Data.CircleTexture);
+        Transform t = Transform(glm::vec3(circle.Position, depth), glm::vec3(circle.Radius, circle.Radius, 1.0f));
+
+        if(!s->Transparent)
+        {
+            s->Draw(t);
+        }
+        else
+        {
+            s_Data.TransparentSprites.push_back(std::pair<Ref<RenderItem2D>, Transform>(s, t));
+        }
+    }
+    void Renderer2D::DrawRect(Rosewood::Rect rect, glm::vec4 color, float depth)
+    {
+        Ref<RenderQuad> s = RenderQuad::Create(color);
+        Transform t = Transform(glm::vec3(rect.Position(), depth), glm::vec3(0.0f), glm::vec3(rect.Width, rect.Height, 1.0f));
+
+        if(!s->Transparent)
+        {
+            s->Draw(t);
+        }
+        else
+        {
+            s_Data.TransparentSprites.push_back(std::pair<Ref<RenderItem2D>, Transform>(s, t));
         }
     }
 }

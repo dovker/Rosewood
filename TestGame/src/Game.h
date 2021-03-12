@@ -16,8 +16,10 @@ namespace TestGame
         void OnUpdate(Rosewood::Timestep timestep) override;
         virtual void OnImGuiRender() override;
         void OnEvent(Rosewood::Event& e) override;
+
+        static Scene* GetScene();
     private:
-        Scene* m_Scene;
+        static Scene* s_Scene;
     };
 
 }

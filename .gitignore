@@ -254,3 +254,4 @@ paket-files/
 Rosewood/Makefile
 Makefile
 .vscode/settings.json
+.vscode/c_cpp_properties.json

@@ -4,7 +4,7 @@
 #include "Rosewood/Events/MouseEvent.h"
 #include "Rosewood/Events/KeyEvent.h"
 #include "Rosewood/Events/ApplicationEvent.h"
-#include "Rosewood/Timestep.h"
+#include "Rosewood/Core/Timestep.h"
 
 
 #include <glm/glm.hpp>
@@ -91,6 +91,7 @@ namespace Rosewood
 
             const glm::vec3& GetPosition() const { return m_Position; }
             void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }
+            void SetZoom(const float& zoom) { m_Zoom = zoom; RecalculateViewMatrix(); }
 
             float GetRotation() const { return m_Rotation; }
             void SetRotation(float rotation) { m_Rotation = rotation; RecalculateViewMatrix(); }
@@ -105,7 +106,7 @@ namespace Rosewood
 
             glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
             float m_Rotation = 0.0f;
-            
+            float m_Zoom = 1.0f;
     };
     class DecalCamera
     {

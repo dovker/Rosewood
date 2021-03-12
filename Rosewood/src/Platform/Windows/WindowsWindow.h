@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Rosewood/Window.h"
+#include "Rosewood/Core/Window.h"
 
 #include <GLFW/glfw3.h>
 #include "Rosewood/Graphics/Graphics.h"

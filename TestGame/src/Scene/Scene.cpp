@@ -4,11 +4,29 @@
 namespace TestGame {
 extern const uint32_t ChunkSize = 16;
 extern const uint32_t ChunkArea = 256;
-extern uint32_t TileSize = 16;
+extern uint32_t TileSize = 8;
 
     Scene::Scene()
     {        
-        m_Camera = new Camera(glm::vec2(Rosewood::Application::Get().GetWindow().GetWidth() / 4, Rosewood::Application::Get().GetWindow().GetHeight() / 4));
+        m_Camera = new GameCamera(glm::vec2(Rosewood::Application::Get().GetWindow().GetWidth(), Rosewood::Application::Get().GetWindow().GetHeight()));
+        
+        m_Map = new Map(1000, 1000);
+        
+        for (int j = 0; j<1000; j++)
+        {
+            for (int i = 0; i<1000; i++)
+            {
+                glm::vec2 st(i, j);
+                float value = glm::abs(Rosewood::Noise::FBM(st / 50.832f * 2.0f, 3, 0.5f, 54534.532f) - 0.5f) * 2.0f;
+                if(value > 0.15f)
+                {
+                    m_Map->Set(i, j, SET_TEX_INDEX(1) | TILE_ISBLOCK); 
+                }
+                else{
+                    m_Map->Set(i, j, 0); 
+                }
+            }
+        }
         
         Entity* m_Player = new Player();
         m_Entities = std::vector<Entity*>
@@ -16,27 +34,16 @@ extern uint32_t TileSize = 16;
             m_Player,
         };
         m_Camera->SetTarget(m_Player);
-        
-        m_Map = new Map(100, 100);
-        
-        for (int i = 0; i<100; i++)
-        {
-            for (int j = 0; j<100; j++)
-            {
-                m_Map->Set(i, j, 17); //TODO: TEST THIS
-            }
-        }
-        
-        Rosewood::BatchRenderer::Init();
     }
     void Scene::OnLoad()
     {
+        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Load<Rosewood::Texture>("Content/Tileset.png", "Tileset");
+        m_Map->SetTexture(mapTexture);
+    
         for(auto& entity : m_Entities)
         {
             entity->OnLoad();
         }
-        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Load<Rosewood::Texture>("Content/Tileset.png", "Tileset");
-        m_Map->SetTexture(mapTexture);
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)
     {
@@ -58,7 +65,7 @@ extern uint32_t TileSize = 16;
         
         Rosewood::Renderer2D::Begin(m_Camera->GetCamera());
         
-        m_Map->Draw();
+        m_Map->Draw(m_Camera);
         
         for(auto& entity : m_Entities)
         {
@@ -82,5 +89,7 @@ extern uint32_t TileSize = 16;
             entity->OnEvent(e);
         }
     }
+
+    Map* Scene::GetMap() { return m_Map; }
 
 }

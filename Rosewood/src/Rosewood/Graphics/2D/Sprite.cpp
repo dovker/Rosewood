@@ -1,7 +1,7 @@
 #include "rwpch.h"
 
 #include "Rosewood/Graphics/Graphics.h"
-#include "Rosewood/Application.h"
+#include "Rosewood/Core/Application.h"
 #include "BatchRenderer.h"
 
 #include "Sprite.h"
@@ -39,15 +39,11 @@ namespace Rosewood
         
         if(Offset.FlippedY) UVY = glm::vec2(frameRect.Bottom, frameRect.Top);
         else UVY = glm::vec2(frameRect.Top, frameRect.Bottom);
-        
-        if(transform.Rotation.z > 0.00001)
-        {
-            BatchRenderer::DrawQuad(glm::vec3(pos, transform.Position.z), SourceRect.RelativeWidth() * scale, Texture, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
-        }
-        else
-        {
-            BatchRenderer::DrawQuad(glm::vec3(pos, transform.Position.z), SourceRect.RelativeWidth() * scale, Texture, transform.Rotation.z, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
-        }
+
+        Transform t = Transform(transform.Position, transform.Rotation, glm::vec3(SourceRect.RelativeWidth() * scale, 1.0f));
+
+        //TODO: Check Out Reverse-ivness of the animation, I fixed the batch renderer
+        BatchRenderer::DrawQuad(t.GetTransform(), Texture, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
         
     }
     

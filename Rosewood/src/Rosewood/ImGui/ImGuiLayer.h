@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Rosewood/Layer.h"
+#include "Rosewood/Core/Layer.h"
 #include "Rosewood/Events/Event.h"
 #include <Rosewood/Events/KeyEvent.h>
 #include <Rosewood/Events/MouseEvent.h>

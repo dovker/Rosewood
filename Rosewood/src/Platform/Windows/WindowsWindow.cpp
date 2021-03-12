@@ -10,6 +10,7 @@
 namespace Rosewood {
 
 	static bool s_GLFWInitialized = false;
+	static uint8_t s_GLFWWindowCount = 0;
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -24,11 +25,17 @@ namespace Rosewood {
 	WindowsWindow::WindowsWindow(const WindowProperties& properties)
 	{
 		Init(properties);
+		s_GLFWWindowCount++;
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
 		Shutdown();
+		s_GLFWWindowCount--;
+		if(s_GLFWWindowCount == 0)
+		{
+			glfwTerminate();
+		}
 	}
 
 	void WindowsWindow::Init(const WindowProperties& properties)
@@ -40,6 +47,7 @@ namespace Rosewood {
         
 
 		RW_CORE_INFO("Creating window {0} ({1}, {2})", properties.Title, properties.Width, properties.Height);
+        
 
 		if (!s_GLFWInitialized)
 		{
@@ -54,6 +62,9 @@ namespace Rosewood {
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
         
         m_Context = new OpenGLContext(m_Window);
+		#ifdef RW_PLATFORM_MACOS
+		glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+		#endif
 
         m_Context->Init();
         
@@ -61,7 +72,17 @@ namespace Rosewood {
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
         
+		#ifdef RW_PLATFORM_MACOS
+        
+		glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height){
+			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+			data.Width = width;
+			data.Height = height;
 
+			WindowResizeEvent event(width, height);
+			data.EventCallback(event);
+		});
+		#else
 		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 		{
@@ -72,7 +93,7 @@ namespace Rosewood {
 			WindowResizeEvent event(width, height);
 			data.EventCallback(event);
 		});
-
+		#endif
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);

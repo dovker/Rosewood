@@ -1,5 +1,5 @@
 #include "Rosewood.h"
-#include "Rosewood/EntryPoint.h"
+#include "Rosewood/Core/EntryPoint.h"
 #include "imgui.h"
 #include "Sofa.h"
 #include "2DCameraController.h"

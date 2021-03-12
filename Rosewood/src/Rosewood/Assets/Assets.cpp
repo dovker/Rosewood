@@ -162,13 +162,13 @@ namespace Rosewood
     template <>
     Ref<Sound> AssetManager::Get<Sound>(const std::string name)
     {
-        RW_CORE_ASSERT(Exists<Sound>(name), "Shader {0} not found", name);
+        RW_CORE_ASSERT(Exists<Sound>(name), "Sound {0} not found", name);
         return assetsData.m_Sounds[name];
     }
     template <>
     Ref<Model> AssetManager::Get<Model>(const std::string name)
     {
-        RW_CORE_ASSERT(Exists<Model>(name), "Shader {0} not found", name);
+        RW_CORE_ASSERT(Exists<Model>(name), "Model {0} not found", name);
         return assetsData.m_Models[name];
     }
 }

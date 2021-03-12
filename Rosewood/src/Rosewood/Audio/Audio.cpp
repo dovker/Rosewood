@@ -8,17 +8,16 @@
 
 namespace Rosewood {
 
-    static SoLoud::Soloud* s_AudioDevice = nullptr;
+    static Scope<SoLoud::Soloud> s_AudioDevice;
 
     void Audio::Init()
     {
-        s_AudioDevice = new SoLoud::Soloud;
+        s_AudioDevice = CreateScope<SoLoud::Soloud>();
         s_AudioDevice->init();
     }
     void Audio::Deinit()
     {
         s_AudioDevice->deinit();
-        delete s_AudioDevice;
     }
     float Audio::GetGlobalVolume()
     {

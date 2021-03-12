@@ -1,6 +1,6 @@
 #pragma once
 #include "rwpch.h"
-#include "Rosewood/Core.h"
+#include "Rosewood/Core/Core.h"
 
 #include "Rosewood/Graphics/API/Texture.h"
 #include "Rosewood/Graphics/API/VertexArray.h"

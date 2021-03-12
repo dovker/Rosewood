@@ -4,6 +4,8 @@
 #include "../Entity/Entity.h"
 #include "../Entity/Player.h"
 #include "../Map/Map.h"
+#include "../Map/Tile.h"
+
 
 namespace TestGame {
 
@@ -18,12 +20,13 @@ namespace TestGame {
         void OnEvent(Rosewood::Event &e);
         void OnWindowResize(int w, int h);
         
-        Camera* GetCamera() { return m_Camera; }
-        void SetCamera(Camera* cam) { m_Camera = cam; }
+        GameCamera* GetCamera() { return m_Camera; }
+        void SetCamera(GameCamera* cam) { m_Camera = cam; }
         
+        Map* GetMap();
     private:
         std::vector<Entity*> m_Entities;
-        Camera* m_Camera;
+        GameCamera* m_Camera;
         Map* m_Map;
     };
     

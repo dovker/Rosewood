@@ -5,7 +5,7 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "GLFW/glfw3.h"
-#include "Rosewood/Application.h"
+#include "Rosewood/Core/Application.h"
 
 #include <Rosewood/Events/MouseEvent.h>
 #include <glad/glad.h>
