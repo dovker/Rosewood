@@ -8,26 +8,32 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 
 # Features
 * OpenGL Support
-* Graphics API abstractions
 * Cross-Platform (Tested on major desktop platforms)
 * *Fast* Sprite / Quad Batcher
-* Simple Asset / content manager and library
+* Simple Asset manager and library
 * Event system
 * Audio (SoLoud) support
 * Spritefont support
-* 2D Light Pre-pass renderer with HDR support
+* 2D Rendering
+* Assimp 3D Model loading
+* entt ECS
+
+# Currently working on
+* LUA Scriptin
+* Better ECS support
 
 # Goals / To-do
-* Serialization
+* LUA Scripting
+* Virtual File system
+* Scene Serialization
+* Level editor
+* 3D Rendering
+* Compression
+* Project Exporting
+* Scripted UI
 * Text rendering
 * Particle effects
-* Primitive rendering (~~Circle~~, Triangle, ~~Quad~~, Line, Function / curve)
-* Implement ECS
-* Support DX11, Vulkan and Metal
-* Asset importer tool
-* Level editor / IDE
-* Shader cross-compilation
-* Deferred Renderer (~~2D~~, 3D)
+* Support Vulkan and Metal
 * Physics support
 * Multi-threading
 * Networking
@@ -61,3 +67,4 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h)
 * [spdlog](https://github.com/gabime/spdlog)
 * [SoLoud](https://github.com/jarikomppa/soloud)
+* More to be written later
