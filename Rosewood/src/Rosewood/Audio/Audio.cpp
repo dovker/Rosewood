@@ -39,6 +39,7 @@ namespace Rosewood {
 
 
     Sound::Sound(const std::string& path)
+        : m_Path(path)
     {
         m_Sound.load(path.c_str());
     }

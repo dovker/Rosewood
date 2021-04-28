@@ -8,6 +8,7 @@ namespace Rosewood
 
 	std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
 	std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
+	std::shared_ptr<spdlog::logger> Log::s_LuaLogger;
 
 
 	void Log::Init()
@@ -22,7 +23,8 @@ namespace Rosewood
 		s_ClientLogger = spdlog::stdout_color_mt("APP");
 		spdlog::set_level(spdlog::level::trace);
 	
-
+		s_LuaLogger = spdlog::stdout_color_mt("LUA");
+		spdlog::set_level(spdlog::level::trace);
 		
 	}
 }

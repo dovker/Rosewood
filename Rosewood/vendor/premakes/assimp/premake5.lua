@@ -168,10 +168,10 @@ project "assimp"
    filter "system:windows"
       systemversion "latest"
 
-   filter  "configurations:Debug"
+   filter  "configurations.Debug"
        runtime "Debug"
        symbols "on"
 
-   filter  "configurations:Release"
+   filter  "configurations.Release"
        runtime "Release"
        optimize "on"

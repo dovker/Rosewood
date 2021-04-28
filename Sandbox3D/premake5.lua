@@ -24,11 +24,19 @@ project "Sandbox3D"
         "%{IncludeDir.entt}",
         "%{IncludeDir.assimp}",
         "%{IncludeDir.SoLoud}",
+        "%{IncludeDir.lua}",
 
     }
     links
     {
-        "Rosewood"
+        "Rosewood",
+        "GLFW",
+        "Glad",
+        "ImGui",
+        "SoloudStatic",
+        "assimp",
+        "zlib",
+        "lua"
     }
     
     filter "action:xcode4"
@@ -43,6 +51,7 @@ project "Sandbox3D"
             "%{IncludeDir.entt}",
             "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}",
+            "%{IncludeDir.lua}",
 
         }
     

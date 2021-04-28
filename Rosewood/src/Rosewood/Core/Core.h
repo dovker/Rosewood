@@ -43,7 +43,7 @@
         #define RW_ASSERT(x, ...) { if(!(x)) { RW_ERROR("Assertion Failed: {0}", __VA_ARGS__);  } }
         #define RW_CORE_ASSERT(x, ...) { if(!(x)) { RW_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
     #else
-        #define RW_ASSERT(x, ...) { if(!(x)) { RW_ERROR("Assertion Failed: {0}", __VA_ARGS__); }
+        #define RW_ASSERT(x, ...) { if(!(x)) { RW_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
         #define RW_CORE_ASSERT(x, ...) { if(!(x)) { RW_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
     #endif
 #else

@@ -7,9 +7,11 @@ namespace Rosewood
     struct AssetsData
     {
         std::unordered_map<std::string, Ref<Texture>> m_Textures;
-        std::unordered_map<std::string, Ref<Shader>>  m_Shaders;
-        std::unordered_map<std::string, Ref<Sound>>  m_Sounds;
+        std::unordered_map<std::string, Ref<Shader>> m_Shaders;
+        std::unordered_map<std::string, Ref<Sound>> m_Sounds;
         std::unordered_map<std::string, Ref<Model>> m_Models;
+        //ADD Text Format
+        
     };
     static AssetsData assetsData;
 // // // // //
@@ -171,4 +173,9 @@ namespace Rosewood
         RW_CORE_ASSERT(Exists<Model>(name), "Model {0} not found", name);
         return assetsData.m_Models[name];
     }
+    void AssetManager::CheckChanges() //Only valid for DEBUG and RELEASE
+    {
+        //DO THIS ON A SEPERATE THREAD AND IMPLEMENT OS SPECIFICS LATER
+    }
+
 }

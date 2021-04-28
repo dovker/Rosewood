@@ -17,7 +17,10 @@ project "Rosewood"
         "vendor/stb_image/**.h",
         "vendor/stb_image/**.cpp",
         "vendor/glm/glm/**.hpp",
-        "vendor/glm/glm/**.inl"
+        "vendor/glm/glm/**.inl",
+        "vendor/lua/**.cpp",
+        "vendor/lua/**.h",
+
     }
     includedirs
     {
@@ -31,6 +34,7 @@ project "Rosewood"
         "%{IncludeDir.assimp}",
         "%{IncludeDir.SoLoud}",
         "%{IncludeDir.zlib}",
+        "%{IncludeDir.lua}",
         "%{IncludeDir.entt}"
     }
     filter "action:xcode4"
@@ -50,6 +54,7 @@ project "Rosewood"
             "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}",
             "%{IncludeDir.zlib}",
+            "%{IncludeDir.lua}",
             "%{IncludeDir.entt}"
         }
     filter {}
@@ -75,6 +80,7 @@ project "Rosewood"
         "SoloudStatic",
         "assimp",
         "zlib",
+        "lua",
         "opengl32.lib"
     }
     defines

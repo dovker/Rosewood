@@ -8,6 +8,8 @@
 #include <utility>
 #include <algorithm>
 #include <functional>
+#include <filesystem>
+#include <new>
 
 #include <string>
 #include <fstream>

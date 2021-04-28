@@ -9,8 +9,8 @@ namespace Rosewood
 {
 	
 	OpenGLShader::OpenGLShader(const std::string& path)
+		: m_Path(path)
 	{
-
 		std::ifstream stream(path);
 		enum class ShaderType
 		{
@@ -85,9 +85,9 @@ namespace Rosewood
 		return id;
 	}
 
-    void  OpenGLShader::Recompile(const std::string& filepath)
+    void  OpenGLShader::Recompile()
     {
-        std::ifstream stream(filepath);
+        std::ifstream stream(m_Path);
         enum class ShaderType
         {
             NONE = -1, VERTEX = 0, FRAGMENT = 1

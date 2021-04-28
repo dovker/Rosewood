@@ -14,7 +14,8 @@ namespace Rosewood
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
         
-        virtual void Recompile(const std::string& filepath) = 0;
+        virtual const std::string& GetPath() = 0;
+        virtual void Recompile() = 0;
         virtual void Recompile(const std::string& vs, const std::string& fs) = 0;
 
         

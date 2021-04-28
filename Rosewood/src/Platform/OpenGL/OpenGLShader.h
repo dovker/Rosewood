@@ -15,6 +15,9 @@ namespace Rosewood
         
         virtual void Bind() override;
         virtual void Unbind() override;
+
+        virtual const std::string& GetPath() { return m_Path; }
+
         
         virtual void setBool(const std::string& name, bool value) override;
         virtual void setInt(const std::string& name, int value) override;
@@ -27,10 +30,11 @@ namespace Rosewood
         virtual void setVec3(const std::string& name, const glm::vec3& value) override;
         virtual void setVec2(const std::string& name, const glm::vec2& value) override;
         
-        virtual void Recompile(const std::string& filepath) override;
+        virtual void Recompile() override;
         virtual void Recompile(const std::string& vs, const std::string& fs) override;
 
     private:
+        std::string m_Path;
         uint32_t m_ID;
         uint32_t CompileShader(unsigned int type, const std::string& source);
     };

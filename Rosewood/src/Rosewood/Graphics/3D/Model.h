@@ -64,6 +64,7 @@ namespace Rosewood {
     public:
         Model() {}
         Model(const std::string& path)
+            : m_Path(path)
         {
             loadModel(path);
         }
@@ -79,6 +80,8 @@ namespace Rosewood {
         void SetMaterial(Ref<Material> material) { m_Material = material; }
         void BindMaterial() { m_Material->Bind(); }
         void BindMeshTextures(Ref<Mesh> mesh) { m_Material->BindPBRMaps(mesh->textures); }
+
+        const std::string& GetPath() { return m_Path; }
         
     private:
         std::vector<Ref<Mesh>> m_Meshes;

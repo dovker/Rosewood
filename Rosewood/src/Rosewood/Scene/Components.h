@@ -4,7 +4,7 @@
 #include "ScriptableEntity.h"
 
 #include <glm/glm.hpp>
-#include <Rosewood\Scene\SceneCamera.h>
+#include <Rosewood/Scene/SceneCamera.h>
 
 
 namespace Rosewood

@@ -340,11 +340,11 @@ namespace Rosewood
 
     void DeferredRenderer::ReloadShaders()
     {
-        s_Buffer.GBufferShader->Recompile("EngineContent/Shaders/GBuffer2D.glsl");
-        s_Buffer.LightBufferShader->Recompile("EngineContent/Shaders/LightBuffer2D.glsl");
-        s_Buffer.FinalShader->Recompile("EngineContent/Shaders/FinalPass2D.glsl");
-        s_Buffer.DecalShader->Recompile("EngineContent/Shaders/DecalLight2D.glsl");
-        s_Buffer.DepthRenderShader->Recompile("EngineContent/Shaders/DepthDrawing2D.glsl");
+        s_Buffer.GBufferShader->Recompile();
+        s_Buffer.LightBufferShader->Recompile();
+        s_Buffer.FinalShader->Recompile();
+        s_Buffer.DecalShader->Recompile();
+        s_Buffer.DepthRenderShader->Recompile();
 
     }
 

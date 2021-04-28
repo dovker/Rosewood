@@ -14,9 +14,11 @@ namespace Rosewood
 
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+		inline static std::shared_ptr<spdlog::logger>& GetLuaLogger() { return s_LuaLogger; }
 	private:
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
+		static std::shared_ptr<spdlog::logger> s_LuaLogger;
 	};
 
 }
@@ -34,3 +36,10 @@ namespace Rosewood
 #define RW_WARN(...)          ::Rosewood::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define RW_ERROR(...)         ::Rosewood::Log::GetClientLogger()->error(__VA_ARGS__)
 #define RW_CRITICAL(...)      ::Rosewood::Log::GetClientLogger()->critical(__VA_ARGS__)
+
+// Lua log LUA_macros		
+#define RW_LUA_TRACE(...)         ::Rosewood::Log::GetLuaLogger()->trace(__VA_ARGS__)
+#define RW_LUA_INFO(...)          ::Rosewood::Log::GetLuaLogger()->info(__VA_ARGS__)
+#define RW_LUA_WARN(...)          ::Rosewood::Log::GetLuaLogger()->warn(__VA_ARGS__)
+#define RW_LUA_ERROR(...)         ::Rosewood::Log::GetLuaLogger()->error(__VA_ARGS__)
+#define RW_LUA_CRITICAL(...)      ::Rosewood::Log::GetLuaLogger()->critical(__VA_ARGS__)

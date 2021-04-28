@@ -14,7 +14,9 @@ namespace Rosewood {
     public:
         ~Sound() {}
         Sound();
+        
         Sound(const std::string& path);
+        const std::string& GetPath() { return m_Path; }
         
         void Play();
         void PlayBackground();
@@ -47,6 +49,8 @@ namespace Rosewood {
         bool m_Protected = false;
         float m_Volume = 1.0f;
         float m_Pan = 0.0f;
+
+        std::string m_Path;
         
         SoLoud::Wav m_Sound;
     };

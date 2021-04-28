@@ -17,6 +17,7 @@ workspace "Rosewood"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
     require "/vendor/cmake"
+    require "/vendor/export-compile-commands"
 
     IncludeDir = {}
 
@@ -30,6 +31,8 @@ workspace "Rosewood"
     IncludeDir["SoLoud"] =      "%{wks.location}/Rosewood/vendor/soloud/include"
     IncludeDir["zlib"] =        "%{wks.location}/Rosewood/vendor/zlib"      
     IncludeDir["entt"] =        "%{wks.location}/Rosewood/vendor/entt/include"          
+    IncludeDir["lua"] =        "%{wks.location}/Rosewood/vendor/lua/src"          
+
     
 
 
@@ -41,6 +44,7 @@ workspace "Rosewood"
         include "Rosewood/vendor/imgui"
         include "Rosewood/vendor/assimp"
         include "Rosewood/vendor/zlib"
+        include "Rosewood/vendor/lua"
     group ""
 
     include "Rosewood"

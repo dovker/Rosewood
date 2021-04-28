@@ -259,3 +259,4 @@ Makefile
 *.filters
 *.idb
 *.sln
+*.idx

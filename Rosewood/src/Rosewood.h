@@ -36,6 +36,8 @@
 #include "Rosewood/Graphics/3D/Mesh.h"
 #include "Rosewood/Graphics/3D/Model.h"
 
+#include "Rosewood/Scripting/lua/LuaState.h"
+
 
 #include "Rosewood/Assets/Assets.h"
 

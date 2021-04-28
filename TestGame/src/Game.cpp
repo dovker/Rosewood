@@ -10,10 +10,27 @@ namespace TestGame {
     Game::Game()
         : Layer("Example") {}
 
+    Rosewood::LuaState* state;
     void Game::OnAttach()
     {
         Rosewood::Renderer2D::Init();
         Rosewood::Benchmark::Init();
+
+        state = new Rosewood::LuaState();
+
+        state->ExecuteScript("Content/Scripts/Script.lua");
+        state->InsistGlobal("SampleScript");
+        state->CallVoidFunction("OnCreate");
+        //Do on seperate threads
+        //state.CloseGlobal();
+        state->ClearStack();
+
+        RW_CRITICAL("AHAHA");
+        RW_TRACE("AHAHA");
+        RW_INFO("AHAHA");
+        RW_WARN("AHAHA");
+        RW_ERROR("AHAHA");
+
 
         s_Scene = new Scene();
         
@@ -23,7 +40,15 @@ namespace TestGame {
     void Game::OnUpdate(Rosewood::Timestep timestep)
     {
         s_Scene->OnUpdate(timestep);
-                
+        
+        {
+            Rosewood::BenchmarkTimer timer = Rosewood::BenchmarkTimer("Lua OnUpdate");
+            
+            state->InsistGlobal("SampleScript");
+            state->CallVoidFunction("OnUpdate");
+            state->ClearStack();
+            
+        }
         s_Scene->OnDraw();
         
     }
@@ -32,6 +57,7 @@ namespace TestGame {
     {
         s_Scene->OnUnload();
         delete s_Scene;
+        delete state;
     }
     
     bool open = true;
