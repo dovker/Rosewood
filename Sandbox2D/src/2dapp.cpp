@@ -4,6 +4,7 @@
 #include "Sofa.h"
 #include "2DCameraController.h"
 
+const std::string Rosewood::FileSystem::ProjectRoot = "../../../Sandbox2D/";
 
 class ExampleLayer : public Rosewood::Layer
 {

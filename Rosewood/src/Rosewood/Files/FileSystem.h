@@ -3,9 +3,30 @@
 
 namespace Rosewood
 {
+    enum class FilePathType
+    {
+        ENGINE,
+        PROJECT
+    };
+
     class FileSystem
     {
-        static std::string Root;
+    public:
+        static const std::string EngineRoot;
+        static const std::string ProjectRoot;
+
+        
+
+        static std::string GetPath(const std::string& path, FilePathType type = FilePathType::PROJECT);
+
+        // FILE ReadFile(Path)
+        // void WriteFile(FILE file);
+        // FILE ReadFileCompressed();
+        // void WriteFileCompressed;
+        // void MakeDir
+        // void CopyFile(FILE);
+        // std::string ListDirectory
+
         //Unordered map for default storing places
         //Also contains platform specific application folders for save files
 
@@ -18,5 +39,5 @@ namespace Rosewood
         //Byte Data loading
 
         //Abstracting FILE Class which holds file data and reads / writes.
-    }
+    };
 }

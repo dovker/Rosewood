@@ -3,6 +3,10 @@
 #include "Rosewood/Graphics/Graphics.h"
 #include "BatchRenderer.h"
 #include "Rosewood/Graphics/API/VertexArray.h"
+
+#include "Rosewood/Files/FileSystem.h"
+
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Rosewood
@@ -72,7 +76,7 @@ namespace Rosewood
         delete[] indices;
 
         
-        s_Data.DefaultShader = Shader::Create("EngineContent/Shaders/Default2D.glsl");
+        s_Data.DefaultShader = Shader::Create(FileSystem::GetPath("Shaders/Default2D.glsl", FilePathType::ENGINE));
         s_Data.CurrentShader = s_Data.DefaultShader;
         
 

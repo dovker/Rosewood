@@ -1,10 +1,13 @@
 #pragma once
 #include "Rosewood/Core/Timestep.h"
+#include "Rosewood/Events/Event.h"
+#include "Rosewood/Events/ApplicationEvent.h"
 #include "entt.hpp"
 
 namespace Rosewood
 {
     class Entity;
+    class System;
 
     class Scene
     {
@@ -16,9 +19,14 @@ namespace Rosewood
 		void DestroyEntity(Entity entity);
 
 		void OnUpdateRuntime(Timestep ts);
-        void OnViewportResize(uint32_t width, uint32_t height);
+        void OnRenderRuntime();
+        bool OnViewportResize(Rosewood::WindowResizeEvent& e);
+        void OnEvent(Event& e);
+
+        void AddSystem(System& system);
 
         Entity GetPrimaryCameraEntity();
+        entt::registry* GetRegistry() { return &m_Registry; }
 
     private:
         template<typename T>
@@ -27,6 +35,9 @@ namespace Rosewood
         uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
         entt::registry m_Registry; 
 
+        std::vector<System> m_Systems;
+
         friend class Entity;
+        friend class System;
     };
 }

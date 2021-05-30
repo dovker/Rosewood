@@ -40,6 +40,8 @@
 
 
 #include "Rosewood/Assets/Assets.h"
+#include "Rosewood/Files/FileSystem.h"
+#include "Rosewood/Files/File.h"
 
 #include "Rosewood/Audio/Audio.h"
 
@@ -47,7 +49,10 @@
 
 #include "Rosewood/Benchmark/Benchmark.h"
 
-#include "Rosewood/Scene/Scene.h"
-
+#include "Rosewood/ECS/Scene.h"
+#include "Rosewood/ECS/System.h"
+#include "Rosewood/ECS/Entity.h"
+#include "Rosewood/ECS/ScriptableEntity.h"
+#include "Rosewood/ECS/Components.h"
 
 #endif

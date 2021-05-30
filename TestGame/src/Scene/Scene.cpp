@@ -8,51 +8,60 @@ extern uint32_t TileSize = 8;
 
     Scene::Scene()
     {        
-        m_Camera = new GameCamera(glm::vec2(Rosewood::Application::Get().GetWindow().GetWidth(), Rosewood::Application::Get().GetWindow().GetHeight()));
         
-        m_Map = new Map(1000, 1000);
-        
-        for (int j = 0; j<1000; j++)
-        {
-            for (int i = 0; i<1000; i++)
-            {
-                glm::vec2 st(i, j);
-                float value = glm::abs(Rosewood::Noise::FBM(st / 50.832f * 2.0f, 3, 0.5f, 54534.532f) - 0.5f) * 2.0f;
-                if(value > 0.15f)
-                {
-                    m_Map->Set(i, j, SET_TEX_INDEX(1) | TILE_ISBLOCK); 
-                }
-                else{
-                    m_Map->Set(i, j, 0); 
-                }
-            }
-        }
-        
-        Entity* m_Player = new Player();
-        m_Entities = std::vector<Entity*>
-        {
-            m_Player,
-        };
-        m_Camera->SetTarget(m_Player);
+        m_Scene = Rosewood::CreateRef<Rosewood::Scene>();
     }
+
     void Scene::OnLoad()
     {
-        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Load<Rosewood::Texture>("Content/Tileset.png", "Tileset");
-        m_Map->SetTexture(mapTexture);
-    
-        for(auto& entity : m_Entities)
-        {
-            entity->OnLoad();
-        }
+        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Load<Rosewood::Texture>(Rosewood::FileSystem::GetPath("Tileset.png"), "Tileset");
+       
+        Rosewood::Ref<Rosewood::Sprite> sprite = Rosewood::Sprite::Create(mapTexture);
+
+        auto ent = m_Scene->CreateEntity("enity");
+        ent.AddComponent<Rosewood::SpriteRenderComponent>(sprite);
+
+        auto camera = m_Scene->CreateEntity("camera");
+        camera.AddComponent<Rosewood::CameraComponent>();
+
+        class CameraController : public Rosewood::ScriptableEntity
+		{
+		public:
+			virtual void OnCreate() override
+			{
+                Rosewood::Transform& translation = GetComponent<Rosewood::TransformComponent>();
+                //translation.Position.z = -.3f;
+			}
+
+			virtual void OnDestroy() override
+			{
+			}
+
+			virtual void OnUpdate(Rosewood::Timestep ts) override
+			{
+				Rosewood::Transform& translation = GetComponent<Rosewood::TransformComponent>();
+
+				float speed = 5.0f;
+
+				if (Rosewood::Input::IsKeyPressed(KEY_A)) //switch to key::a
+					translation.Position.x -= speed * ts;
+				if (Rosewood::Input::IsKeyPressed(KEY_D))
+					translation.Position.x += speed * ts;
+				if (Rosewood::Input::IsKeyPressed(KEY_W))
+					translation.Position.y -= speed * ts;
+				if (Rosewood::Input::IsKeyPressed(KEY_S))
+					translation.Position.y += speed * ts;
+
+                //RW_INFO("{0}, {1}, {2}", translation.Position.x, translation.Position.y, translation.Position.z);
+			}
+		};
+
+		camera.AddComponent<Rosewood::NativeScriptComponent>().Bind<CameraController>();
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)
     {
-        m_Camera->OnUpdate(timestep);
-        for(auto& entity : m_Entities)
-        {
-            entity->OnUpdate(timestep, m_Entities);
-
-        }
+        m_Scene->OnUpdateRuntime(timestep);
+        
     }
     void Scene::OnDraw()
     {
@@ -62,17 +71,8 @@ extern uint32_t TileSize = 8;
         }
         Rosewood::BatchRenderer::ResetStats();
 
+        m_Scene->OnRenderRuntime();
         
-        Rosewood::Renderer2D::Begin(m_Camera->GetCamera());
-        
-        m_Map->Draw(m_Camera);
-        
-        for(auto& entity : m_Entities)
-        {
-            entity->OnDraw();
-        }
-        
-        Rosewood::Renderer2D::End();
     }
     void Scene::OnUnload()
     {
@@ -83,7 +83,7 @@ extern uint32_t TileSize = 8;
     }
     void Scene::OnEvent(Rosewood::Event &e)
     {
-        m_Camera->OnEvent(e);
+        m_Scene->OnEvent(e);
         for(auto& entity : m_Entities)
         {
             entity->OnEvent(e);

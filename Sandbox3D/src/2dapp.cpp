@@ -2,6 +2,8 @@
 #include "Rosewood/Core/EntryPoint.h"
 #include "imgui.h"
 
+const std::string Rosewood::FileSystem::ProjectRoot = "../../../Sandbox3D/";
+
 
 class ExampleLayer : public Rosewood::Layer
 {

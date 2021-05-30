@@ -1,6 +1,5 @@
 #pragma once
 #include "Rosewood.h"
-#include "../Camera/CameraController.h"
 #include "../Entity/Entity.h"
 #include "../Entity/Player.h"
 #include "../Map/Map.h"
@@ -20,14 +19,11 @@ namespace TestGame {
         void OnEvent(Rosewood::Event &e);
         void OnWindowResize(int w, int h);
         
-        GameCamera* GetCamera() { return m_Camera; }
-        void SetCamera(GameCamera* cam) { m_Camera = cam; }
-        
         Map* GetMap();
     private:
         std::vector<Entity*> m_Entities;
-        GameCamera* m_Camera;
         Map* m_Map;
+        Rosewood::Ref<Rosewood::Scene> m_Scene;
     };
     
 }

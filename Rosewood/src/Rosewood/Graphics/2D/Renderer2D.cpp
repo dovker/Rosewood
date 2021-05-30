@@ -2,6 +2,8 @@
 #include "Renderer2D.h"
 #include "BatchRenderer.h"
 #include "Rosewood/Assets/Assets.h"
+#include "Rosewood/Files/FileSystem.h"
+
 
 namespace Rosewood
 {
@@ -19,7 +21,7 @@ namespace Rosewood
         Rosewood::GraphicsCommand::ToggleDepthTest(true);
 
         
-        s_Data.CircleTexture = AssetManager::Load<Texture>("EngineContent/Textures/Circle.png", "Circle");
+        s_Data.CircleTexture = AssetManager::Load<Texture>(FileSystem::GetPath("Textures/Circle.png", FilePathType::ENGINE), "Circle");
 
         
         s_Data.TransparentSprites = std::vector<std::pair<Ref<RenderItem2D>, Transform>>();
@@ -38,6 +40,14 @@ namespace Rosewood
     void Renderer2D::Begin(const OrthographicCamera& camera)
     {
         BatchRenderer::Begin(camera);
+    }
+    void Renderer2D::Begin(const EditorCamera& camera)
+    {
+        BatchRenderer::Begin(camera);
+    }
+    void Renderer2D::Begin(const Camera& camera, const glm::mat4& transform)
+    {
+        BatchRenderer::Begin(camera, transform);
     }
     bool compareSprites(std::pair<Ref<RenderItem2D>, Transform> s1, std::pair<Ref<RenderItem2D>, Transform> s2)
     {

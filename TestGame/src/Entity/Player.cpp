@@ -14,7 +14,7 @@ namespace TestGame
     
     void Player::OnLoad()
     {
-        Rosewood::AssetManager::Load<Rosewood::Texture>("Content/Player.png", "Player.png");
+        Rosewood::AssetManager::Load<Rosewood::Texture>(Rosewood::FileSystem::GetPath("Player.png"), "Player.png");
 
         m_Sprite = Rosewood::Sprite::Create(Rosewood::AssetManager::Get<Rosewood::Texture>("Player.png"));
         m_Collider = Rosewood::Rect(m_Transform.Position.x, m_Transform.Position.y, m_Sprite->Texture->GetWidth(), m_Sprite->Texture->GetHeight());
@@ -36,23 +36,23 @@ namespace TestGame
         m_Transform.Position.y += m_Velocity.y * dt;
         m_Collider.SetPosition(m_Transform.Position);
 
-        glm::vec2 p = Game::GetScene()->GetCamera()->ScreenToWorldCoords(MousePos);
-        if(Rosewood::Input::IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-        {
-            m_Map->SetLine((int)(pPrev.x/TileSize), (int)(pPrev.y/TileSize), (int)(p.x/TileSize), (int)(p.y/TileSize), 0);
-        }
-        if(Rosewood::Input::IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-        {
-            m_Map->SetLineCustom((int)(pPrev.x/TileSize), (int)(pPrev.y/TileSize), (int)(p.x/TileSize), (int)(p.y/TileSize), SET_TEX_INDEX(5) | TILE_ISBLOCK, [&](int x, int y, uint32_t val){
-                m_Map->SetCircleOutline({glm::vec2(x * TileSize, y * TileSize), 25.0f}, val);
-            });
-        }
-        if(Rosewood::Input::IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE))
-        {
-            m_Map->SetStructure((int)(p.x/TileSize), (int)(p.y/TileSize), m_Map->GetStructure(0, 0, 16, 16));
-        }
-        PrevMousePos = MousePos;
-        pPrev = Game::GetScene()->GetCamera()->ScreenToWorldCoords(PrevMousePos);
+        // glm::vec2 p = Game::GetScene()->GetCamera()->ScreenToWorldCoords(MousePos);
+        // if(Rosewood::Input::IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        // {
+        //     m_Map->SetLine((int)(pPrev.x/TileSize), (int)(pPrev.y/TileSize), (int)(p.x/TileSize), (int)(p.y/TileSize), 0);
+        // }
+        // if(Rosewood::Input::IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+        // {
+        //     m_Map->SetLineCustom((int)(pPrev.x/TileSize), (int)(pPrev.y/TileSize), (int)(p.x/TileSize), (int)(p.y/TileSize), SET_TEX_INDEX(5) | TILE_ISBLOCK, [&](int x, int y, uint32_t val){
+        //         m_Map->SetCircleOutline({glm::vec2(x * TileSize, y * TileSize), 25.0f}, val);
+        //     });
+        // }
+        // if(Rosewood::Input::IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE))
+        // {
+        //     m_Map->SetStructure((int)(p.x/TileSize), (int)(p.y/TileSize), m_Map->GetStructure(0, 0, 16, 16));
+        // }
+        // PrevMousePos = MousePos;
+        // pPrev = Game::GetScene()->GetCamera()->ScreenToWorldCoords(PrevMousePos);
     }
 
     void Player::CalculateMovement()

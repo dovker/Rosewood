@@ -4,6 +4,7 @@
 #include "Rosewood/Graphics/Graphics.h"
 #include "Rosewood/Core/Application.h"
 
+#include "Rosewood/Files/FileSystem.h"
 
 
 namespace Rosewood
@@ -129,11 +130,11 @@ namespace Rosewood
 
         GraphicsCommand::ToggleBackfaceCulling(false);
         
-        s_Buffer.GBufferShader = Shader::Create("EngineContent/Shaders/GBuffer2D.glsl");
-        s_Buffer.LightBufferShader = Shader::Create("EngineContent/Shaders/LightBuffer2D.glsl");
-        s_Buffer.FinalShader = Shader::Create("EngineContent/Shaders/FinalPass2D.glsl");
-        s_Buffer.DecalShader = Shader::Create("EngineContent/Shaders/DecalLight2D.glsl");
-        s_Buffer.DepthRenderShader = Shader::Create("EngineContent/Shaders/DepthDrawing2D.glsl");
+        s_Buffer.GBufferShader =     Shader::Create(FileSystem::GetPath("Shaders/GBuffer2D.glsl"     , FilePathType::ENGINE));
+        s_Buffer.LightBufferShader = Shader::Create(FileSystem::GetPath("Shaders/LightBuffer2D.glsl" , FilePathType::ENGINE));
+        s_Buffer.FinalShader =       Shader::Create(FileSystem::GetPath("Shaders/FinalPass2D.glsl"   , FilePathType::ENGINE));
+        s_Buffer.DecalShader =       Shader::Create(FileSystem::GetPath("Shaders/DecalLight2D.glsl"  , FilePathType::ENGINE));
+        s_Buffer.DepthRenderShader = Shader::Create(FileSystem::GetPath("Shaders/DepthDrawing2D.glsl", FilePathType::ENGINE));
 
         
         s_Buffer.DecalQueue = std::vector<Ref<DecalLight>>();

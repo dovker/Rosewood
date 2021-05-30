@@ -4,7 +4,7 @@
 #include "ScriptableEntity.h"
 
 #include <glm/glm.hpp>
-#include <Rosewood/Scene/SceneCamera.h>
+#include "SceneCamera.h"
 
 
 namespace Rosewood
@@ -28,7 +28,7 @@ namespace Rosewood
         TransformComponent(const Transform transform)
             : TransformData(transform) {}
 
-        operator const Transform&() { return TransformData; }
+        operator Transform&() { return TransformData; }
         glm::mat4 GetTransform() { return TransformData.GetTransform(); }
 
     };
@@ -42,6 +42,7 @@ namespace Rosewood
         SpriteRenderComponent(const Ref<Sprite> sprite)
             : SpriteData(sprite) {}
 
+        Ref<Sprite> GetSprite() { return SpriteData; }
     };
 
     struct CameraComponent
@@ -74,4 +75,18 @@ namespace Rosewood
 			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
 		}
 	};
+    // struct LuaScriptComponent
+	// {
+	// 	LuaScript* script = nullptr;
+
+	// 	ScriptableEntity*(*InstantiateScript)();
+	// 	void (*DestroyScript)(NativeScriptComponent*);
+
+	// 	template<typename T>
+	// 	void Bind()
+	// 	{
+	// 		InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+	// 		DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
+	// 	}
+	// };
 }

@@ -2,7 +2,6 @@
 #include "Rosewood.h"
 #include "Chunk.h"
 #include <glm/glm.hpp>
-#include "../Camera/CameraController.h"
 #include "Tile.h"
 
 
@@ -377,33 +376,33 @@ extern uint32_t TileSize;
             return str;
         }
 
-        void Draw(GameCamera* camera)
-        { 
-            Rosewood::BenchmarkTimer timer("Map Drawing");
+        // void Draw(GameCamera* camera)
+        // { 
+        //     Rosewood::BenchmarkTimer timer("Map Drawing");
             
-            Rosewood::Rect bounds = camera->GetBounds();
-            int left = (int)glm::clamp(bounds.Left/TileSize, 0.0f, (float)SizeX);
-            int right = glm::ceil(glm::clamp(bounds.Right/TileSize, 0.0f, (float)SizeX));
-            int top = (int)glm::clamp(bounds.Top/TileSize, 0.0f, (float)SizeY);
-            int bottom = glm::ceil(glm::clamp(bounds.Bottom/TileSize, 0.0f, (float)SizeY));
+        //     Rosewood::Rect bounds = camera->GetBounds();
+        //     int left = (int)glm::clamp(bounds.Left/TileSize, 0.0f, (float)SizeX);
+        //     int right = glm::ceil(glm::clamp(bounds.Right/TileSize, 0.0f, (float)SizeX));
+        //     int top = (int)glm::clamp(bounds.Top/TileSize, 0.0f, (float)SizeY);
+        //     int bottom = glm::ceil(glm::clamp(bounds.Bottom/TileSize, 0.0f, (float)SizeY));
 
-            int tW = m_Texture->GetWidth(); // Texture width
-            for(int j = top; j<bottom; j++)
-            {
-                for (int i = left; i < right; i++)
-                {
-                    uint32_t tile = GET_TEX_INDEX(m_Array[i + j*SizeX]);
-                    if (tile != 0)
-                    {
-                        int sY = (tile * TileSize / tW);
-                        int sX = ((tile * TileSize) % tW) / TileSize;
-                        int sX1 = sX+1;
-                        int sY1 = sY+1;
-                        Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * TileSize, j * TileSize, 3.0f), glm::vec2(TileSize, TileSize), m_Texture, {sX * TileSize, sY * TileSize}, {sX1 * TileSize, sY1 * TileSize}, glm::vec4(1.0f));
-                    }
-                }
-            }
-        }
+        //     int tW = m_Texture->GetWidth(); // Texture width
+        //     for(int j = top; j<bottom; j++)
+        //     {
+        //         for (int i = left; i < right; i++)
+        //         {
+        //             uint32_t tile = GET_TEX_INDEX(m_Array[i + j*SizeX]);
+        //             if (tile != 0)
+        //             {
+        //                 int sY = (tile * TileSize / tW);
+        //                 int sX = ((tile * TileSize) % tW) / TileSize;
+        //                 int sX1 = sX+1;
+        //                 int sY1 = sY+1;
+        //                 Rosewood::BatchRenderer::DrawQuad(glm::vec3(i * TileSize, j * TileSize, 3.0f), glm::vec2(TileSize, TileSize), m_Texture, {sX * TileSize, sY * TileSize}, {sX1 * TileSize, sY1 * TileSize}, glm::vec4(1.0f));
+        //             }
+        //         }
+        //     }
+        // }
         void SetTexture(Rosewood::Ref<Rosewood::Texture> texture)
         {
             m_Texture = texture;

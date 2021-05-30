@@ -3,9 +3,13 @@
 #include "Scene/Scene.h"
 #include "Game.h"
 
+
+const std::string Rosewood::FileSystem::ProjectRoot = "../../../TestGame/";
+
 namespace TestGame {
 
     Scene* Game::s_Scene = nullptr;
+
     
     Game::Game()
         : Layer("Example") {}
@@ -18,7 +22,7 @@ namespace TestGame {
 
         state = new Rosewood::LuaState();
 
-        state->ExecuteScript("Content/Scripts/Script.lua");
+        state->ExecuteScript(Rosewood::FileSystem::GetPath("Scripts/Script.lua"));
         state->InsistGlobal("SampleScript");
         state->CallVoidFunction("OnCreate");
         //Do on seperate threads

@@ -32,6 +32,7 @@ namespace Rosewood {
 	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
 		m_AspectRatio = (float)width / (float)height;
+		m_OrthographicSize = height;
 		RecalculateProjection();
 	}
 
@@ -39,17 +40,19 @@ namespace Rosewood {
 	{
 		if (m_ProjectionType == ProjectionType::Perspective)
 		{
-			m_Projection = glm::perspective(m_PerspectiveFOV, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar);
+			m_Projection = glm::perspective(m_PerspectiveFOV, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar); 
 		}
 		else
 		{
 			float orthoLeft = -m_OrthographicSize * m_AspectRatio * 0.5f;
 			float orthoRight = m_OrthographicSize * m_AspectRatio * 0.5f;
-			float orthoBottom = -m_OrthographicSize * 0.5f;
-			float orthoTop = m_OrthographicSize * 0.5f;
+			float orthoBottom = m_OrthographicSize * 0.5f;
+			float orthoTop = -m_OrthographicSize * 0.5f;
 
 			m_Projection = glm::ortho(orthoLeft, orthoRight,
-				orthoBottom, orthoTop, m_OrthographicNear, m_OrthographicFar);
+				orthoBottom, orthoTop, m_OrthographicNear, m_OrthographicFar); //FIX THIS
+
+			RW_CORE_INFO("{0}, {1}, {2}, {3}, {4}, {5}", orthoLeft, orthoRight, orthoBottom, orthoTop, m_AspectRatio, m_OrthographicSize);
 		}
 		
 	}

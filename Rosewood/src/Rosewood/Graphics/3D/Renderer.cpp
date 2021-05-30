@@ -2,6 +2,7 @@
 
 #include "Rosewood/Graphics/Graphics.h"
 #include "Rosewood/Core/Application.h"
+#include "Rosewood/Files/FileSystem.h"
 #include "Renderer.h"
 
 
@@ -83,8 +84,8 @@ namespace Rosewood
 
         
         
-        s_Buffer.GBufferShader = Shader::Create("EngineContent/Shaders/GBuffer.glsl");
-        s_Buffer.FinalShader = Shader::Create("EngineContent/Shaders/FinalPass.glsl");
+        s_Buffer.GBufferShader = Shader::Create(FileSystem::GetPath("Shaders/GBuffer.glsl"  , FilePathType::ENGINE));
+        s_Buffer.FinalShader =   Shader::Create(FileSystem::GetPath("Shaders/FinalPass.glsl", FilePathType::ENGINE));
     }
     void Renderer::Begin(EditorCamera& camera)
     {

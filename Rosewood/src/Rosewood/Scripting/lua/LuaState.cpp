@@ -2,6 +2,9 @@
 #include "wrappers/wrap_Debug.h"
 #include "wrappers/wrap_Core.h"
 
+#include "Rosewood/Files/FileSystem.h"
+
+
 
 namespace Rosewood
 {
@@ -13,7 +16,7 @@ namespace Rosewood
 
         wrap_Log log;
         InitType(log);
-        ExecuteScript("EngineContent/Scripts/Wrappers/wrap_Debug.lua");
+        ExecuteScript(FileSystem::GetPath("Scripts/Wrappers/wrap_Debug.lua", FilePathType::ENGINE));
 
         wrap_Benchmark benchmark;
         InitType(benchmark);
