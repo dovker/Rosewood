@@ -1,7 +1,7 @@
 # Rosewood
 Rosewood Game Engine
 
-**Rosewood Engine** is a game engine created for learning purposes. The core and ECS of the engine are based of [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although is highly customized to my own interests, needs.
+**Rosewood Engine** is a game engine created for learning purposes and GameJam games. The base I had no idea how it worked was based on [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although at this stage the engine is very different.
 
 # Plan
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.
@@ -9,26 +9,25 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 # Features
 * OpenGL Support
 * Cross-Platform (Tested on major desktop platforms)
-* *Fast* Sprite / Quad Batcher
+* 2D Rendering (Line Rendering to come in the future)
 * Simple Asset manager and library
-* Event system
 * Audio (SoLoud) support
 * Spritefont support
-* 2D Rendering
-* Assimp 3D Model loading
-* entt ECS
+* ECS
+* Virtual File System
 
 # Currently working on
-* LUA Scriptin
-* Better ECS support
+* Yaml Serialization
+* Lua Scripting
 
 # Goals / To-do
+* Networking
 * LUA Scripting
-* Virtual File system
 * Scene Serialization
+* Asset Importing (Tool Later)
 * Level editor
 * 3D Rendering
-* Compression
+* Asset Compression
 * Project Exporting
 * Scripted UI
 * Text rendering
@@ -36,7 +35,6 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Support Vulkan and Metal
 * Physics support
 * Multi-threading
-* Networking
 
 # Building
 ## Windows:
@@ -49,9 +47,10 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 
   Open **Terminal** and type `cd <Enter the solution direction>`
   Proceed by entering this command:
-  `vendor/bin/premake/premake5 xcode4`
-  Your project files should now be generated!
-  Once again, you are free to change `xcode4` with whatever you please!
+  `./premake5.sh [build system (gmake by default)]`
+  Your makefiles should now be generated!
+  Then you can build and run the project with this command:
+  `./build.sh [project name to launch]`
 
 ## Linux coming soon
 
@@ -67,4 +66,8 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h)
 * [spdlog](https://github.com/gabime/spdlog)
 * [SoLoud](https://github.com/jarikomppa/soloud)
-* More to be written later
+* [Assimp](https://github.com/assimp/assimp)
+* [zlib](https://zlib.net) Will be utilized later
+* [LUA](http://www.lua.org/home.html)
+* [Entt](https://github.com/skypjack/entt)
+* [yaml-cpp](https://github.com/jbeder/yaml-cpp)
