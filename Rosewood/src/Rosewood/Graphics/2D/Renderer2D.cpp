@@ -3,6 +3,7 @@
 #include "BatchRenderer.h"
 #include "Rosewood/Assets/Assets.h"
 #include "Rosewood/Files/FileSystem.h"
+#include "Rosewood/Graphics/Graphics.h"
 
 
 namespace Rosewood

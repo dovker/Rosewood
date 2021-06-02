@@ -14,6 +14,7 @@
 #include "Rosewood/Maths/Math.h"
 #include "Rosewood/Maths/Noise.h"
 #include "Rosewood/Maths/Structs.h"
+#include "Rosewood/Core/Types.h"
 
 
 #include "Rosewood/Graphics/Graphics.h"

@@ -51,6 +51,10 @@
 #define RW_CORE_ASSERT(x, ...)
 #endif
 
+#ifndef NDEBUG
+#define RW_DEBUG
+#endif
+
 
 #define BIT(x) (1 << x)
 #define RW_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
@@ -75,5 +79,3 @@ namespace Rosewood
 
 
 }
-
-#define Texture2D Ref<Texture>

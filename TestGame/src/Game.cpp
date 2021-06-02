@@ -29,13 +29,6 @@ namespace TestGame {
         //state.CloseGlobal();
         state->ClearStack();
 
-        RW_CRITICAL("AHAHA");
-        RW_TRACE("AHAHA");
-        RW_INFO("AHAHA");
-        RW_WARN("AHAHA");
-        RW_ERROR("AHAHA");
-
-
         s_Scene = new Scene();
         
         s_Scene->OnLoad();

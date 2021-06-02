@@ -37,5 +37,6 @@ namespace Rosewood
         std::string m_Path;
         uint32_t m_ID;
         uint32_t CompileShader(unsigned int type, const std::string& source);
+        uint32_t Compile();
     };
 }

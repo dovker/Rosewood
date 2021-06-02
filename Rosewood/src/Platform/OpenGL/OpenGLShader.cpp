@@ -11,52 +11,7 @@ namespace Rosewood
 	OpenGLShader::OpenGLShader(const std::string& path)
 		: m_Path(path)
 	{
-		std::ifstream stream(path);
-		enum class ShaderType
-		{
-			NONE = -1, VERTEX = 0, FRAGMENT = 1
-		};
-		std::string line;
-		std::stringstream ss[2];
-		ShaderType type = ShaderType::NONE;
-		try
-		{
-			while (getline(stream, line))
-			{
-				if (line.find("#shader") != std::string::npos)
-				{
-					if (line.find("vertex") != std::string::npos)
-						type = ShaderType::VERTEX;
-					else if (line.find("fragment") != std::string::npos)
-						type = ShaderType::FRAGMENT;
-
-				}
-				else
-				{
-					ss[(int)type] << line << "\n";
-				}
-			}
-		}
-		catch (std::ifstream::failure e)
-		{
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-		}
-		const std::string vertexShader = ss[0].str();
-		const std::string fragmentShader = ss[1].str();
-		//std::cout << vertexShader << std::endl;
-		//std::cout << fragmentShader << std::endl;
-		m_ID = glCreateProgram();
-		uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-		uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-		glAttachShader(m_ID, vs);
-		glAttachShader(m_ID, fs);
-		glLinkProgram(m_ID);
-		glValidateProgram(m_ID);
-
-		glDeleteShader(vs);
-		glDeleteShader(fs);
-
+		m_ID = Compile();
 	}
 
 	uint32_t OpenGLShader::CompileShader(unsigned int type, const std::string& source)
@@ -81,62 +36,65 @@ namespace Rosewood
 			glDeleteShader(id);
 			return 0;
 		}
-        //std::cout << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "Shader compiled successfully" << std::endl;
+
 		return id;
 	}
+	uint32_t OpenGLShader::Compile()
+	{
+		std::ifstream stream(m_Path);
+		enum class ShaderType
+		{
+			NONE = -1, VERTEX = 0, FRAGMENT = 1
+		};
+		std::string line;
+		std::stringstream ss[2];
+		ShaderType type = ShaderType::NONE;
+		try
+		{
+			while (getline(stream, line))
+			{
+				if (line.find("#shader") != std::string::npos)
+				{
+					if (line.find("vertex") != std::string::npos)
+						type = ShaderType::VERTEX;
+					else if (line.find("fragment") != std::string::npos)
+						type = ShaderType::FRAGMENT;
 
+				}
+				else
+				{
+					ss[(int)type] << line << "\n";
+				}
+			}
+			if(stream.bad())
+			{
+				throw std::invalid_argument("Error Reading the file");
+			}
+		}
+		catch (const std::invalid_argument& e)
+		{
+			RW_CORE_ERROR("SHADER IFSTREAM ERROR: {0}", e.what());
+		}
+		const std::string vertexShader = ss[0].str();
+		const std::string fragmentShader = ss[1].str();
+		
+		uint32_t id = glCreateProgram();
+		uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+		uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+		glAttachShader(id, vs);
+		glAttachShader(id, fs);
+		glLinkProgram(id);
+		glValidateProgram(id);
+
+		glDeleteShader(vs);
+		glDeleteShader(fs);
+
+		return id;
+	}
     void  OpenGLShader::Recompile()
     {
-        std::ifstream stream(m_Path);
-        enum class ShaderType
-        {
-            NONE = -1, VERTEX = 0, FRAGMENT = 1
-        };
-        std::string line;
-        std::stringstream ss[2];
-        ShaderType type = ShaderType::NONE;
-        try
-        {
-            while (getline(stream, line))
-            {
-                if (line.find("#shader") != std::string::npos)
-                {
-                    if (line.find("vertex") != std::string::npos)
-                        type = ShaderType::VERTEX;
-                    else if (line.find("fragment") != std::string::npos)
-                        type = ShaderType::FRAGMENT;
-
-                }
-                else
-                {
-                    ss[(int)type] << line << "\n";
-                }
-            }
-        }
-        catch (std::ifstream::failure e)
-        {
-            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-        }
-        const std::string vertexShader = ss[0].str();
-        const std::string fragmentShader = ss[1].str();
-        //std::cout << vertexShader << std::endl;
-        //std::cout << fragmentShader << std::endl;
-        uint32_t TempID;
-        TempID = glCreateProgram();
-
-        uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-        uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-        glAttachShader(TempID, vs);
-        glAttachShader(TempID, fs);
-        glLinkProgram(TempID);
-        glValidateProgram(TempID);
-
-        glDeleteShader(vs);
-        glDeleteShader(fs);
-        glDeleteProgram(m_ID);
-        
-        m_ID = TempID;
+        m_ID = Compile();
     }
 
     void OpenGLShader::Recompile(const std::string& vs, const std::string& fs)
