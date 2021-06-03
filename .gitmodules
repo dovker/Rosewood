@@ -1,8 +1,5 @@
 [submodule "Submod"]
 	branch = docking
-[submodule "Rosewood/vendor/assimp"]
-	path = Rosewood/vendor/assimp
-	url = https://github.com/AminAliari/assimp
 [submodule "Rosewood/vendor/soloud"]
 	path = Rosewood/vendor/soloud
 	url = https://github.com/dovker/soloud.git
@@ -24,3 +21,6 @@
 [submodule "Rosewood/vendor/imgui"]
 	path = Rosewood/vendor/imgui
 	url = https://github.com/dovker/imgui.git
+[submodule "assimp"]
+	path = assimp
+	url = https://github.com/dovker/assimp.git
