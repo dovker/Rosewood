@@ -22,5 +22,8 @@
 	path = Rosewood/vendor/imgui
 	url = https://github.com/dovker/imgui.git
 [submodule "assimp"]
-	path = assimp
+	path = Rosewood/vendor/assimp
+	url = https://github.com/dovker/assimp.git
+[submodule "Rosewood/vendor/assimp"]
+	path = Rosewood/vendor/assimp
 	url = https://github.com/dovker/assimp.git
