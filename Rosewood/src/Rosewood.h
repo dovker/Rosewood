@@ -43,6 +43,7 @@
 #include "Rosewood/Assets/Assets.h"
 #include "Rosewood/Files/FileSystem.h"
 #include "Rosewood/Files/File.h"
+#include "Rosewood/Data/Compression.h"
 
 #include "Rosewood/Audio/Audio.h"
 

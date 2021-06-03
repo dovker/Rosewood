@@ -29,6 +29,15 @@ namespace TestGame {
         //state.CloseGlobal();
         state->ClearStack();
 
+        Rosewood::BinaryFile file(Rosewood::FileSystem::GetPath("grass.png"));
+
+        file.SetData(Rosewood::Compression::Compress(file.GetData()));
+        file.Write(Rosewood::FileSystem::GetPath("grass.rwimg"));
+
+        file = Rosewood::BinaryFile(Rosewood::FileSystem::GetPath("grass.rwimg"));
+        file.SetData(Rosewood::Compression::Decompress(file.GetData()));
+        file.Write(Rosewood::FileSystem::GetPath("grass2.png"));
+
         s_Scene = new Scene();
         
         s_Scene->OnLoad();
