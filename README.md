@@ -37,6 +37,8 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Multi-threading
 
 # Building
+## All Platforms
+  If you try to make project and it fails, make sure every dependency has it's premake5.lua file, if not, you can find those files in **"Rosewood/vendor/premakes"** folder.
 ## Windows:
 
   Double click **"premake5.bat"** file and VS2019 project files will be generated
@@ -44,17 +46,27 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
   If you wish to create project files for another IDE, change `vs2019` with whatever you choose in **"premake5.bat"** file.
   
 ## MacOS:
-
-  Open **Terminal** and type `cd <Enter the solution direction>`
-  Proceed by entering this command:
+  1. Download Premake5 binaries for Mac OS and paste them in vendor/bin/premake folder.
+  2. Open **Terminal** and type `cd <Enter the solution direction>`
+  3. Proceed by entering this command:
   `./premake5.sh [build system (gmake by default)]`
+  
   Your makefiles should now be generated!
-  Then you can build and run the project with this command:
+  4. Then you can build and run the project with this command:
   `./build.sh [project name to launch]`
 
-## Linux coming soon
-
-
+## Linux:
+  1. Download Premake5 binaries for Linux and paste them in vendor/bin/premake folder.
+  2. REQUIRED PACKAGES:
+    ** `xorg-dev`
+    ** `libasound2-dev`
+  3. Open **Terminal** and type `cd <Enter the solution direction>`
+  4. Proceed by entering this command:
+  `./premake5.sh [build system (gmake by default)]`
+  
+  Your makefiles should now be generated!
+  5. Then you can build and run the project with this command:
+  `./build.sh [project name to launch]`
 ### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
 
 # Libraries / dependencies
