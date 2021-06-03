@@ -82,7 +82,7 @@ I have decided to replace Lua C library with Sol2 library for the sake of simpli
 * [spdlog](https://github.com/gabime/spdlog)
 * [SoLoud](https://github.com/jarikomppa/soloud)
 * [Assimp](https://github.com/assimp/assimp)
-* [zlib](https://zlib.net) Will be utilized later
+* [zlib](https://zlib.net)
 * [LUA](http://www.lua.org/home.html)
 * [Entt](https://github.com/skypjack/entt)
 * [yaml-cpp](https://github.com/jbeder/yaml-cpp)
