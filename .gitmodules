@@ -12,9 +12,6 @@
 [submodule "Rosewood/vendor/glfw"]
 	path = Rosewood/vendor/glfw
 	url = https://github.com/glfw/glfw
-[submodule "Rosewood/vendor/imgui"]
-	path = Rosewood/vendor/imgui
-	url = https://github.com/ocornut/imgui/
 [submodule "Rosewood/vendor/spdlog"]
 	path = Rosewood/vendor/spdlog
 	url = https://github.com/gabime/spdlog
