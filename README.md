@@ -6,6 +6,9 @@ Rosewood Game Engine
 # Plan
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.
 
+# Recent Thoughts
+I have decided to replace Lua C library with Sol2 library for the sake of simplicity. I have learned how Lua C works and have gained the knowledge, therefore I see no further need to spend more time on it! 
+
 # Features
 * OpenGL Support
 * Cross-Platform (Tested on major desktop platforms)
@@ -15,19 +18,19 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * Spritefont support
 * ECS
 * Virtual File System
+* File Compression
 
 # Currently working on
-* Yaml Serialization
+* Yaml and Binary Serialization
 * Lua Scripting
 
 # Goals / To-do
 * Networking
 * LUA Scripting
 * Scene Serialization
-* Asset Importing (Tool Later)
+* Asset Importing and Compression (Tool Later)
 * Level editor
 * 3D Rendering
-* Asset Compression
 * Project Exporting
 * Scripted UI
 * Text rendering
