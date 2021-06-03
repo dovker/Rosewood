@@ -5,7 +5,7 @@
 	url = https://github.com/AminAliari/assimp
 [submodule "Rosewood/vendor/soloud"]
 	path = Rosewood/vendor/soloud
-	url = https://github.com/jarikomppa/soloud
+	url = https://github.com/dovker/soloud.git
 [submodule "Rosewood/vendor/glm"]
 	path = Rosewood/vendor/glm
 	url = https://github.com/g-truc/glm
@@ -21,3 +21,6 @@
 [submodule "Rosewood/vendor/yaml-cpp"]
 	path = Rosewood/vendor/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp
+[submodule "Rosewood/vendor/imgui"]
+	path = Rosewood/vendor/imgui
+	url = https://github.com/dovker/imgui.git
