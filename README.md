@@ -66,7 +66,7 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
   
   Your makefiles should now be generated!
   5. Then you can build and run the project with this command:
-  `./build.sh [project name to launch]`
+  `./build-linux.sh [project name to launch]`
 ### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
 
 # Libraries / dependencies
