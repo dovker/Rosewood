@@ -27,7 +27,7 @@ namespace Rosewood
         
         glm::vec2 scale = glm::vec2(transform.Scale.x, transform.Scale.y);
         
-        glm::vec2 texSize = glm::vec2(Texture->GetWidth(), Texture->GetHeight());
+        glm::vec2 texSize = glm::vec2(SpriteTexture->GetWidth(), SpriteTexture->GetHeight());
         
         glm::vec2 pos = glm::vec2(transform.Position.x, transform.Position.y) + (SourceRect.RelativeWidth() * scale) * Offset.Offset;
         
@@ -43,7 +43,7 @@ namespace Rosewood
         Transform t = Transform(transform.Position, transform.Rotation, glm::vec3(SourceRect.RelativeWidth() * scale, 1.0f));
 
         //TODO: Check Out Reverse-ivness of the animation, I fixed the batch renderer
-        BatchRenderer::DrawQuad(t.GetTransform(), Texture, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
+        BatchRenderer::DrawQuad(t.GetTransform(), SpriteTexture, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
         
     }
     

@@ -4,7 +4,12 @@
 
 #include "Rosewood/Files/FileSystem.h"
 
-
+extern "C"
+{
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
+}
 
 namespace Rosewood
 {

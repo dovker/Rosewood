@@ -2,7 +2,8 @@
 
 #include <string>
 #include "Rosewood/Graphics/API/Texture.h"
-#include <glad/glad.h>
+
+typedef unsigned int GLenum;
 
 namespace Rosewood
 {

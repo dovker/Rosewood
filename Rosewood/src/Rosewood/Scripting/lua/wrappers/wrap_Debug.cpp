@@ -5,9 +5,30 @@
 #include "Rosewood/Core/Log.h"
 #include "Rosewood/Benchmark/Benchmark.h"
 
+extern "C"
+{
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
+}
 
 namespace Rosewood
 {
+    const char* wrap_Log::Name = "Log";
+
+    luaL_Reg* wrap_Log::w_functions = 
+        (luaL_Reg[]){
+            {"Trace",    wrap_Log::w_trace},
+            {"Assert",   wrap_Log::w_assert},
+            {"Info",     wrap_Log::w_info},
+            {"Warn",     wrap_Log::w_warn},
+            {"Error",    wrap_Log::w_error},
+            {"Critical", wrap_Log::w_critical}
+        };
+
+    int wrap_Log::functionCount = 6;
+    int wrap_Log::metaFunctionCount = 0;
+
     int wrap_Log::w_trace(lua_State* L)
     {
         RW_LUA_TRACE(lua_tostring(L, -1));
@@ -43,6 +64,27 @@ namespace Rosewood
         RW_LUA_CRITICAL(lua_tostring(L, -1));
         return 0;
     }
+
+
+    const char* wrap_Benchmark::Name = "Benchmark";
+
+    luaL_Reg* wrap_Benchmark::w_functions = 
+        (luaL_Reg[]){
+            {"Stop", wrap_Benchmark::w_stop},
+            {"new",  wrap_Benchmark::w_create}
+        };
+
+    int wrap_Benchmark::functionCount = 2;
+
+    const char* wrap_Benchmark::MetaName = "Benchmark_meta";
+
+    luaL_Reg* wrap_Benchmark::w_metaFunctions = 
+        (luaL_Reg[]){
+            {"__gc",    wrap_Benchmark::w__gc},
+            {"__index", wrap_Benchmark::w__index},
+        };
+
+    int wrap_Benchmark::metaFunctionCount = 2;
 
     int wrap_Benchmark::w_stop(lua_State* L)
     {

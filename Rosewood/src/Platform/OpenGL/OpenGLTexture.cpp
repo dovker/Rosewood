@@ -2,7 +2,6 @@
 #include "OpenGLTexture.h"
 #include "stb_image.h"
 #include <glad/glad.h>
-//#include <OpenGL/gl.h>
 #include "OpenGL.h"
 
 namespace Rosewood

@@ -2,10 +2,9 @@
 
 #include "Rosewood/Core/Window.h"
 
-#include <GLFW/glfw3.h>
 #include "Rosewood/Graphics/Graphics.h"
-#include "Platform/OpenGL/OpenGLContext.h"
 
+struct GLFWwindow;
 
 namespace Rosewood {
 
@@ -21,8 +20,8 @@ namespace Rosewood {
 		inline unsigned int GetHeight() const override { return m_Data.Height; }
 		inline float GetTime() override;
 
-		inline void LockCursor() override { glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); };
-		inline void UnlockCursor() override { glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); };
+		inline void LockCursor() 	override;
+		inline void UnlockCursor() 	override;
 		//extend to cursor modes
 
 
@@ -50,7 +49,6 @@ namespace Rosewood {
 		};
 
 		WindowData m_Data;
-
 	};
 
 }

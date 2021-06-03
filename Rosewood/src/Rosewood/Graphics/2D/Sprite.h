@@ -33,7 +33,7 @@ namespace Rosewood
     class Sprite : public RenderItem2D
     {
     public:
-        Ref<Texture> Texture;
+        Ref<Texture> SpriteTexture;
         Rect SourceRect;
         
         Animation2D Animation;
@@ -47,10 +47,10 @@ namespace Rosewood
         }
         
         Sprite(Ref<Rosewood::Texture> texture, glm::vec4 color = glm::vec4(1.0f), bool transparent = false)
-            :Texture(texture),  RenderItem2D(color, transparent), SourceRect(Rect(texture)) {}
+            :SpriteTexture(texture),  RenderItem2D(color, transparent), SourceRect(Rect(texture)) {}
         
         Sprite(Ref<Rosewood::Texture> texture, glm::vec4 color, bool transparent, Rect sourceRect, Offset2D offset, Animation2D animation)
-        :Texture(texture),  RenderItem2D(color, transparent), SourceRect(sourceRect), Offset(offset), Animation(animation) {}
+        :SpriteTexture(texture),  RenderItem2D(color, transparent), SourceRect(sourceRect), Offset(offset), Animation(animation) {}
         
         virtual void Draw(Transform transform) override;
 

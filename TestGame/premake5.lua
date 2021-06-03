@@ -91,17 +91,14 @@ project "TestGame"
         }
 --["RW_WORKSPACE_DIR=%{wks.location}"]
     
-    filter "configurations.Debug"
-        defines "RW_DEBUG"
+    filter "configurations:Debug"
         runtime "Debug"
         symbols "On"
     
-    filter "configurations.Release"
-        defines "RW_RELEASE"
+    filter "configurations:Release"
         runtime "Release"            
         optimize "On"
     
-    filter "configurations.Dist"
-        defines "RW_DIST"
+    filter "configurations:Dist"
         runtime "Release"
         optimize "On"

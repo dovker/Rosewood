@@ -51,9 +51,6 @@
 #define RW_CORE_ASSERT(x, ...)
 #endif
 
-#ifndef NDEBUG
-#define RW_DEBUG
-#endif
 
 
 #define BIT(x) (1 << x)

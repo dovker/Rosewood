@@ -21,3 +21,6 @@
 [submodule "Rosewood/vendor/zlib"]
 	path = Rosewood/vendor/zlib
 	url = https://github.com/madler/zlib
+[submodule "Rosewood/vendor/yaml-cpp"]
+	path = Rosewood/vendor/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp

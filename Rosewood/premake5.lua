@@ -1,7 +1,7 @@
 project "Rosewood"
     kind "StaticLib"
     language "C++"
-    staticruntime "on"
+    staticruntime "off"
     cppdialect "C++17"
     
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
@@ -25,7 +25,7 @@ project "Rosewood"
     includedirs
     {
         "src",
-        "%{IncludeDir.spdlog}",
+        "vendor/spdlog/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
@@ -35,7 +35,8 @@ project "Rosewood"
         "%{IncludeDir.SoLoud}",
         "%{IncludeDir.zlib}",
         "%{IncludeDir.lua}",
-        "%{IncludeDir.entt}"
+        "%{IncludeDir.entt}",
+        "%{IncludeDir.yaml_cpp}"
     }
     filter "action:xcode4"
         pchheader "src/rwpch.h"
@@ -55,7 +56,8 @@ project "Rosewood"
             "%{IncludeDir.SoLoud}",
             "%{IncludeDir.zlib}",
             "%{IncludeDir.lua}",
-            "%{IncludeDir.entt}"
+            "%{IncludeDir.entt}",
+            "%{IncludeDir.yaml_cpp}"
         }
     filter {}
     
@@ -81,7 +83,7 @@ project "Rosewood"
         "assimp",
         "zlib",
         "lua",
-        "opengl32.lib"
+        "yaml-cpp"
     }
     defines
     {
@@ -97,15 +99,15 @@ project "Rosewood"
     filter "system:macosx"
         systemversion "latest"
 
-    filter "configurations.Debug"
+    filter "configurations:Debug"
         defines "RW_DEBUG"
         runtime "Debug"
         symbols "On"
-    filter "configurations.Release"
+    filter "configurations:Release"
         defines "RW_RELEASE"
         runtime "Release"
         optimize "On"
-    filter "configurations.Dist"
+    filter "configurations:Dist"
         defines "RW_DIST"
         runtime "Release"
         optimize "On"

@@ -82,7 +82,7 @@ namespace Rosewood
     float CalculateRadius(const PointLight &light)
     {
         float lightMax  = std::fmaxf(std::fmaxf(light.color.r * light.intensity, light.color.g * light.intensity), light.color.b * light.intensity);
-        return (-light.linear +  std::sqrtf(light.linear * light.linear - 4 * light.quadratic * (light.constant - (256.0 / 5.0) * lightMax)))
+        return (-light.linear +  glm::sqrt(light.linear * light.linear - 4 * light.quadratic * (light.constant - (256.0f / 5.0f) * lightMax)))
         / (2 * light.quadratic);  ;
     }
 

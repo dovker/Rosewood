@@ -3,7 +3,10 @@
 #include "Rosewood/Events/ApplicationEvent.h"
 #include "Rosewood/Events/KeyEvent.h"
 #include "Rosewood/Events/MouseEvent.h"
-#include <glad/glad.h>
+#include "GLFW/glfw3.h"
+#include "Platform/OpenGL/OpenGLContext.h"
+
+
 //#include <OpenGL/gl.h>
 
 
@@ -36,6 +39,15 @@ namespace Rosewood {
 		{
 			glfwTerminate();
 		}
+	}
+
+	void WindowsWindow::LockCursor() 
+	{ 
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+	} 
+	void WindowsWindow::UnlockCursor() 
+	{ 
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 
 	void WindowsWindow::Init(const WindowProperties& properties)

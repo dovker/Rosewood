@@ -2,12 +2,9 @@
 
 #include "wrapper.h"
 
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
+
+struct luaL_Reg;
+struct lua_State;
 
 namespace Rosewood
 {
@@ -16,19 +13,10 @@ namespace Rosewood
     private:
 
 
-        const char* Name = "Log";
-
-        luaL_Reg* w_functions = 
-        (luaL_Reg[]){
-            {"Trace", w_trace},
-            {"Assert", w_assert},
-            {"Info", w_info},
-            {"Warn", w_warn},
-            {"Error", w_error},
-            {"Critical", w_critical}
-        };
-        int functionCount = 6;
-        int metaFunctionCount = 0;
+        static const char* Name;
+        static luaL_Reg* w_functions;
+        static int functionCount;
+        static int metaFunctionCount;
     
     public:
         static int w_trace(lua_State* L);
@@ -51,22 +39,12 @@ namespace Rosewood
     class wrap_Benchmark : public LuaWrapper
     {
     private:
-
-
-        const char* Name = "Benchmark";
-        const char* MetaName = "Benchmark_meta";
-        luaL_Reg* w_functions = 
-        (luaL_Reg[]){
-            {"Stop", w_stop},
-            {"new", w_create}
-        };
-        luaL_Reg* w_metaFunctions = 
-        (luaL_Reg[]){
-            {"__gc", w__gc},
-            {"__index", w__index},
-        };
-        int functionCount = 2;
-        int metaFunctionCount = 2;
+        static const char* Name;
+        static const char* MetaName;
+        static luaL_Reg* w_functions;
+        static luaL_Reg* w_metaFunctions;
+        static int functionCount;
+        static int metaFunctionCount;
     
     public:
         

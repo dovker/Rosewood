@@ -2,30 +2,23 @@
 
 #include "wrapper.h"
 
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
+
+
+struct luaL_Reg;
+struct lua_State;
+
 
 namespace Rosewood
 {
+    
     class wrap_Application : public LuaWrapper
     {
     private:
 
 
-        const char* Name = "Application";
-        luaL_Reg* w_functions = 
-        (luaL_Reg[]){
-            {"GetDeltaTime", w_getDeltaTime},
-            {"GetDeltaTimeMiliseconds", w_getDeltaTimeMiliseconds},
-            {"GetTime", w_getTime},
-            {"GetTimeMiliseconds", w_getTimeMiliseconds},
-
-        };
-        int functionCount = 4; 
+        static const char* Name;
+        static luaL_Reg* w_functions;
+        static int functionCount; 
     
     public:
         static int w_getDeltaTime(lua_State* L);
@@ -47,14 +40,9 @@ namespace Rosewood
     {
     private:
 
-        const char* Name = "Window";
-        luaL_Reg* w_functions = 
-        (luaL_Reg[]){
-            {"SetTitle", w_setTitle},
-            {"GetWidth", w_getWidth},
-            {"GetHeight", w_getHeight}
-        };
-        int functionCount = 3;
+        static const char* Name;
+        static luaL_Reg* w_functions;
+        static int functionCount;
     
     public:
         static int w_setTitle(lua_State* L);

@@ -1,12 +1,11 @@
 #include "rwpch.h"
 #include "wrappers/wrapper.h"
 
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
+struct lua_State;
+struct luaL_Reg;
+typedef int (*lua_CFunction) (lua_State *L);
+
+
 namespace Rosewood
 {
     enum class LuaVar
@@ -47,8 +46,6 @@ namespace Rosewood
         void PushTableFunction(const char* fnName, lua_CFunction fn);
         void PushTableInt(const char* varName, int val);
         void PushTableBool(const char* varName, bool val);
-
-
 
 
         void CallVoidFunction(const char* fnName);

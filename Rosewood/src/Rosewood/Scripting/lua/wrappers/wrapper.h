@@ -1,12 +1,7 @@
 #pragma once
 #include "rwpch.h"
 
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
+struct luaL_Reg;
 
 namespace Rosewood
 {
