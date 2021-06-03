@@ -83,7 +83,8 @@ project "Rosewood"
         "assimp",
         "zlib",
         "lua",
-        "yaml-cpp"
+        "yaml-cpp",
+        "opengl32.lib"
     }
     defines
     {

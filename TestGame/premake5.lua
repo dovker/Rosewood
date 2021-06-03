@@ -89,6 +89,14 @@ project "TestGame"
             "{COPY} Content %{cfg.targetdir}",
             "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}"
         }
+        links
+        {
+            "GL",
+            "X11",
+            "dl",
+            "pthread",
+            "asound"
+        }
 --["RW_WORKSPACE_DIR=%{wks.location}"]
     
     filter "configurations:Debug"
