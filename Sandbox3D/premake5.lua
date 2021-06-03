@@ -57,7 +57,6 @@ project "Sandbox3D"
     
     
     filter "system:macosx"
-        systemversion "latest"
         links
         {
             "Cocoa.framework",

@@ -30,7 +30,6 @@ project "yaml-cpp"
 		staticruntime "On"
 
 	filter "system:macosx"
-	  	systemversion "latest"
 		cppdialect "C++17"
 	  	staticruntime "On"
 

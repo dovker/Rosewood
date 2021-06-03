@@ -55,7 +55,6 @@ project "TestGame"
     
     
     filter "system:macosx"
-        systemversion "latest"
         links
         {
             "Cocoa.framework",

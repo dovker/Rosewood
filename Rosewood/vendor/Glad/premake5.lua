@@ -28,7 +28,6 @@ project "Glad"
 		staticruntime "On"
 
 	filter "system:macosx"
-		systemversion "latest"
 		staticruntime "On"
         
 	filter { "system:windows", "configurations:Release" }

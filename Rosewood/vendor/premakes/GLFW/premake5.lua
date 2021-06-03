@@ -44,7 +44,6 @@ project "GLFW"
 
 	filter "system:macosx"
       	system "macosx"
-		systemversion "latest"
 		staticruntime "On"
 
 		files

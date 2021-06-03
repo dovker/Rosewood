@@ -97,8 +97,6 @@ project "Rosewood"
     filter "system:linux"
         systemversion "latest"
 
-    filter "system:macosx"
-        systemversion "latest"
 
     filter "configurations:Debug"
         defines "RW_DEBUG"
