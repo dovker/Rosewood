@@ -7,7 +7,7 @@ Rosewood Game Engine
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.
 
 # Recent Thoughts
-I have decided to replace Lua C library with Sol2 library for the sake of simplicity. I have learned how Lua C works and have gained the knowledge, therefore I see no further need to spend more time on it! 
+I am thinking to replace Lua C library with Sol2 library for the sake of simplicity. I have learned how Lua C works and have gained the knowledge, therefore I see no further need to spend more time on it! 
 
 # Features
 * OpenGL Support
@@ -83,6 +83,7 @@ I have decided to replace Lua C library with Sol2 library for the sake of simpli
 * [SoLoud](https://github.com/jarikomppa/soloud)
 * [Assimp](https://github.com/assimp/assimp)
 * [zlib](https://zlib.net)
+* minizip
 * [LUA](http://www.lua.org/home.html)
 * [Entt](https://github.com/skypjack/entt)
 * [yaml-cpp](https://github.com/jbeder/yaml-cpp)
