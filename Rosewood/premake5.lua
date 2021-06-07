@@ -20,7 +20,6 @@ project "Rosewood"
         "vendor/glm/glm/**.inl",
         "vendor/lua/**.cpp",
         "vendor/lua/**.h",
-
     }
     includedirs
     {

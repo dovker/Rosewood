@@ -4,6 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Rosewood/Files/File.h"
+#include "Rosewood/Assets/Asset.h"
+
 namespace Rosewood
 {
     class Shader
@@ -29,7 +32,11 @@ namespace Rosewood
         virtual void setVec4(const std::string& name, const glm::vec4& value)   = 0;
         virtual void setVec3(const std::string& name, const glm::vec3& value)   = 0;
         virtual void setVec2(const std::string& name, const glm::vec2& value)   = 0;
-        
+
+
+        static AssetType GetAssetType() { return AssetType::Shader; }
+
         static Ref<Shader> Create(const std::string& filepath);
+        static Ref<Shader> Create(const TextFile& file);
     };
 }

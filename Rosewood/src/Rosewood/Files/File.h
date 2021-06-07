@@ -1,8 +1,13 @@
+#pragma once
+
 #include "rwpch.h"
 #include "Rosewood/Core/Types.h"
+#include "Rosewood/Assets/Asset.h"
 
 namespace Rosewood
 {
+    class TextFile;
+
     class BinaryFile
     {
     public:
@@ -14,9 +19,13 @@ namespace Rosewood
         void Write();
         void Write(const std::string& filepath);
 
-        const std::string& GetPath() { return m_Path; }
-        std::vector<byte> GetData() { return m_Data; }
-        void SetData(const std::vector<byte>& data) { m_Data = data; } // Maybe copy the data?
+        const std::string& GetPath() const { return m_Path; }
+        std::vector<byte> GetData() const { return m_Data; }
+        void SetData(const std::vector<byte>& data) { m_Data = data; } // Maybe copy the data?  
+
+
+        TextFile ToTextFile();
+        static AssetType GetAssetType() { return AssetType::BinaryFile; }
 
         static Ref<BinaryFile> Create(const std::string& filepath)
         {
@@ -44,9 +53,14 @@ namespace Rosewood
         void Write();
         void Write(const std::string& filepath);
 
-        const std::string& GetPath() { return m_Path; }
-        const std::string& GetData() { return m_Data; }
+        const std::string& GetPath() const { return m_Path; }
+        const std::string& GetData() const { return m_Data; }
+        const std::vector<byte> GetRawData();
         void SetData(const std::string& data) { m_Data = data; } // Maybe copy the data?
+
+
+        BinaryFile ToBinaryFile();
+        static AssetType GetAssetType() { return AssetType::TextFile; }
 
         static Ref<TextFile> Create(const std::string& filepath)
         {

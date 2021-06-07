@@ -26,6 +26,21 @@ namespace Rosewood
         processNode(scene->mRootNode, scene);
         
     }
+    void Model::loadModel(const BinaryFile& file)
+    {
+        Assimp::Importer import;
+        const aiScene *scene = import.ReadFileFromMemory(file.GetData().data(), file.GetData().size(), aiProcess_Triangulate | aiProcess_CalcTangentSpace);
+        
+        if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+        {
+            RW_ERROR("ASSIMP : {0}", import.GetErrorString());
+            return;
+        }
+        
+        m_Path = file.GetPath().substr(0, file.GetPath().find_last_of('/'));
+
+        processNode(scene->mRootNode, scene);
+    }
     void Model::processNode(aiNode *node, const aiScene *scene)
     {
         // process all the node's meshes (if any)
@@ -134,7 +149,7 @@ namespace Rosewood
                       fixedPath[i] = '/';
                 }
                 
-                Ref<Texture> tex =Texture::Create(m_Path + "/" + fixedPath);
+                Ref<Texture> tex =Texture::Create(m_Path + "/" + fixedPath); //Add zip thing
                 textures.push_back(tex);
                 m_LoadedTextures.push_back(tex);
             }

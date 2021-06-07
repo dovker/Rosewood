@@ -1,7 +1,7 @@
 #include <rwpch.h>
 #include "Renderer2D.h"
 #include "BatchRenderer.h"
-#include "Rosewood/Assets/Assets.h"
+#include "Rosewood/Assets/AssetManager.h"
 #include "Rosewood/Files/FileSystem.h"
 #include "Rosewood/Graphics/Graphics.h"
 
@@ -22,7 +22,7 @@ namespace Rosewood
         Rosewood::GraphicsCommand::ToggleDepthTest(true);
 
         
-        s_Data.CircleTexture = AssetManager::Load<Texture>(FileSystem::GetPath("Textures/Circle.png", FilePathType::ENGINE), "Circle");
+        s_Data.CircleTexture = AssetManager::Load<Texture>("Textures/Circle.png", "Circle", FilePathType::ENGINE);
 
         
         s_Data.TransparentSprites = std::vector<std::pair<Ref<RenderItem2D>, Transform>>();

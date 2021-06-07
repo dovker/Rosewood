@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Rosewood/Graphics/API/Texture.h"
+#include "Rosewood/Files/File.h"
 
 typedef unsigned int GLenum;
 
@@ -13,6 +14,7 @@ namespace Rosewood
     public:
         // the program ID
         OpenGLTexture(const std::string& path);
+        OpenGLTexture(const BinaryFile& file);
         OpenGLTexture(uint32_t width, uint32_t height);
         
         ~OpenGLTexture();
@@ -35,5 +37,6 @@ namespace Rosewood
         uint32_t m_Width, m_Height;
         GLenum m_InternalFormat, m_DataFormat;
         uint32_t m_ID;
+        void loadTexture(unsigned char* data, int width, int height, int channels );
     };
 }

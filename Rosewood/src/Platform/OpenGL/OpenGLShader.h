@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Rosewood/Graphics/API/Shader.h"
+#include "Rosewood/Files/File.h"
 
 namespace Rosewood
 {
@@ -11,6 +12,7 @@ namespace Rosewood
     {
     public:
         OpenGLShader(const std::string& filepath);
+        OpenGLShader(const TextFile& file);
         virtual ~OpenGLShader() {}
         
         virtual void Bind() override;
@@ -38,5 +40,6 @@ namespace Rosewood
         uint32_t m_ID;
         uint32_t CompileShader(unsigned int type, const std::string& source);
         uint32_t Compile();
+        uint32_t Compile(const std::string& text);
     };
 }

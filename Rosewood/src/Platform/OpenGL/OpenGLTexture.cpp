@@ -6,17 +6,8 @@
 
 namespace Rosewood
 {
-    
-	OpenGLTexture::OpenGLTexture(const std::string& path)
-		: m_Path(path)
+    void OpenGLTexture::loadTexture(unsigned char* data, int width, int height, int channels )
 	{
-		int width, height, channels;
-		stbi_set_flip_vertically_on_load(1);
-
-		unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-	
-		RW_CORE_ASSERT(data, "Failed to load image!" + path + " stb_image: " + stbi_failure_reason());
-
 		m_Width = width;
 		m_Height = height;
 
@@ -57,8 +48,6 @@ namespace Rosewood
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
         
         glBindTexture(GL_TEXTURE_2D, 0);
-
-            
 //            glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
 //            glTextureStorage2D(m_ID, 1, internalFormat, m_Width, m_Height);
 //
@@ -70,8 +59,32 @@ namespace Rosewood
 //
 //            glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
         
-        
 		stbi_image_free(data);
+	}
+
+	OpenGLTexture::OpenGLTexture(const std::string& path)
+		: m_Path(path)
+	{
+		int width, height, channels;
+		stbi_set_flip_vertically_on_load(1);
+
+		unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+	
+		RW_CORE_ASSERT(data, "Failed to load image! " + m_Path + " stb_image: " + stbi_failure_reason());
+
+		loadTexture(data, width, height, channels);
+	}
+	OpenGLTexture::OpenGLTexture(const BinaryFile& file)
+		: m_Path(file.GetPath())
+	{
+		int width, height, channels;
+		stbi_set_flip_vertically_on_load(1);
+
+		unsigned char* data = stbi_load_from_memory(file.GetData().data(), file.GetData().size(), &width, &height, &channels, 0);
+	
+		RW_CORE_ASSERT(data, "Failed to load image! " + m_Path + " stb_image: " + stbi_failure_reason());
+
+		loadTexture(data, width, height, channels);
 	}
 	
 	OpenGLTexture::OpenGLTexture(uint32_t width, uint32_t height)

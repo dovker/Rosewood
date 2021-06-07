@@ -36,27 +36,6 @@ namespace Rosewood
 
         static uintmax_t FileSize(const std::string& path, FilePathType type = FilePathType::PROJECT);
 
-
-        // FILE ReadFile(Path)
-        // void WriteFile(FILE file);
-        // FILE ReadFileCompressed();
-        // void WriteFileCompressed;
-        // void MakeDir
-        // void CopyFile(FILE);
-        // std::string ListDirectory
-
-        //Unordered map for default storing places
-        //Also contains platform specific application folders for save files
-
-        //Also make a file watcher??
-        //USE FILESYSTEM FOR COPYING AND SUCH
-        //Get List of files in a path
-
-        //Also, ZLIB?
-        //Zlib functions in loading?
-        //Byte Data loading
-
-        //Abstracting FILE Class which holds file data and reads / writes.
     private:
         static std::filesystem::path getFSPath(const std::string& path, FilePathType type);
     };

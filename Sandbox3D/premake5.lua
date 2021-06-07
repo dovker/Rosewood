@@ -24,7 +24,7 @@ project "Sandbox3D"
         "%{IncludeDir.entt}",
         "%{IncludeDir.assimp}",
         "%{IncludeDir.SoLoud}",
-        "%{IncludeDir.lua}",
+        "%{IncludeDir.zlib}",
 
     }
     links
@@ -51,7 +51,7 @@ project "Sandbox3D"
             "%{IncludeDir.entt}",
             "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}",
-            "%{IncludeDir.lua}",
+            "%{IncludeDir.zlib}",
 
         }
     

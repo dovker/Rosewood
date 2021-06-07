@@ -6,6 +6,8 @@
 #include "soloud_thread.h"
 #include "soloud_wav.h"
 
+#include "Rosewood/Files/File.h"
+#include "Rosewood/Assets/Asset.h"
 
 namespace Rosewood {
 
@@ -16,6 +18,7 @@ namespace Rosewood {
         Sound();
         
         Sound(const std::string& path);
+        Sound(const BinaryFile& file);
         const std::string& GetPath() { return m_Path; }
         
         void Play();
@@ -41,6 +44,9 @@ namespace Rosewood {
         void SetPause(bool pause);
 
         static Ref<Sound> Create(const std::string& path);
+        static Ref<Sound> Create(const BinaryFile& file);
+
+        static AssetType GetAssetType() { return AssetType::Sound; }
     
     private:
         int m_Handle;

@@ -49,6 +49,17 @@ namespace Rosewood {
         return CreateRef<Sound>(path);
     }
 
+    Sound::Sound(const BinaryFile& file)
+        : m_Path(file.GetPath())
+    {
+        m_Sound.loadMem(file.GetData().data(), file.GetData().size(), true, true);
+    }
+
+    Ref<Sound> Sound::Create(const BinaryFile& file)
+    {
+        return CreateRef<Sound>(file);
+    }
+
     void Sound::Play()
     {
         m_Handle = s_AudioDevice->play(m_Sound, m_Volume, m_Pan, m_Paused);

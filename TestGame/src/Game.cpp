@@ -38,6 +38,7 @@ namespace TestGame {
         file.SetData(Rosewood::Compression::Decompress(file.GetData()));
         file.Write(Rosewood::FileSystem::GetPath("grass2.png"));
 
+
         s_Scene = new Scene();
         
         s_Scene->OnLoad();

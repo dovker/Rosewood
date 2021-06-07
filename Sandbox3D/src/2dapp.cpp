@@ -18,7 +18,6 @@ public:
     
     Rosewood::Ref<Rosewood::Model> model;
     
-    Rosewood::AssetManager assetManager;
     Rosewood::Ref<Rosewood::Sound> sound;
     
     Rosewood::EditorCamera camera = Rosewood::EditorCamera(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);

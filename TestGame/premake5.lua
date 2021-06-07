@@ -24,7 +24,7 @@ project "TestGame"
         "%{IncludeDir.entt}",
         "%{IncludeDir.assimp}",
         "%{IncludeDir.SoLoud}",
-        "%{IncludeDir.lua}",
+        "%{IncludeDir.zlib}",
     }
     links
     {
@@ -49,7 +49,7 @@ project "TestGame"
             "%{IncludeDir.entt}",
             "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}",
-            "%{IncludeDir.lua}",
+            "%{IncludeDir.zlib}",
 
         }
     

@@ -21,7 +21,6 @@ public:
     
     Rosewood::Ref<Rosewood::SpriteFont> font;
     
-    Rosewood::AssetManager assetManager;
     Rosewood::Ref<Rosewood::VertexArray> m_VertexArray;
     Rosewood::Ref<Rosewood::Framebuffer> m_Framebuffer;
     Rosewood::Ref<Rosewood::Sound> sound;
@@ -61,18 +60,18 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{
-        Rosewood::Ref<Rosewood::Texture> albedo = assetManager.Load<Rosewood::Texture>("Content/TestBox.png", "Deferred_Albedo");
-        Rosewood::Ref<Rosewood::Texture> normal = assetManager.Load<Rosewood::Texture>("Content/Deferred_Normal.png", "Deferred_Normal");
-        Rosewood::Ref<Rosewood::Texture> spec = assetManager.Load<Rosewood::Texture>("Content/Deferred_Specular.png", "Deferred_Specular");
-        Rosewood::Ref<Rosewood::Texture> lightTex = assetManager.Load<Rosewood::Texture>("Content/awesomeface.png", "DecalLight");
+        Rosewood::Ref<Rosewood::Texture> albedo = Rosewood::AssetManager::Load<Rosewood::Texture>("TestBox.png", "Deferred_Albedo");
+        Rosewood::Ref<Rosewood::Texture> normal = Rosewood::AssetManager::Load<Rosewood::Texture>("Deferred_Normal.png", "Deferred_Normal");
+        Rosewood::Ref<Rosewood::Texture> spec = Rosewood::AssetManager::Load<Rosewood::Texture>("Deferred_Specular.png", "Deferred_Specular");
+        Rosewood::Ref<Rosewood::Texture> lightTex = Rosewood::AssetManager::Load<Rosewood::Texture>("awesomeface.png", "DecalLight");
         
-        sofa.Load(assetManager);
+        sofa.Load();
 
         texture = lightTex;
 
         
-        assetManager.Load<Rosewood::Sound>("Content/sound.mp3", "Sound");
-        assetManager.Load<Rosewood::Texture>("Content/Chroma.png", "Sprite_Font");
+        Rosewood::AssetManager::Load<Rosewood::Sound>("sound.mp3", "Sound");
+        Rosewood::AssetManager::Load<Rosewood::Texture>("Chroma.png", "Sprite_Font");
         
 //        mesh = Rosewood::RenderMesh::Create(
 //        std::vector<float>{-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
@@ -85,8 +84,8 @@ public:
         flatMesh = Rosewood::RenderMesh::CreateFlatQuad(std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
         planeMesh= Rosewood::RenderMesh::CreatePerpendicularQuad(std::vector<Rosewood::Ref<Rosewood::Texture>>{albedo, normal, spec});
 
-        sound = assetManager.Get<Rosewood::Sound>("Sound");
-        fontTexture = assetManager.Get<Rosewood::Texture>("Sprite_Font");
+        sound = Rosewood::AssetManager::Get<Rosewood::Sound>("Sound");
+        fontTexture = Rosewood::AssetManager::Get<Rosewood::Texture>("Sprite_Font");
         
         decal = Rosewood::DecalLight::Create(texture, {mouseX, mouseY, 0.0f}, direction, color * intensityDecal, {texture->GetWidth(), texture->GetHeight()});
         

@@ -40,10 +40,12 @@
 #include "Rosewood/Scripting/lua/LuaState.h"
 
 
-#include "Rosewood/Assets/Assets.h"
+#include "Rosewood/Assets/AssetManager.h"
 #include "Rosewood/Files/FileSystem.h"
 #include "Rosewood/Files/File.h"
 #include "Rosewood/Data/Compression.h"
+#include "Rosewood/Data/Pack.h"
+
 
 #include "Rosewood/Audio/Audio.h"
 

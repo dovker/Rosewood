@@ -13,6 +13,11 @@ namespace Rosewood
 	{
 		m_ID = Compile();
 	}
+	OpenGLShader::OpenGLShader(const TextFile& file)
+		: m_Path(file.GetPath())
+	{
+		m_ID = Compile(file.GetData());
+	}
 
 	uint32_t OpenGLShader::CompileShader(unsigned int type, const std::string& source)
 	{
@@ -42,6 +47,60 @@ namespace Rosewood
 	uint32_t OpenGLShader::Compile()
 	{
 		std::ifstream stream(m_Path);
+		enum class ShaderType
+		{
+			NONE = -1, VERTEX = 0, FRAGMENT = 1
+		};
+		std::string line;
+		std::stringstream ss[2];
+		ShaderType type = ShaderType::NONE;
+		try
+		{
+			while (getline(stream, line))
+			{
+				if (line.find("#shader") != std::string::npos)
+				{
+					if (line.find("vertex") != std::string::npos)
+						type = ShaderType::VERTEX;
+					else if (line.find("fragment") != std::string::npos)
+						type = ShaderType::FRAGMENT;
+
+				}
+				else
+				{
+					ss[(int)type] << line << "\n";
+				}
+			}
+			if(stream.bad())
+			{
+				throw std::invalid_argument("Error Reading the file");
+			}
+		}
+		catch (const std::invalid_argument& e)
+		{
+			RW_CORE_ERROR("SHADER IFSTREAM ERROR: {0}", e.what());
+		}
+		const std::string vertexShader = ss[0].str();
+		const std::string fragmentShader = ss[1].str();
+		
+		uint32_t id = glCreateProgram();
+		uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+		uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+		glAttachShader(id, vs);
+		glAttachShader(id, fs);
+		glLinkProgram(id);
+		glValidateProgram(id);
+
+		glDeleteShader(vs);
+		glDeleteShader(fs);
+
+		return id;
+	}
+	uint32_t OpenGLShader::Compile(const std::string& text)
+	{
+		std::stringstream stream;
+		stream << text;
 		enum class ShaderType
 		{
 			NONE = -1, VERTEX = 0, FRAGMENT = 1

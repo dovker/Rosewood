@@ -24,4 +24,13 @@ namespace Rosewood
         }
         return nullptr;
     }
+    Ref<Texture> Texture::Create(const BinaryFile& file)
+    {
+        switch (Graphics::GetAPI())
+        {
+            case Graphics::API::None:    RW_CORE_ASSERT(false, "None is currently not supported!"); return nullptr;
+            case Graphics::API::OpenGL:  return CreateRef<OpenGLTexture>(file);
+        }
+        return nullptr;
+    }
 }

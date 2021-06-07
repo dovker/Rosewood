@@ -7,6 +7,9 @@
 #include "Rosewood/Graphics/API/Buffer.h"
 #include "Mesh.h"
 
+#include "Rosewood/Files/File.h"
+#include "Rosewood/Assets/Asset.h"
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -68,14 +71,25 @@ namespace Rosewood {
         {
             loadModel(path);
         }
+        Model(const BinaryFile& file)
+            : m_Path(file.GetPath())
+        {
+            loadModel(file);
+        }
         static Ref<Model> Create(const std::string& path)
         {
             return CreateRef<Model>(path);
+        }
+        static Ref<Model> Create(const BinaryFile& file)
+        {
+            return CreateRef<Model>(file);
         }
         void SetShader(Ref<Shader> shader) { m_Material->SetShader(shader); }
         Ref<Shader> GetShader() { return m_Material->shader; }
         
         std::vector<Ref<Mesh>> GetMeshes() { return m_Meshes; }
+
+        static AssetType GetAssetType() { return AssetType::Model; }
         
         void SetMaterial(Ref<Material> material) { m_Material = material; }
         void BindMaterial() { m_Material->Bind(); }
@@ -89,6 +103,8 @@ namespace Rosewood {
         std::string m_Path;
         std::vector<Ref<Texture>> m_LoadedTextures;
         void loadModel(const std::string& path);
+        void loadModel(const BinaryFile& file);
+
         void processNode(aiNode *node, const aiScene *scene);
         Ref<Mesh> processMesh(aiMesh *mesh, const aiScene *scene);
         std::vector<Ref<Texture>> loadMaterialTextures(aiMaterial *mat, aiTextureType type);

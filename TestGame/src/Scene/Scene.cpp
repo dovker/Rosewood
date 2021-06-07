@@ -14,7 +14,7 @@ extern uint32_t TileSize = 8;
 
     void Scene::OnLoad()
     {
-        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Load<Rosewood::Texture>(Rosewood::FileSystem::GetPath("Tileset.png"), "Tileset");
+        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Load<Rosewood::Texture>("Tileset.png", "Tileset");
        
         Rosewood::Ref<Rosewood::Sprite> sprite = Rosewood::Sprite::Create(mapTexture);
 

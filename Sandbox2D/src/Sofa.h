@@ -11,24 +11,24 @@ public:
     Ref<Texture> Top_n, Arm_n, Front_n, Thing_n, Seat_n, Back_n, Blank_n;
     Ref<RenderMesh> Top_m, Arm_m, Front_m, Thing_m, Seat_m, Back_m, Blank_m;
     float scale = 5.0f;
-    void Load(AssetManager asset)
+    void Load()
     {
-        Top   = asset.Load<Texture>("Content/Room/Sofa_Top.png", "Top");
-        Arm   = asset.Load<Texture>("Content/Room/Sofa_ArmRest.png", "Arm");
-        Front = asset.Load<Texture>("Content/Room/Sofa_Front.png", "Front");
-        Thing = asset.Load<Texture>("Content/Room/Sofa_Thing.png", "Thing");
-        Seat  = asset.Load<Texture>("Content/Room/Sofa_Seat.png", "Seat");
-        Back  = asset.Load<Texture>("Content/Room/Sofa_Back.png", "Back");
+        Top   = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Top.png", "Top");
+        Arm   = Rosewood::AssetManager::Load<Texture>("Room/Sofa_ArmRest.png", "Arm");
+        Front = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Front.png", "Front");
+        Thing = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Thing.png", "Thing");
+        Seat  = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Seat.png", "Seat");
+        Back  = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Back.png", "Back");
         
-        Top_n   = asset.Load<Texture>("Content/Room/Sofa_Normal_Top.png", "Top_n");
-        Arm_n   = asset.Load<Texture>("Content/Room/Sofa_Normal_ArmRest.png", "Arm_n");
-        Front_n = asset.Load<Texture>("Content/Room/Sofa_Normal_Front.png", "Front_n");
-        Thing_n = asset.Load<Texture>("Content/Room/Sofa_Normal_Thing.png", "Thing_n");
-        Seat_n  = asset.Load<Texture>("Content/Room/Sofa_Normal_Seat.png", "Seat_n");
-        Back_n  = asset.Load<Texture>("Content/Room/Sofa_Normal_Back.png", "Back_n");
+        Top_n   = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Normal_Top.png", "Top_n");
+        Arm_n   = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Normal_ArmRest.png", "Arm_n");
+        Front_n = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Normal_Front.png", "Front_n");
+        Thing_n = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Normal_Thing.png", "Thing_n");
+        Seat_n  = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Normal_Seat.png", "Seat_n");
+        Back_n  = Rosewood::AssetManager::Load<Texture>("Room/Sofa_Normal_Back.png", "Back_n");
         
-        blank = asset.Load<Texture>("Content/Room/blank.png", "blank");
-        Blank_n = asset.Load<Texture>("Content/Room/blank_n.png", "blank_n");
+        blank = Rosewood::AssetManager::Load<Texture>("Room/blank.png", "blank");
+        Blank_n = Rosewood::AssetManager::Load<Texture>("Room/blank_n.png", "blank_n");
 
         
         Top_m   = RenderMesh::CreateFlatQuad(std::vector<Ref<Texture>>{Top  , Top_n  , blank});

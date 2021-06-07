@@ -81,8 +81,19 @@ namespace Rosewood
             RW_CORE_ERROR("BINARY OFSTREAM ERROR: {0}", e.what());
         }
     }
+    TextFile BinaryFile::ToTextFile()
+    {
+        return TextFile(std::string(m_Data.begin(), m_Data.end()));
+    }
 
-
+    BinaryFile TextFile::ToBinaryFile()
+    {
+        return BinaryFile(std::vector<byte>(m_Data.begin(), m_Data.end()));
+    }
+    const std::vector<byte> TextFile::GetRawData()
+    {
+        return std::vector<byte>(m_Data.begin(), m_Data.end());
+    }
     void TextFile::m_Load(const std::string& filepath)
     {
         try
