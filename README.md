@@ -25,11 +25,11 @@ I am thinking to replace Lua C library with Sol2 library for the sake of simplic
 
 # Goals / To-do
 * Networking
+* Project Exporting
 * Binary Serialization
 * Scene Serialization
 * Level editor
 * 3D Rendering
-* Project Exporting
 * Scripted UI
 * Text rendering
 * Particle effects
