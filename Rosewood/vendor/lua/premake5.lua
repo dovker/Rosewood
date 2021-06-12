@@ -1,6 +1,7 @@
 project "lua"
 	language    "C"
 	kind        "StaticLib"
+	staticruntime "on"
 	warnings    "off"
 
 	includedirs { "src" }

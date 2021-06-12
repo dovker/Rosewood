@@ -1,7 +1,7 @@
 project "Rosewood"
     kind "StaticLib"
     language "C++"
-    staticruntime "off"
+    staticruntime "on"
     cppdialect "C++17"
     
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")

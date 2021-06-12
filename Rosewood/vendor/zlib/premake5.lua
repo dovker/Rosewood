@@ -1,4 +1,3 @@
-  
 project "zlib"
 	language    "C"
 	kind        "StaticLib"
@@ -7,18 +6,20 @@ project "zlib"
 	defines     { "N_FSEEKO" }
 	warnings    "off"
 
-	
-
-	filter "system:windows"
-		defines { "_WINDOWS", "WIN32" }
-
-	filter "system:not windows"
-		defines { 'HAVE_UNISTD_H', "unix" }
-
-		
 	files
 	{
 		"*.h",
 		"*.c"
 	}
 
+
+	filter "system:windows"
+		defines { "_WINDOWS", "WIN32" }
+	filter{}
+
+	filter "system:not windows"
+		defines { 'HAVE_UNISTD_H', "unix" }
+	filter{}
+
+		
+	

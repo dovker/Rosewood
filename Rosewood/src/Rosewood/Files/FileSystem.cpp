@@ -1,3 +1,5 @@
+#include "rwpch.h"
+
 #include "FileSystem.h"
 
 namespace Rosewood
@@ -27,13 +29,13 @@ namespace Rosewood
         root = "";
 #endif
         std::filesystem::path currentPath(root + contentName + path);
-        return currentPath;
+        return currentPath.make_preferred();
     }
 
 
     std::string FileSystem::GetPath(const std::string& path, FilePathType type)
     {
-        return getFSPath(path, type).c_str();
+        return getFSPath(path, type).string();
     }
 
     void FileSystem::CreateDirectory(const std::string& path, FilePathType type)
@@ -122,7 +124,7 @@ namespace Rosewood
         try {
             for(auto& p: std::filesystem::directory_iterator(getFSPath(path, type)))
             {
-                std::string str = p.path();
+                std::string str = p.path().string();
                 str.erase(0, getFSPath("", type).string().size());
                 vec.push_back(str);
             }
@@ -134,11 +136,11 @@ namespace Rosewood
     }
     std::string FileSystem::GetFilename(const std::string& path)
     {
-        return std::filesystem::path(path).filename();
+        return std::filesystem::path(path).filename().string();
     }
     std::string FileSystem::GetExtension(const std::string& path)
     {
-        return std::filesystem::path(path).extension();
+        return std::filesystem::path(path).extension().string();
     }
     uintmax_t FileSystem::FileSize(const std::string& path, FilePathType type)
     {
