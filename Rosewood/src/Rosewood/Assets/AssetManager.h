@@ -10,6 +10,7 @@ namespace Rosewood {
     struct AssetsData
     {
         std::unordered_map<std::string, Asset> Assets;
+        //bool archived;
     };
 
     static AssetsData assetsData;
@@ -28,7 +29,7 @@ namespace Rosewood {
         }
         template <class T> static void Unload(const std::string& name)
         {
-            assetsData.Assets[name].Get<T>().reset();
+            assetsData.Assets[name].Unload<T>();
         }
         template <class T> static Ref<T> Get(const std::string& name)
         {
@@ -46,7 +47,7 @@ namespace Rosewood {
             assetsData.Assets[name] = temp;
         }
 
-        
+        //static bool packed;
     };
     
 }

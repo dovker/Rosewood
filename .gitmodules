@@ -27,3 +27,6 @@
 [submodule "Rosewood/vendor/assimp"]
 	path = Rosewood/vendor/assimp
 	url = https://github.com/dovker/assimp.git
+[submodule "Rosewood/vendor/json"]
+	path = Rosewood/vendor/json
+	url = https://github.com/nlohmann/json.git

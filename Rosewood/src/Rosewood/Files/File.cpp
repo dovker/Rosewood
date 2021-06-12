@@ -47,6 +47,11 @@ namespace Rosewood
     {
 
     }
+    BinaryFile::BinaryFile(const BinaryFile& data)
+        : m_Data(data.GetData())
+    {
+
+    }
     BinaryFile::~BinaryFile()
     {
 
@@ -81,12 +86,13 @@ namespace Rosewood
             RW_CORE_ERROR("BINARY OFSTREAM ERROR: {0}", e.what());
         }
     }
-    TextFile BinaryFile::ToTextFile()
+    TextFile BinaryFile::ToTextFile() const 
     {
         return TextFile(std::string(m_Data.begin(), m_Data.end()));
     }
+    
 
-    BinaryFile TextFile::ToBinaryFile()
+    BinaryFile TextFile::ToBinaryFile() const
     {
         return BinaryFile(std::vector<byte>(m_Data.begin(), m_Data.end()));
     }
@@ -122,6 +128,10 @@ namespace Rosewood
     TextFile::TextFile(std::string& data)
         : m_Data(data)
     {
+    }
+    TextFile::TextFile(const BinaryFile& data)
+    {
+        m_Data = std::string(m_Data.begin(), m_Data.end());
     }
 
     void TextFile::Reload()

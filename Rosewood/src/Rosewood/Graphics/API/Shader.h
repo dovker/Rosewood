@@ -37,6 +37,7 @@ namespace Rosewood
         static AssetType GetAssetType() { return AssetType::Shader; }
 
         static Ref<Shader> Create(const std::string& filepath);
+        static Ref<Shader> Create(const BinaryFile& file);
         static Ref<Shader> Create(const TextFile& file);
     };
 }

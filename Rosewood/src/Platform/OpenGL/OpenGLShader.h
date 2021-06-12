@@ -12,7 +12,9 @@ namespace Rosewood
     {
     public:
         OpenGLShader(const std::string& filepath);
+        OpenGLShader(const BinaryFile& file);
         OpenGLShader(const TextFile& file);
+
         virtual ~OpenGLShader() {}
         
         virtual void Bind() override;

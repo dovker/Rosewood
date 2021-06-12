@@ -32,7 +32,7 @@ namespace Rosewood {
     public:
         Asset(){};
         Asset(std::any asset, const std::string& path, const std::string& name, FilePathType pathType, uint32_t version)
-            : m_Asset(asset), m_Path(path), m_Name(name), m_Version(version), m_PathType(pathType)
+            : m_Asset(asset), m_Path(path), m_Name(name), m_Version(version), m_PathType(pathType), m_Loaded(false)
         {}
         ~Asset(){};
 
@@ -46,20 +46,34 @@ namespace Rosewood {
             m_Version = version;
             m_PathType = pathType;
             m_Asset = ref;
+            m_Loaded = true;
 
             return ref;
         }
+        //LoadArchived
+
     
         template <class T> Ref<T> Get()
         {
             if(T::GetAssetType() == m_AssetType)
             {
-                return std::any_cast<Ref<T>>(m_Asset);
+                if(m_Loaded)
+                    return std::any_cast<Ref<T>>(m_Asset);
+                else
+                     RW_CORE_ERROR("ASSET NAMED {0} IS NOT LOADED", m_Name);
             }
             else
             {
                 RW_CORE_ERROR("ASSET TYPES {0} and {1} DON'T MATCH", AssetTypeNames[(int)T::GetAssetType()], AssetTypeNames[(int)m_AssetType]);
                 return nullptr;
+            }
+        }
+        template <class T> void Unload()
+        {
+            if(m_Loaded)
+            {
+                m_Loaded = false;
+                std::any_cast<Ref<T>>(m_Asset).reset();
             }
         }
 
@@ -70,7 +84,7 @@ namespace Rosewood {
         FilePathType GetFilePathType() const { return m_PathType; }
         
         template <class T>
-        void SetData(const T& data) { m_Asset = data; }
+        void SetData(const T& data) { m_Asset = data; m_Loaded = true; }
 
     private:
         AssetType m_AssetType;
@@ -78,8 +92,14 @@ namespace Rosewood {
         std::string m_Path;
         uint32_t m_Version;
         FilePathType m_PathType;
+        //bool m_Compressed;
+        //bool toLoadOnInit
+        bool m_Loaded;
 
         std::any m_Asset;
+
+        //LoadBytes() {if(Compressed) do this else do that}
+        
     };
 
 }

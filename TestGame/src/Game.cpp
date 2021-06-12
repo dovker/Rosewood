@@ -31,12 +31,16 @@ namespace TestGame {
 
         Rosewood::BinaryFile file(Rosewood::FileSystem::GetPath("grass.png"));
 
-        file.SetData(Rosewood::Compression::Compress(file.GetData()));
-        file.Write(Rosewood::FileSystem::GetPath("grass.rwimg"));
-
-        file = Rosewood::BinaryFile(Rosewood::FileSystem::GetPath("grass.rwimg"));
-        file.SetData(Rosewood::Compression::Decompress(file.GetData()));
-        file.Write(Rosewood::FileSystem::GetPath("grass2.png"));
+        {
+            file.Write(Rosewood::FileSystem::GetPath("grass1.png"));
+            Rosewood::Pack pack(Rosewood::FileSystem::GetPath("Pack.zip"));
+            pack.AddFile("grass.png", file.GetData());
+        }
+        {
+            Rosewood::Pack pack(Rosewood::FileSystem::GetPath("Pack.zip"));
+            file.SetData(pack.ReadFile("grass.png"));
+            file.Write(Rosewood::FileSystem::GetPath("grass123.png"));
+        }
 
 
         s_Scene = new Scene();

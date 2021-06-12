@@ -35,7 +35,9 @@ project "Rosewood"
         "%{IncludeDir.zlib}",
         "%{IncludeDir.lua}",
         "%{IncludeDir.entt}",
-        "%{IncludeDir.yaml_cpp}"
+        "%{IncludeDir.yaml_cpp}",
+        "%{IncludeDir.json}",
+        "%{IncludeDir.libzip}",
     }
     filter "action:xcode4"
         pchheader "src/rwpch.h"
@@ -56,7 +58,9 @@ project "Rosewood"
             "%{IncludeDir.zlib}",
             "%{IncludeDir.lua}",
             "%{IncludeDir.entt}",
-            "%{IncludeDir.yaml_cpp}"
+            "%{IncludeDir.yaml_cpp}",
+            "%{IncludeDir.json}",
+            "%{IncludeDir.libzip}",
         }
     filter {}
     
@@ -81,6 +85,7 @@ project "Rosewood"
         "SoloudStatic",
         "assimp",
         "zlib",
+        "libzip",
         "lua",
         "yaml-cpp",
         "opengl32.lib"

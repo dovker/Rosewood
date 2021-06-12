@@ -24,7 +24,8 @@ project "TestGame"
         "%{IncludeDir.entt}",
         "%{IncludeDir.assimp}",
         "%{IncludeDir.SoLoud}",
-        "%{IncludeDir.zlib}",
+        "%{IncludeDir.yaml_cpp}",
+        "%{IncludeDir.json}",
     }
     links
     {
@@ -35,6 +36,8 @@ project "TestGame"
         "SoloudStatic",
         "assimp",
         "zlib",
+        "libzip",
+        "yaml-cpp",
         "lua"
     }
     
@@ -49,8 +52,8 @@ project "TestGame"
             "%{IncludeDir.entt}",
             "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}",
-            "%{IncludeDir.zlib}",
-
+            "%{IncludeDir.yaml_cpp}",
+            "%{IncludeDir.json}",
         }
     
     

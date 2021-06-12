@@ -13,6 +13,8 @@ namespace Rosewood
     public:
         BinaryFile(const std::string& filepath);
         BinaryFile(const std::vector<byte>& data);
+        BinaryFile(const BinaryFile& data);
+
         ~BinaryFile();
 
         void Reload();
@@ -24,7 +26,7 @@ namespace Rosewood
         void SetData(const std::vector<byte>& data) { m_Data = data; } // Maybe copy the data?  
 
 
-        TextFile ToTextFile();
+        TextFile ToTextFile() const;
         static AssetType GetAssetType() { return AssetType::BinaryFile; }
 
         static Ref<BinaryFile> Create(const std::string& filepath)
@@ -47,6 +49,8 @@ namespace Rosewood
     public:
         TextFile(const std::string& filepath);
         TextFile(std::string& data);
+        TextFile(const BinaryFile& data);
+
         ~TextFile() {};
 
         void Reload();
@@ -59,7 +63,7 @@ namespace Rosewood
         void SetData(const std::string& data) { m_Data = data; } // Maybe copy the data?
 
 
-        BinaryFile ToBinaryFile();
+        BinaryFile ToBinaryFile() const;
         static AssetType GetAssetType() { return AssetType::TextFile; }
 
         static Ref<TextFile> Create(const std::string& filepath)
@@ -67,6 +71,10 @@ namespace Rosewood
             return CreateRef<TextFile>(filepath);
         }
         static Ref<TextFile> Create(std::string& data)
+        {
+            return CreateRef<TextFile>(data);
+        }
+        static Ref<TextFile> Create(const BinaryFile& data)
         {
             return CreateRef<TextFile>(data);
         }

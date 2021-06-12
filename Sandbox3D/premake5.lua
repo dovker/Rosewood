@@ -24,7 +24,6 @@ project "Sandbox3D"
         "%{IncludeDir.entt}",
         "%{IncludeDir.assimp}",
         "%{IncludeDir.SoLoud}",
-        "%{IncludeDir.zlib}",
 
     }
     links
@@ -36,6 +35,8 @@ project "Sandbox3D"
         "SoloudStatic",
         "assimp",
         "zlib",
+        "libzip",
+        "yaml-cpp",
         "lua"
     }
     
@@ -51,7 +52,6 @@ project "Sandbox3D"
             "%{IncludeDir.entt}",
             "%{IncludeDir.assimp}",
             "%{IncludeDir.SoLoud}",
-            "%{IncludeDir.zlib}",
 
         }
     

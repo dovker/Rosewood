@@ -13,6 +13,11 @@ namespace Rosewood
 	{
 		m_ID = Compile();
 	}
+	OpenGLShader::OpenGLShader(const BinaryFile& file)
+		: m_Path(file.GetPath())
+	{
+		m_ID = Compile(file.ToTextFile().GetData());
+	}
 	OpenGLShader::OpenGLShader(const TextFile& file)
 		: m_Path(file.GetPath())
 	{
