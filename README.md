@@ -13,7 +13,6 @@ I am thinking to replace Lua C library with Sol2 library for the sake of simplic
 * OpenGL Support
 * Cross-Platform (Tested on major desktop platforms)
 * 2D Rendering (Line Rendering to come in the future)
-* Simple Asset manager and library
 * Audio (SoLoud) support
 * Spritefont support
 * ECS
@@ -21,17 +20,16 @@ I am thinking to replace Lua C library with Sol2 library for the sake of simplic
 * File Compression
 
 # Currently working on
-* Yaml and Binary Serialization
+* Asset Manager with zip archive support
 * Lua Scripting
 
 # Goals / To-do
 * Networking
-* LUA Scripting
+* Project Exporting
+* Binary Serialization
 * Scene Serialization
-* Asset Importing and Compression (Tool Later)
 * Level editor
 * 3D Rendering
-* Project Exporting
 * Scripted UI
 * Text rendering
 * Particle effects
@@ -83,7 +81,7 @@ I am thinking to replace Lua C library with Sol2 library for the sake of simplic
 * [SoLoud](https://github.com/jarikomppa/soloud)
 * [Assimp](https://github.com/assimp/assimp)
 * [zlib](https://zlib.net)
-* minizip
+* [libzip](https://libzip.org)
 * [LUA](http://www.lua.org/home.html)
 * [Entt](https://github.com/skypjack/entt)
 * [yaml-cpp](https://github.com/jbeder/yaml-cpp)
