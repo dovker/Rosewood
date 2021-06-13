@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Rosewood/Files/File.h"
-#include "Rosewood/Assets/Asset.h"
+#include "Rosewood/Assets/AssetTypes.h"
 
 namespace Rosewood
 {

@@ -1,7 +1,7 @@
 #include "rwpch.h"
 
 #include "File.h"
-#include "rwpch.h"
+#include "Rosewood/Data/Compression.h"
 
 namespace Rosewood
 {
@@ -53,6 +53,12 @@ namespace Rosewood
         : m_Data(data.GetData())
     {
 
+    }
+    void BinaryFile::Compress(){
+        m_Data = Rosewood::Compression::Compress(m_Data);
+    }
+    void BinaryFile::Decompress(){
+        m_Data = Rosewood::Compression::Decompress(m_Data);
     }
     BinaryFile::~BinaryFile()
     {

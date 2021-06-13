@@ -8,7 +8,8 @@
 #include "Mesh.h"
 
 #include "Rosewood/Files/File.h"
-#include "Rosewood/Assets/Asset.h"
+#include "Rosewood/Assets/AssetTypes.h"
+
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>

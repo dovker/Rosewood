@@ -2,7 +2,7 @@
 
 #include "rwpch.h"
 #include "Rosewood/Core/Types.h"
-#include "Rosewood/Assets/Asset.h"
+#include "Rosewood/Assets/AssetTypes.h"
 
 namespace Rosewood
 {
@@ -11,6 +11,7 @@ namespace Rosewood
     class BinaryFile
     {
     public:
+        BinaryFile() {}
         BinaryFile(const std::string& filepath);
         BinaryFile(const std::vector<byte>& data);
         BinaryFile(const BinaryFile& data);
@@ -24,6 +25,8 @@ namespace Rosewood
         const std::string& GetPath() const { return m_Path; }
         std::vector<byte> GetData() const { return m_Data; }
         void SetData(const std::vector<byte>& data) { m_Data = data; } // Maybe copy the data?  
+        void Compress();
+        void Decompress();
 
 
         TextFile ToTextFile() const;
@@ -47,6 +50,7 @@ namespace Rosewood
     class TextFile
     {
     public:
+        TextFile() {}
         TextFile(const std::string& filepath);
         TextFile(std::string& data);
         TextFile(const BinaryFile& data);

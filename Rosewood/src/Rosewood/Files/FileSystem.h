@@ -6,7 +6,8 @@ namespace Rosewood
     enum class FilePathType
     {
         ENGINE,
-        PROJECT
+        PROJECT,
+        USER
     };
 
     class FileSystem
@@ -14,10 +15,14 @@ namespace Rosewood
     public:
         static const std::string EngineRoot;
         static const std::string ProjectRoot;
-
+        static const std::string EngineFolder;
+        static const std::string ProjectFolder;
         
 
         static std::string GetPath(const std::string& path, FilePathType type = FilePathType::PROJECT);
+        static std::string GetRootPath(FilePathType type = FilePathType::PROJECT);
+        static std::string GetFolderName(FilePathType type = FilePathType::PROJECT);
+
         static void CreateDirectory(const std::string& path, FilePathType type = FilePathType::PROJECT);
         static void CreateDirectories(const std::string& path, FilePathType type = FilePathType::PROJECT);
 

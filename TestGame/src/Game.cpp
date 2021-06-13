@@ -15,6 +15,7 @@ namespace TestGame {
         : Layer("Example") {}
 
     Rosewood::LuaState* state;
+    Rosewood::Ref<Rosewood::Texture> GRASS;
     void Game::OnAttach()
     {
         Rosewood::Renderer2D::Init();
@@ -33,14 +34,15 @@ namespace TestGame {
 
         {
             file.Write(Rosewood::FileSystem::GetPath("grass1.png"));
-            Rosewood::Pack pack(Rosewood::FileSystem::GetPath("Pack.zip"));
+            Rosewood::Pack pack(Rosewood::FileSystem::GetRootPath() + Rosewood::FileSystem::GetFolderName() + ".zip");
             pack.AddFile("grass.png", file.GetData());
         }
         {
-            Rosewood::Pack pack(Rosewood::FileSystem::GetPath("Pack.zip"));
+            Rosewood::Pack pack(Rosewood::FileSystem::GetRootPath() + Rosewood::FileSystem::GetFolderName() + ".zip");
             file.SetData(pack.ReadFile("grass.png"));
             file.Write(Rosewood::FileSystem::GetPath("grass123.png"));
         }
+        GRASS = Rosewood::AssetManager::Load<Rosewood::Texture>("grass.png", "neim", Rosewood::FilePathType::PROJECT, true, false, 0);
 
 
         s_Scene = new Scene();
@@ -61,7 +63,6 @@ namespace TestGame {
             
         }
         s_Scene->OnDraw();
-        
     }
     
     void Game::OnDetach()

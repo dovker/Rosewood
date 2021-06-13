@@ -5,6 +5,8 @@
 namespace Rosewood
 {
     const std::string FileSystem::EngineRoot = "../../../Rosewood/";
+    const std::string FileSystem::EngineFolder = "EngineContent";
+    const std::string FileSystem::ProjectFolder = "Content";
 
     std::filesystem::path FileSystem::getFSPath(const std::string& path, FilePathType type)
     {
@@ -13,23 +15,67 @@ namespace Rosewood
         switch (type)
         {
         case FilePathType::ENGINE:
-            contentName = "EngineContent/";
+            contentName = EngineFolder + "/";
             root = EngineRoot;
             break;
 
         case FilePathType::PROJECT:
-            contentName = "Content/";
+            contentName = ProjectFolder + "/";
             root = ProjectRoot;
             break;
 
         default:
             break;
         }
-#ifndef RW_DEBUG
-        root = "";
-#endif
+
+        #ifndef RW_DEBUG
+            root = "";
+        #endif
+
         std::filesystem::path currentPath(root + contentName + path);
         return currentPath.make_preferred();
+    }
+
+    std::string FileSystem::GetRootPath(FilePathType type)
+    {
+        std::string root = "";
+        switch (type)
+        {
+        case FilePathType::ENGINE:
+            root = EngineRoot;
+            break;
+
+        case FilePathType::PROJECT:
+            root = ProjectRoot;
+            break;
+
+        default:
+            break;
+        }
+
+        #ifndef RW_DEBUG
+            root = "";
+        #endif
+
+        std::filesystem::path currentPath(root);
+        return currentPath.make_preferred().string();
+    }
+    std::string FileSystem::GetFolderName(FilePathType type)
+    {
+        switch (type)
+        {
+        case FilePathType::ENGINE:
+            return EngineFolder;
+            break;
+
+        case FilePathType::PROJECT:
+            return ProjectFolder;
+            break;
+
+        default:
+            return "";
+            break;
+        }
     }
 
 

@@ -2,11 +2,11 @@
 #include "rwpch.h"
 #include "Rosewood/Files/FileSystem.h"
 #include "Rosewood/Assets/Asset.h"
+#include "Rosewood/Assets/AssetTypes.h"
+
 
 namespace Rosewood {
     
-
-
     struct AssetsData
     {
         std::unordered_map<std::string, Asset> Assets;
@@ -20,10 +20,10 @@ namespace Rosewood {
     public:
         AssetManager(){};
         ~AssetManager(){};
-        template <class T> static Ref<T> Load(const std::string& path, const std::string& name, FilePathType pathType = FilePathType::PROJECT, uint32_t version = 0)
+        template <class T> static Ref<T> Load(const std::string& path, const std::string& name, FilePathType pathType = FilePathType::PROJECT, bool archived = false, bool compressed = false, uint32_t version = 0)
         {
             Asset temp;
-            auto ptr = temp.Load<T>(path, name, pathType, version);
+            auto ptr = temp.Load<T>(path, name, pathType, archived, compressed, version);
             assetsData.Assets[name] = temp;
             return ptr;
         }

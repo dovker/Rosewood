@@ -7,7 +7,7 @@
 #include "soloud_wav.h"
 
 #include "Rosewood/Files/File.h"
-#include "Rosewood/Assets/Asset.h"
+#include "Rosewood/Assets/AssetTypes.h"
 
 namespace Rosewood {
 
