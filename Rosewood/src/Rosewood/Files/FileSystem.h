@@ -5,9 +5,16 @@ namespace Rosewood
 {
     enum class FilePathType
     {
-        ENGINE,
-        PROJECT,
-        USER
+        ENGINE  = 0,
+        PROJECT = 1,
+        USER    = 2,
+    };  
+    const uint32_t FilePathTypeCount = 3;
+    const std::string FilePathTypeNames[3] =
+    {
+        "Engine",
+        "Project",
+        "User"
     };
 
     class FileSystem

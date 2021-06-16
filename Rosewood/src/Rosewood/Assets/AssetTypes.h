@@ -2,26 +2,25 @@
 
 namespace Rosewood
 {
-    
     enum class AssetType
     {
-        Undefined,
-        BinaryFile,
-        TextFile,
-        Model,
-        Texture,
-        Sound,
-        Shader,
+        Undefined   = 0,
+        BinaryFile  = 1,
+        TextFile    = 2,
+        Model       = 3,
+        Texture     = 4,
+        Sound       = 5,
+        Shader      = 6,
     };
-
-    const std::string AssetTypeNames[8] =
+    const uint32_t AssetTypeCount = 7;
+    const std::string AssetTypeNames[7] =
     {
-        "Undefined",
-        "BinaryFile",
-        "TextFile",
-        "Model",
-        "Texture",
-        "Sound",
-        "Shader"
+        "ud",
+        "bf",
+        "tf",
+        "md",
+        "tx",
+        "sn",
+        "sh"
     };
 }

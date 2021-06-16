@@ -20,7 +20,7 @@ namespace Rosewood
         virtual void Bind() override;
         virtual void Unbind() override;
 
-        virtual const std::string& GetPath() { return m_Path; }
+        virtual const std::string& GetPath() override { return m_Path; }
 
         
         virtual void setBool(const std::string& name, bool value) override;

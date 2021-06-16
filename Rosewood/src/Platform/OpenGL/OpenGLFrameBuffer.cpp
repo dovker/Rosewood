@@ -73,6 +73,7 @@ namespace Rosewood
             switch (format)
             {
                 case FramebufferTextureFormat::DEPTH24STENCIL8:  return true;
+                default: break;
             }
 
             return false;
@@ -142,6 +143,7 @@ namespace Rosewood
                     case FramebufferTextureFormat::RGB16F:
                         Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGB16F, GL_RGB, GL_FLOAT, m_Specification.Width, m_Specification.Height, i);
                         break;
+                    default: break;
                 }
             }
         }
@@ -155,6 +157,7 @@ namespace Rosewood
                 case FramebufferTextureFormat::DEPTH24STENCIL8:
                     Utils::AttachDepthTexture(m_DepthAttachment, m_Specification.Samples, GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, m_Specification.Width, m_Specification.Height);
                     break;
+                default: break;
             }
         }
 

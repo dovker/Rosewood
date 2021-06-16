@@ -42,8 +42,8 @@ namespace TestGame {
             file.SetData(pack.ReadFile("grass.png"));
             file.Write(Rosewood::FileSystem::GetPath("grass123.png"));
         }
-        GRASS = Rosewood::AssetManager::Load<Rosewood::Texture>("grass.png", "neim", Rosewood::FilePathType::PROJECT, true, false, 0);
 
+        Rosewood::AssetLoader::LoadAssets(Rosewood::FileSystem::GetPath("Index.json"));
 
         s_Scene = new Scene();
         
@@ -81,6 +81,10 @@ namespace TestGame {
 
         ImGui::Text("Frame Time: %.3fms | %iFPS", Rosewood::Application::GetDeltaTime() * 1000.0f, (int)(1.0f/Rosewood::Application::GetDeltaTime()));
 
+        if(ImGui::Button("Export Assets"))
+        {
+            Rosewood::AssetLoader::ExportAssetIndex(Rosewood::FileSystem::GetPath("Index.json"), Rosewood::FilePathType::PROJECT);
+        }
 
         ImGui::Separator();
         ImGui::Text("PROFILER");

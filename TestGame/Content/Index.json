@@ -1,0 +1,20 @@
+{
+    "Tileset": {
+        "Archived": false,
+        "AssetType": "tx",
+        "Compressed": false,
+        "LoadOnInit": true,
+        "Path": "Tileset.png",
+        "PathType": "Project",
+        "Version": 0
+    },
+    "neim": {
+        "Archived": true,
+        "AssetType": "tx",
+        "Compressed": false,
+        "LoadOnInit": true,
+        "Path": "grass.png",
+        "PathType": "Project",
+        "Version": 0
+    }
+}

@@ -1,20 +1,19 @@
 #pragma once
 #include "rwpch.h"
 #include "Rosewood/Files/FileSystem.h"
-#include "Rosewood/Files/File.h"
-#include "Rosewood/Assets/Asset.h"
 
 namespace Rosewood {
     
     class AssetLoader
     {
-        static void LoadAssets(const std::string& packageDescriptorPath);
-        static void LoadPackage(const std::string& path, bool compressed);
+    public:
+        static void LoadAssets(const std::string& packageDescriptorPath, bool archive = false);
+        //static void LoadPackage(const std::string& packageDescriptorPath);
 
-        static void ExportAssetIndex(const std::string& path);
-        static TextFile ExportAssetIndex();
+        static void ExportAssetIndex(const std::string& path, FilePathType type = FilePathType::PROJECT);
+        //static TextFile ExportAssetIndex();
 
-    }
+    };
 }
 
 

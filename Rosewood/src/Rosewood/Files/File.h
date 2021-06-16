@@ -40,6 +40,10 @@ namespace Rosewood
         {
             return CreateRef<BinaryFile>(data);
         }
+        static Ref<BinaryFile> Create(const BinaryFile& data)
+        {
+            return CreateRef<BinaryFile>(data);
+        }
 
     private:
         void m_Load(const std::string& filepath);

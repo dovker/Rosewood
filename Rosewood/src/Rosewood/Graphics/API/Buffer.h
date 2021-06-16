@@ -27,7 +27,7 @@ namespace Rosewood
             case ShaderDataType::Int3:      return 4 * 3;
             case ShaderDataType::Int4:      return 4 * 4;
             case ShaderDataType::Bool:      return 1;
-                
+            default: break;
         }
         RW_CORE_ASSERT(false, "Unknown Shader data type");
         return 0;
@@ -61,6 +61,7 @@ namespace Rosewood
                 case ShaderDataType::Int3:    return 3;
                 case ShaderDataType::Int4:    return 4;
                 case ShaderDataType::Bool:    return 1;
+                default: break;
             }
 
             RW_CORE_ASSERT(false, "Unknown ShaderDataType!");

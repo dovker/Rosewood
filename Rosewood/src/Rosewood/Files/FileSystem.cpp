@@ -8,6 +8,8 @@ namespace Rosewood
     const std::string FileSystem::EngineFolder = "EngineContent";
     const std::string FileSystem::ProjectFolder = "Content";
 
+    
+
     std::filesystem::path FileSystem::getFSPath(const std::string& path, FilePathType type)
     {
         std::string contentName = "";

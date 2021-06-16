@@ -41,6 +41,7 @@
 
 
 #include "Rosewood/Assets/AssetManager.h"
+#include "Rosewood/Assets/AssetLoader.h"
 #include "Rosewood/Files/FileSystem.h"
 #include "Rosewood/Files/File.h"
 #include "Rosewood/Data/Compression.h"
