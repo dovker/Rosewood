@@ -11,56 +11,42 @@ extern "C"
 #include "lauxlib.h"
 #include "lualib.h"
 }
+#include "sol/sol.hpp"
+
 
 namespace Rosewood
 {
     const char* wrap_Application::Name = "Application";
-
-    luaL_Reg* wrap_Application::w_functions = 
-        (luaL_Reg[]){
-            {"GetDeltaTime",            wrap_Application::w_getDeltaTime},
-            {"GetDeltaTimeMiliseconds", wrap_Application::w_getDeltaTimeMiliseconds},
-            {"GetTime",                 wrap_Application::w_getTime},
-            {"GetTimeMiliseconds",      wrap_Application::w_getTimeMiliseconds},
-
-        };
-
-    int wrap_Application::functionCount = 4; 
-
-    int wrap_Application::w_getDeltaTime(lua_State* L)
+    wrap_Application::wrap_Application(lua_State * L)
     {
-        lua_pushnumber(L, Rosewood::Application::GetDeltaTime());
-        return 1;
+        sol::state_view lua(L);
+
+        auto ns = lua["Rosewood"].get_or_create<sol::table>();
+
+        auto table = lua.create_table_with(
+            "GetDeltaTime",            Application::GetDeltaTime,
+            "GetTime",                 Application::GetTime
+        );
+        ns["Application"] = table;
     }
 
-    int wrap_Application::w_getDeltaTimeMiliseconds(lua_State* L)
-    {
-        lua_pushnumber(L, Rosewood::Application::GetDeltaTime() * 1000.0f);
-        return 1;
-    }
-
-    int wrap_Application::w_getTime(lua_State* L)
-    {
-        lua_pushnumber(L, Rosewood::Application::GetTime());
-        return 1;
-    }
-
-    int wrap_Application::w_getTimeMiliseconds(lua_State* L)
-    {
-        lua_pushnumber(L, Rosewood::Application::GetTime() * 1000.0f);
-        return 1;
-    }
 
     const char* wrap_Window::Name = "Window";
 
-    luaL_Reg* wrap_Window::w_functions = 
-        (luaL_Reg[]){
-            {"SetTitle",    wrap_Window::w_setTitle},
-            {"GetWidth",    wrap_Window::w_getWidth},
-            {"GetHeight",   wrap_Window::w_getHeight}
-        };
+    wrap_Window::wrap_Window(lua_State * L)
+    {
+        sol::state_view lua(L);
+
+        auto ns = lua["Rosewood"].get_or_create<sol::table>();
+
+        auto table = lua.create_table_with(
+            "SetTitle",            wrap_Window::w_setTitle,
+            "GetWidth",            wrap_Window::w_getWidth,
+            "GetHeight",           wrap_Window::w_getHeight   
+        );
+        ns["Window"] = table;
+    }
     
-    int wrap_Window::functionCount = 3;
 
     int wrap_Window::w_setTitle(lua_State* L)
     {

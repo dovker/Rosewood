@@ -24,11 +24,8 @@ namespace TestGame {
         state = new Rosewood::LuaState();
 
         state->ExecuteScript(Rosewood::FileSystem::GetPath("Scripts/Script.lua"));
-        state->InsistGlobal("SampleScript");
-        state->CallVoidFunction("OnCreate");
-        //Do on seperate threads
-        //state.CloseGlobal();
-        state->ClearStack();
+        state->CallVoidFunction("OnCreate", "SampleScript");
+        
 
         Rosewood::BinaryFile file(Rosewood::FileSystem::GetPath("grass.png"));
 
@@ -57,9 +54,7 @@ namespace TestGame {
         {
             Rosewood::BenchmarkTimer timer = Rosewood::BenchmarkTimer("Lua OnUpdate");
             
-            state->InsistGlobal("SampleScript");
-            state->CallVoidFunction("OnUpdate");
-            state->ClearStack();
+            state->CallVoidFunction("OnUpdate", "SampleScript");
             
         }
         s_Scene->OnDraw();

@@ -34,6 +34,7 @@ project "Rosewood"
         "%{IncludeDir.SoLoud}",
         "%{IncludeDir.zlib}",
         "%{IncludeDir.lua}",
+        "%{IncludeDir.sol}",
         "%{IncludeDir.entt}",
         "%{IncludeDir.yaml_cpp}",
         "%{IncludeDir.json}",

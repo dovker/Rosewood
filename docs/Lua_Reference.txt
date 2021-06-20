@@ -1,0 +1,128 @@
+Rosewood.Log:Critical(string)
+Rosewood.Log:Trace(string)
+Rosewood.Log:Info(string)
+Rosewood.Log:Warn(string)
+Rosewood.Log:Error(string)
+Rosewood.Log:Assert(bool, string)
+
+Rosewood.BenchmarkTimer Rosewood.BenchmarkTimer:new(string)
+Rosewood.BenchmarkTimer:Stop()
+
+
+Rosewood.Window:SetTitle(string)
+int Rosewood.Window:GetWidth()
+int Rosewood.Window:GetHeight()
+
+float Rosewood.Application:GetDeltaTime()
+float Rosewood.Application:GetTime()
+
+vec2 vec2:new()
+vec2 vec2:new(float)
+vec2 vec2:new(float, float)
+
+float vec2.x
+float vec2.y
+
+vec2 vec2:add(vec2)
+vec2 vec2:sub(vec2)
+vec2 vec2:div(vec2)
+vec2 vec2:div(float)
+vec2 vec2:mul(vec2)
+vec2 vec2:mul(float)
+vec2 vec2:dot(vec2)
+vec2 vec2:normalize()
+vec2 vec2:length()
+vec2 vec2:distance(vec2)
+
+vec2  vec2 + vec2
+vec2  vec2 - vec2
+vec2  vec2 / vec2
+vec2  vec2 / float
+vec2  vec2 * vec2
+vec2  vec2 * float
+vec2 float * vec2
+
+vec3 vec3:new()
+vec3 vec3:new(float)
+vec3 vec3:new(float, float, float)
+
+float vec3.x
+float vec3.y
+float vec3.z
+
+float vec3.r
+float vec3.g
+float vec3.b
+
+vec3 vec3:add(vec3)
+vec3 vec3:sub(vec3)
+vec3 vec3:div(vec3)
+vec3 vec3:div(float)
+vec3 vec3:mul(vec3)
+vec3 vec3:mul(float)
+vec3 vec3:dot(vec3)
+vec3 vec3:cross(vec3)
+vec3 vec3:normalize()
+vec3 vec3:length()
+vec3 vec3:distance(vec3)
+
+vec3  vec3 + vec3
+vec3  vec3 - vec3
+vec3  vec3 / vec3
+vec3  vec3 / float
+vec3  vec3 * vec3
+vec3  vec3 * float
+vec3 float * vec3
+
+vec4 vec4:new()
+vec4 vec4:new(float)
+vec4 vec4:new(float, float, float, float)
+
+float vec4.x
+float vec4.y
+float vec4.z
+float vec4.w
+
+float vec4.r
+float vec4.g
+float vec4.b
+float vec4.a
+
+vec4 vec4:add(vec4)
+vec4 vec4:sub(vec4)
+vec4 vec4:div(vec4)
+vec4 vec4:div(float)
+vec4 vec4:mul(vec4)
+vec4 vec4:mul(float)
+vec4 vec4:dot(vec4)
+vec4 vec4:normalize()
+vec4 vec4:length()
+vec4 vec4:distance(vec4)
+
+vec4  vec4 + vec4
+vec4  vec4 - vec4
+vec4  vec4 / vec4
+vec4  vec4 / float
+vec4  vec4 * vec4
+vec4  vec4 * float
+vec4 float * vec4
+
+float vmath:lerp(float, float, float)
+vec2  vmath:lerp(vec2, vec2, float)
+vec3  vmath:lerp(vec3, vec3, float)
+vec4  vmath:lerp(vec4, vec4, float)
+
+float vmath:clamp(float, float, float)
+vec2  vmath:clamp(vec2, vec2, vec2)
+vec3  vmath:clamp(vec3, vec3, vec3)
+vec4  vmath:clamp(vec4, vec4, vec4)
+
+float vmath:min(float, float)
+vec2  vmath:min(vec2, vec2)
+vec3  vmath:min(vec3, vec3)
+vec4  vmath:min(vec4, vec4)
+
+float vmath:max(float, float)
+vec2  vmath:max(vec2, vec2)
+vec3  vmath:max(vec3, vec3)
+vec4  vmath:max(vec4, vec4)

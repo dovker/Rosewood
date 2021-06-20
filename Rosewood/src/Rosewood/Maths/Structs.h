@@ -51,6 +51,7 @@ namespace Rosewood {
         : Left(0.0f), Right(Tex->GetWidth() * scale.x), Top(0.0f), Bottom(Tex->GetHeight() * scale.y), Width(Tex->GetWidth() * scale.x), Height(Tex->GetHeight() * scale.y)
         {}
         glm::vec2 Position() {return glm::vec2(Left, Top);}
+        glm::vec2 Size() {return glm::vec2(Width, Height);}
         glm::vec2 PositionWidth() {return glm::vec2(Right, Bottom);}
         glm::vec2 RelativeWidth() {return glm::vec2(Width, Height);}
         void SetPosition(glm::vec2 Position)
