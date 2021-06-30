@@ -14,17 +14,11 @@ namespace TestGame {
     Game::Game()
         : Layer("Example") {}
 
-    Rosewood::LuaState* state;
     Rosewood::Ref<Rosewood::Texture> GRASS;
     void Game::OnAttach()
     {
         Rosewood::Renderer2D::Init();
         Rosewood::Benchmark::Init();
-
-        state = new Rosewood::LuaState();
-
-        state->ExecuteScript(Rosewood::FileSystem::GetPath("Scripts/Script.lua"));
-        state->CallVoidFunction("OnCreate", "SampleScript");
         
 
         Rosewood::BinaryFile file(Rosewood::FileSystem::GetPath("grass.png"));
@@ -41,7 +35,6 @@ namespace TestGame {
         }
 
         Rosewood::AssetLoader::LoadAssets(Rosewood::FileSystem::GetPath("Index.json"));
-
         s_Scene = new Scene();
         
         s_Scene->OnLoad();
@@ -51,12 +44,6 @@ namespace TestGame {
     {
         s_Scene->OnUpdate(timestep);
         
-        {
-            Rosewood::BenchmarkTimer timer = Rosewood::BenchmarkTimer("Lua OnUpdate");
-            
-            state->CallVoidFunction("OnUpdate", "SampleScript");
-            
-        }
         s_Scene->OnDraw();
     }
     
@@ -64,7 +51,6 @@ namespace TestGame {
     {
         s_Scene->OnUnload();
         delete s_Scene;
-        delete state;
     }
     
     bool open = true;

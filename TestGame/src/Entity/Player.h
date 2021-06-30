@@ -22,7 +22,7 @@ namespace TestGame
         void SetMap(Map* map) { m_Map = map; }
 
     private:
-        Rosewood::Ref<Rosewood::Sprite> m_SpriteAnim;
+        Rosewood::Sprite m_SpriteAnim;
         Rosewood::Rect m_Collider;
         glm::vec2 m_Velocity;
         glm::vec2 m_Acceleration;

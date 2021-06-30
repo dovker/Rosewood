@@ -14,14 +14,21 @@ namespace Rosewood {
 		{
 			return m_Entity.GetComponent<T>();
 		}
+		Entity GetSelf() 
+		{
+			return m_Entity;
+		}
 	protected:
 		virtual void OnCreate() {}
 		virtual void OnDestroy() {}
 		virtual void OnUpdate(Timestep ts) {}
 		virtual void OnRender2D() {}
 	private:
-		Entity m_Entity;
 		friend class Scene;
+		friend class Entity;
+
+		Entity m_Entity;
+		
 	};
 
 }

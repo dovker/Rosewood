@@ -9,7 +9,7 @@ namespace Rosewood
 {
     struct Animation2D
     {
-        float Speed; //Seconds Per Frame TODO: FIX THIS
+        float Speed = 1; //Seconds Per Frame TODO: FIX THIS
         uint32_t Frame = 0;
         uint32_t TotalFrames = 1;
         bool Playing = false;
@@ -20,15 +20,19 @@ namespace Rosewood
     };
     struct Offset2D
     {
-        glm::vec2 Offset = {0.0f, 0.0f};
+        glm::vec2 Pivot = {0.0f, 0.0f};
         bool FlippedX = false;
         bool FlippedY = false;
+        Offset2D() {}
     };
-    struct NineSlice2D //TODO: IMPLEMENT THIS
-    {
-        bool Enabled = false;
-        Rect SourceRect;
-    };
+
+
+    
+    // struct NineSlice2D //TODO: IMPLEMENT THIS
+    // {
+    //     bool Enabled = false;
+    //     Rect SourceRect;
+    // };
 
     class Sprite : public RenderItem2D
     {
@@ -39,29 +43,28 @@ namespace Rosewood
         Animation2D Animation;
         Offset2D Offset;
         
-        Rect GetBounds(Transform transform)
+        Rect GetBounds(const Transform& transform)
         {
             glm::vec2 scale = {transform.Scale.x, transform.Scale.y};
-            return Rect(glm::vec2(transform.Position.x, transform.Position.y) + (SourceRect.RelativeWidth() * scale) * Offset.Offset,
+            return Rect(glm::vec2(transform.Position.x, transform.Position.y) + (SourceRect.RelativeWidth() * scale) * Offset.Pivot,
                         SourceRect.RelativeWidth() * scale);//TODO: FIXXXXXX
         }
         
+        Sprite()
+            : SpriteTexture(nullptr), RenderItem2D(glm::vec4(1.0f), false) {}
+
         Sprite(Ref<Rosewood::Texture> texture, glm::vec4 color = glm::vec4(1.0f), bool transparent = false)
             :SpriteTexture(texture),  RenderItem2D(color, transparent), SourceRect(Rect(texture)) {}
+
+        Sprite(const std::string& spriteName);
         
         Sprite(Ref<Rosewood::Texture> texture, glm::vec4 color, bool transparent, Rect sourceRect, Offset2D offset, Animation2D animation)
         :SpriteTexture(texture),  RenderItem2D(color, transparent), SourceRect(sourceRect), Offset(offset), Animation(animation) {}
         
         virtual void Draw(Transform transform) override;
 
-        static Ref<Sprite> Create(Ref<Rosewood::Texture> texture, glm::vec4 color = glm::vec4(1.0f), bool transparent = false)
-        {
-            return CreateRef<Sprite>(texture, color, transparent);
-        }
-        static Ref<Sprite> Create(Ref<Rosewood::Texture> texture, glm::vec4 color, bool transparent, Rect sourceRect, Offset2D offset, Animation2D animation)
-        {
-            return CreateRef<Sprite>(texture, color, transparent, sourceRect, offset, animation);
-        }
+        void ReloadTexture(const std::string& textureName);
+        void ResetSourceRect() { SourceRect = Rect(SpriteTexture); }
     private:
         float timer = 0.0f;
     };

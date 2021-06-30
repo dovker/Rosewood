@@ -20,12 +20,11 @@ namespace Rosewood
 		virtual void OnUpdate(Timestep ts) {}
 
         virtual void OnRender() {}
-		virtual void OnRender2D() {}
 
-        void AttachSceneData(Scene* scene) { m_Scene = scene; m_Registry = scene->GetRegistry(); }
+        void AttachSceneData(Ref<Scene> scene) { m_Scene = scene; m_Registry = scene->GetRegistry(); }
 
     private:
         entt::registry* m_Registry; 
-        Scene* m_Scene = nullptr;
+        Ref<Scene> m_Scene = nullptr;
     };
 }

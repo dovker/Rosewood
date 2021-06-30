@@ -1,53 +1,48 @@
 SampleScript = {}
 
+local Trans = nil;
+local Speed = 2;
+local InputLeft = 0;
+local InputRight = 0;
+local InputUp = 0;
+local InputDown = 0;
 
-function SampleScript:OnCreate()
-    Rosewood.Window:SetTitle("Balls");
-    Rosewood.Log:Critical("Ahahaha");
-    Rosewood.Log:Trace("AHAHA");
-    Rosewood.Log:Info("AHAHA");
-    Rosewood.Log:Warn("AHAHA");
-    Rosewood.Log:Error("AHAHA");
-    -- local v = glm.vec3:new(1.0, 1.0, 1.0);
-    -- v:add(1.0);
-    -- v:mul(0.4);
-    -- v:mul(4.0, 1.0, 2.0);
-    -- v:div(glm.vec3:new(5.0))
-
-    local v2 = vec2:new(1.0, 1.0)
-
-    v2 = v2:mul(0.4)
-    v2 = v2:mul(vec2:new(4.0, 2.0))
-
-    v2 = v2:div(vec2:new(5.0))
-
-    v2 = v2 * 5.0
-
-    print(vmath:clamp(1.1, 0.0, 1.0))
-
-    v2 = vmath:clamp(v2, vec2:new(0.0, 0.0), vec2:new(1.0, 1.0))
-
-    print(v2)
-
-    local tr = Transform:new()
-    tr.Position = tr.Position:mul(39)
-    tr.Position = tr.Position:add(vec3:new(40))
-    print(tr.Position)
-    print(tr.Rotation)
-    print(tr.Scale)
-
-    local rectangle = Rect:new(0, 0, 100, 100)
-    rectangle.Size = vec2:new(10, 10)
-
-    print(rectangle.Size)
-
+function SampleScript:OnCreate(entity)
+    Trans = entity:TransfromComponent().Transform;
 end
 
-function SampleScript:OnUpdate()
-    local b = Rosewood.BenchmarkTimer:new("Inside Lua Update");
-    if(Rosewood.Input:IsKeyPressed(Keys.A)) then
-        print("PRESSED");
+function SampleScript:OnUpdate(ts)
+    local dir = vec3:new(InputRight - InputLeft, InputDown - InputUp, 0.0);
+    if(dir.x ~= 0.0 and dir.y ~= 0.0) then
+        dir = dir:normalize();
     end
-
-    b:Stop();
+    Trans.Position:add(dir * Speed);
 end
+
+
+function SampleScript:OnKeyPressed(key)
+    if(key == Keys.A) then
+        InputLeft = 1;
+    elseif (key == Keys.D) then
+        InputRight = 1;
+    elseif (key == Keys.S) then
+        InputDown = 1;
+    elseif (key == Keys.W) then
+        InputUp = 1;
+    end
+end
+
+function SampleScript:OnKeyReleased(key)
+    if(key == Keys.A) then
+        InputLeft = 0;
+    elseif (key == Keys.D) then
+        InputRight = 0;
+    elseif (key == Keys.S) then
+        InputDown = 0;
+    elseif (key == Keys.W) then
+        InputUp = 0;
+    end
+end
+
+-- function SampleScript:OnMessageReceived(entity, messageData)
+-- end

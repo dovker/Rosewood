@@ -28,10 +28,25 @@ namespace Rosewood {
 				* rotation
 				* glm::scale(glm::mat4(1.0f), Scale);
         }
+        Transform& operator +=(const Transform& t2)
+        {
+            this->Position += t2.Position;
+            this->Rotation += t2.Rotation;
+            this->Scale *= t2.Scale;
+            return *this;
+        }
+        friend Transform operator +(Transform t1, const Transform& t2)
+        {
+            t1.Position += t2.Position;
+            t1.Rotation += t2.Rotation;
+            t1.Scale *= t2.Scale;
+            return t1;
+        }
     };
     struct Rect
     {
-        float Left, Right, Top, Bottom, Width, Height;
+        float Left = 0.0f, Right = 0.0f, Top = 1.0f, Bottom = 1.0f, Width = 1.0f, Height = 1.0f;
+        Rect() {}
         Rect(glm::vec2 Position, glm::vec2 Size)
             : Left(Position.x), Right(Position.x + Size.x), Top(Position.y), Bottom(Position.y + Size.y), Width(Size.x), Height(Size.y)
         {}

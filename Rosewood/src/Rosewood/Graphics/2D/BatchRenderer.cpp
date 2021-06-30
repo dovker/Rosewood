@@ -382,9 +382,9 @@ namespace Rosewood
     }
     void BatchRenderer::DrawRotatedQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, float rotation, const glm::vec2& fromPix, const glm::vec2& toPix, const glm::vec4& color)
     {
-        float xFrom = 1-(float)fromPix.x/texture->GetWidth();
+        float xFrom = (float)fromPix.x/texture->GetWidth();
         float yFrom = 1-(float)fromPix.y/texture->GetHeight();
-        float xTo = 1-(float)toPix.x/texture->GetWidth();
+        float xTo = (float)toPix.x/texture->GetWidth();
         float yTo = 1-(float)toPix.y/texture->GetHeight();
 
         BatchRenderer::DrawRotatedQuad(pos, size, texture, rotation, glm::vec4(xFrom, yTo, xTo, yFrom), color);

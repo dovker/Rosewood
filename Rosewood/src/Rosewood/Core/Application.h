@@ -4,6 +4,7 @@
 
 #include "Core.h"
 #include "Rosewood/Events/Event.h"
+#include "Rosewood/Events/EventPool.h"
 #include <Rosewood/Events/ApplicationEvent.h>
 #include <Rosewood/Core/Window.h>
 #include <Rosewood/Core/Layer.h>
@@ -40,6 +41,7 @@ namespace Rosewood
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		//EventPool m_EventPool;
 
 	private:
 		static Application* s_Instance;

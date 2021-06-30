@@ -96,7 +96,7 @@ namespace Rosewood
     }
     TextFile BinaryFile::ToTextFile() const 
     {
-        return TextFile(std::string(m_Data.begin(), m_Data.end()));
+        return TextFile(*this);
     }
     
 
@@ -139,7 +139,9 @@ namespace Rosewood
     }
     TextFile::TextFile(const BinaryFile& data)
     {
-        m_Data = std::string(m_Data.begin(), m_Data.end());
+        m_Path = data.GetPath();
+        m_Data.resize(data.GetData().size());
+        std::memcpy(m_Data.data(), data.GetData().data(), data.GetData().size());
     }
 
     void TextFile::Reload()

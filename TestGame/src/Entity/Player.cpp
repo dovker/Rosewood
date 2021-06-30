@@ -16,8 +16,8 @@ namespace TestGame
     {
         Rosewood::AssetManager::Load<Rosewood::Texture>("Player.png", "Player.png");
 
-        m_Sprite = Rosewood::Sprite::Create(Rosewood::AssetManager::Get<Rosewood::Texture>("Player.png"));
-        m_Collider = Rosewood::Rect(m_Transform.Position.x, m_Transform.Position.y, m_Sprite->SpriteTexture->GetWidth(), m_Sprite->SpriteTexture->GetHeight());
+        m_Sprite = Rosewood::Sprite("Player.png");
+        m_Collider = Rosewood::Rect(m_Transform.Position.x, m_Transform.Position.y, m_Sprite.SpriteTexture->GetWidth(), m_Sprite.SpriteTexture->GetHeight());
 
         m_Map = Game::GetScene()->GetMap();
     }

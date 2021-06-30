@@ -52,7 +52,6 @@ namespace Rosewood {
 			m_Projection = glm::ortho(orthoLeft, orthoRight,
 				orthoBottom, orthoTop, m_OrthographicNear, m_OrthographicFar); //FIX THIS
 
-			RW_CORE_INFO("{0}, {1}, {2}, {3}, {4}, {5}", orthoLeft, orthoRight, orthoBottom, orthoTop, m_AspectRatio, m_OrthographicSize);
 		}
 		
 	}

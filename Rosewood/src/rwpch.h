@@ -19,6 +19,9 @@
 #include <ostream>
 #include <array>
 #include <vector>
+#include <deque>
+
+#include <stdio.h>
 
 #include <unordered_map>
 #include <unordered_set>

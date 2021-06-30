@@ -21,10 +21,9 @@ namespace Rosewood
         static void Begin(const Camera& camera, const glm::mat4& transform);
         static void End();
 
-        static void Draw(Ref<Sprite> sprite, Transform transform);
+        static void Draw(Sprite sprite, Transform transform);
         static void DrawCircle(Rosewood::Circle circle, glm::vec4 color, float depth = 0.0f);
         static void DrawRect(Rosewood::Rect rect, glm::vec4 color, float depth = 0.0f);
-
 
         static void SetShader(Ref<Shader> shader);
 

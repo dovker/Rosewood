@@ -10,8 +10,7 @@ namespace Rosewood
 {
     struct RendererData2D
     {
-        std::vector<std::pair<Ref<RenderItem2D>, Transform>> TransparentSprites;
-        Ref<Texture> CircleTexture;
+        std::vector<std::pair<RenderItem2D*, Transform>> TransparentSprites;
     };
 
     static RendererData2D s_Data;
@@ -22,10 +21,11 @@ namespace Rosewood
         Rosewood::GraphicsCommand::ToggleDepthTest(true);
 
         
-        s_Data.CircleTexture = AssetManager::Load<Texture>("Textures/Circle.png", "Circle", FilePathType::ENGINE);
-
+        RenderCircle::CircleTexture = AssetManager::Load<Texture>("Textures/Circle.png", "Circle", FilePathType::ENGINE);
+        RenderCircle::CircleTextureWidth = RenderCircle::CircleTexture->GetWidth();
+        RenderCircle::CircleTextureHeight = RenderCircle::CircleTexture->GetHeight();
         
-        s_Data.TransparentSprites = std::vector<std::pair<Ref<RenderItem2D>, Transform>>();
+        s_Data.TransparentSprites = std::vector<std::pair<RenderItem2D*, Transform>>();
         s_Data.TransparentSprites.reserve(100);
         BatchRenderer::Init();
     }
@@ -50,7 +50,7 @@ namespace Rosewood
     {
         BatchRenderer::Begin(camera, transform);
     }
-    bool compareSprites(std::pair<Ref<RenderItem2D>, Transform> s1, std::pair<Ref<RenderItem2D>, Transform> s2)
+    bool compareSprites(std::pair<RenderItem2D*, Transform> s1, std::pair<RenderItem2D*, Transform> s2)
     {
         return (s1.second.Position.z > s2.second.Position.z);
     }
@@ -65,43 +65,44 @@ namespace Rosewood
         s_Data.TransparentSprites.clear();
     }
 
-    void Renderer2D::Draw(Ref<Sprite> sprite, Transform transform)
+    void Renderer2D::Draw(Sprite sprite, Transform transform)
     {
-        if(!sprite->Transparent)
+        if(!sprite.Visible) return;
+        if(!sprite.Transparent)
         {
-            sprite->Draw(transform);
+            sprite.Draw(transform);
         }
         else
         {
-            s_Data.TransparentSprites.push_back(std::pair<Ref<RenderItem2D>, Transform>(sprite, transform));
+            s_Data.TransparentSprites.push_back(std::pair<RenderItem2D*, Transform>((RenderItem2D*)&sprite, transform));
         }
     }
     void Renderer2D::DrawCircle(Rosewood::Circle circle, glm::vec4 color, float depth)
     {
-        Ref<RenderCircle> s = RenderCircle::Create(color, s_Data.CircleTexture);
+        RenderCircle s(color);
         Transform t = Transform(glm::vec3(circle.Position, depth), glm::vec3(circle.Radius, circle.Radius, 1.0f));
 
-        if(!s->Transparent)
+        if(!s.Transparent)
         {
-            s->Draw(t);
+            s.Draw(t);
         }
         else
         {
-            s_Data.TransparentSprites.push_back(std::pair<Ref<RenderItem2D>, Transform>(s, t));
+            s_Data.TransparentSprites.push_back(std::pair<RenderItem2D*, Transform>((RenderItem2D*)&s, t));
         }
     }
     void Renderer2D::DrawRect(Rosewood::Rect rect, glm::vec4 color, float depth)
     {
-        Ref<RenderQuad> s = RenderQuad::Create(color);
+        RenderQuad s(color);
         Transform t = Transform(glm::vec3(rect.Position(), depth), glm::vec3(0.0f), glm::vec3(rect.Width, rect.Height, 1.0f));
 
-        if(!s->Transparent)
+        if(!s.Transparent)
         {
-            s->Draw(t);
+            s.Draw(t);
         }
         else
         {
-            s_Data.TransparentSprites.push_back(std::pair<Ref<RenderItem2D>, Transform>(s, t));
+            s_Data.TransparentSprites.push_back(std::pair<RenderItem2D*, Transform>((RenderItem2D*)&s, t));
         }
     }
 }

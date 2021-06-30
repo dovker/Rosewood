@@ -64,8 +64,8 @@ namespace Rosewood
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
-			(*--it)->OnEvent(e);
 			if (e.Handled) break;
+			(*--it)->OnEvent(e);
 		}
 	}
 	void Application::PushLayer(Layer* layer)

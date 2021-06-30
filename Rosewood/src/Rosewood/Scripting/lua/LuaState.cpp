@@ -1,9 +1,10 @@
+#include "rwpch.h"
 #include "LuaState.h"
 #include "wrappers/wrap_Debug.h"
 #include "wrappers/wrap_Core.h"
 #include "wrappers/wrap_Input.h"
 #include "wrappers/wrap_Math.h"
-
+#include "wrappers/wrap_ECS.h"
 
 
 #include "Rosewood/Files/FileSystem.h"
@@ -36,6 +37,8 @@ namespace Rosewood
         wrap_Input input(L);
 
         wrap_Math math(L);
+
+        wrap_ECS ecs(L);
     }
 
     LuaState::~LuaState()
@@ -55,8 +58,11 @@ namespace Rosewood
 
     void LuaState::ExecuteScript(const std::string& filepath)
     {
-        std::filesystem::path fp = filepath;
-        RW_CORE_ASSERT(CheckError(luaL_dofile(L, fp.c_str())), "Lua File Not Found!!");//Fix this for engine use
+        RW_CORE_ASSERT(CheckError(luaL_dofile(L, filepath.c_str())), "Lua File Not Found!!");//Fix this for engine use
+    }
+    void LuaState::ExecuteScript(const Ref<TextFile>& file)
+    {
+        RW_CORE_ASSERT(CheckError(luaL_dostring(L, file->GetData().c_str())), "LuaScript Error!!");//Fix this for engine use
     }
     void LuaState::CallVoidFunction(const char* fnName)
     {
@@ -64,20 +70,6 @@ namespace Rosewood
         if(lua_isfunction(L, -1))
         {
             CheckError(lua_pcall(L, 0, 0, 0));
-        }
-    }
-    void LuaState::CallVoidFunction(const char* fnName, const char* tableName)
-    {
-        sol::state_view lua(L);
-        sol::protected_function fn = lua[tableName][fnName];//CATCH ERRORS
-        sol::protected_function_result result = fn();
-        if (!result.valid()) {
-            // Call failed
-            sol::error err = result;
-            std::string what = err.what();
-            RW_LUA_ERROR("FAILED TO CALL FUNCTION: {0}", what);
-            // 'what' Should read
-            // "Handled this message: negative number detected"
         }
     }
 }

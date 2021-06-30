@@ -23,12 +23,14 @@ vec2 vec2:new(float, float)
 float vec2.x
 float vec2.y
 
-vec2 vec2:add(vec2)
-vec2 vec2:sub(vec2)
-vec2 vec2:div(vec2)
-vec2 vec2:div(float)
-vec2 vec2:mul(vec2)
-vec2 vec2:mul(float)
+//SAME AS /= && += && -=, etc.
+vec2:add(vec2)
+vec2:sub(vec2)
+vec2:div(vec2)
+vec2:div(float)
+vec2:mul(vec2)
+vec2:mul(float)
+
 vec2 vec2:dot(vec2)
 vec2 vec2:normalize()
 vec2 vec2:length()
@@ -54,12 +56,14 @@ float vec3.r
 float vec3.g
 float vec3.b
 
-vec3 vec3:add(vec3)
-vec3 vec3:sub(vec3)
-vec3 vec3:div(vec3)
-vec3 vec3:div(float)
-vec3 vec3:mul(vec3)
-vec3 vec3:mul(float)
+//SAME AS /= && += && -=, etc.
+vec3:add(vec3)
+vec3:sub(vec3)
+vec3:div(vec3)
+vec3:div(float)
+vec3:mul(vec3)
+vec3:mul(float)
+
 vec3 vec3:dot(vec3)
 vec3 vec3:cross(vec3)
 vec3 vec3:normalize()
@@ -88,12 +92,14 @@ float vec4.g
 float vec4.b
 float vec4.a
 
-vec4 vec4:add(vec4)
-vec4 vec4:sub(vec4)
-vec4 vec4:div(vec4)
-vec4 vec4:div(float)
-vec4 vec4:mul(vec4)
-vec4 vec4:mul(float)
+//SAME AS /= && += && -=, etc.
+vec4:add(vec4)
+vec4:sub(vec4)
+vec4:div(vec4)
+vec4:div(float)
+vec4:mul(vec4)
+vec4:mul(float)
+
 vec4 vec4:dot(vec4)
 vec4 vec4:normalize()
 vec4 vec4:length()

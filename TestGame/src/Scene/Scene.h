@@ -18,7 +18,7 @@ namespace TestGame {
         void OnUnload();
         void OnEvent(Rosewood::Event &e);
         void OnWindowResize(int w, int h);
-        
+
         Map* GetMap();
     private:
         std::vector<Entity*> m_Entities;

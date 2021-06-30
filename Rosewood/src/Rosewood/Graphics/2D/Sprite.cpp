@@ -2,7 +2,14 @@
 
 #include "Rosewood/Graphics/Graphics.h"
 #include "Rosewood/Core/Application.h"
+#include "Rosewood/Assets/AssetManager.h"
 #include "BatchRenderer.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 #include "Sprite.h"
 
@@ -29,22 +36,31 @@ namespace Rosewood
         
         glm::vec2 texSize = glm::vec2(SpriteTexture->GetWidth(), SpriteTexture->GetHeight());
         
-        glm::vec2 pos = glm::vec2(transform.Position.x, transform.Position.y) + (SourceRect.RelativeWidth() * scale) * Offset.Offset;
-        
         glm::vec2 UVX;
         glm::vec2 UVY;
         
-        if(!Offset.FlippedX) UVX = glm::vec2(frameRect.Right, frameRect.Left);
-        else UVX = glm::vec2(frameRect.Left, frameRect.Right);
+        if(!Offset.FlippedX) UVX = glm::vec2(frameRect.Left, frameRect.Right);
+        else UVX = glm::vec2(frameRect.Right, frameRect.Left);
         
         if(Offset.FlippedY) UVY = glm::vec2(frameRect.Bottom, frameRect.Top);
         else UVY = glm::vec2(frameRect.Top, frameRect.Bottom);
 
-        Transform t = Transform(transform.Position, transform.Rotation, glm::vec3(SourceRect.RelativeWidth() * scale, 1.0f));
+        glm::mat4 result = 
+              glm::translate(glm::mat4(1.0f), transform.Position) *
+              glm::translate(glm::mat4(1.0f), glm::vec3(Offset.Pivot, 0.0f)) *
+              glm::toMat4(glm::quat(transform.Rotation)) *
+              glm::scale(glm::mat4(1.0f), glm::vec3(SourceRect.RelativeWidth() * scale, 1.0f)) *
+              glm::translate(glm::mat4(1.0f), -glm::vec3(Offset.Pivot, 0.0f));
 
-        //TODO: Check Out Reverse-ivness of the animation, I fixed the batch renderer
-        BatchRenderer::DrawQuad(t.GetTransform(), SpriteTexture, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
-        
+        BatchRenderer::DrawQuad(result, SpriteTexture, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
     }
-    
+
+    Sprite::Sprite(const std::string& spriteName)
+        : SpriteTexture(AssetManager::Get<Texture>(spriteName)) ,RenderItem2D({1.0f, 1.0f, 1.0f, 1.0f}, false), SourceRect(Rect(SpriteTexture))
+    {
+    }
+    void Sprite::ReloadTexture(const std::string& textureName)
+    {
+        SpriteTexture = AssetManager::Get<Texture>(textureName);
+    }
 }

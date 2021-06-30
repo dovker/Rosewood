@@ -1,5 +1,9 @@
+#pragma once
+
+
 #include "rwpch.h"
 #include "wrappers/wrapper.h"
+#include "Rosewood/Files/File.h"
 
 
 namespace Rosewood
@@ -14,13 +18,16 @@ namespace Rosewood
         bool CheckError(int r);
 
         void ExecuteScript(const std::string& filepath);
+        void ExecuteScript(const Ref<TextFile>& file);
+
+        lua_State* GetPointer() { return L; }
 
         void CallVoidFunction(const char* fnName);// Fix later
         void CallVoidFunction(const char* fnName, const char* tableName);
-        //Do Call and Get events
 
-        //Automate the Wrrappers and Type stuff to pass in functions
-
-        //Figure out how to return C reference from a function and be able to deal with it's values
+        static Ref<LuaState> Create()
+        {
+            return CreateRef<LuaState>();
+        }
     };
 }

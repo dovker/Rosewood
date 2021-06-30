@@ -55,6 +55,7 @@
 #include "Rosewood/Benchmark/Benchmark.h"
 
 #include "Rosewood/ECS/Scene.h"
+#include "Rosewood/ECS/SceneManager.h"
 #include "Rosewood/ECS/System.h"
 #include "Rosewood/ECS/Entity.h"
 #include "Rosewood/ECS/ScriptableEntity.h"

@@ -1,6 +1,8 @@
 #include "Scene.h"
 #include "cmath"
 
+
+
 namespace TestGame {
 extern const uint32_t ChunkSize = 16;
 extern const uint32_t ChunkArea = 256;
@@ -9,59 +11,33 @@ extern uint32_t TileSize = 8;
     Scene::Scene()
     {        
         
-        m_Scene = Rosewood::CreateRef<Rosewood::Scene>();
+        m_Scene = Rosewood::Scene::Create();
     }
 
     void Scene::OnLoad()
     {
-
-        Rosewood::Ref<Rosewood::Texture> mapTexture = Rosewood::AssetManager::Get<Rosewood::Texture>("Tileset");
-       
-        Rosewood::Ref<Rosewood::Sprite> sprite = Rosewood::Sprite::Create(mapTexture);
+        Rosewood::SceneManager::Init();
+        Rosewood::SceneManager::SetScene(m_Scene);
 
         auto ent = m_Scene->CreateEntity("enity");
-        ent.AddComponent<Rosewood::SpriteRenderComponent>(sprite);
+        ent.AddComponent<Rosewood::SpriteRenderComponent>("TempPlayer");
+
+        auto childEnt = m_Scene->CreateEntity("enity2");
+        childEnt.AddComponent<Rosewood::SpriteRenderComponent>("Sword");
+        childEnt.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(11.0f, 10.0f, 0.0f);
+
+        ent.AddChild(childEnt);
 
         auto camera = m_Scene->CreateEntity("camera");
         camera.AddComponent<Rosewood::CameraComponent>();
 
-        class CameraController : public Rosewood::ScriptableEntity
-		{
-		public:
-			virtual void OnCreate() override
-			{
-                Rosewood::Transform& translation = GetComponent<Rosewood::TransformComponent>();
-                //translation.Position.z = -.3f;
-			}
-
-			virtual void OnDestroy() override
-			{
-			}
-
-			virtual void OnUpdate(Rosewood::Timestep ts) override
-			{
-				Rosewood::Transform& translation = GetComponent<Rosewood::TransformComponent>();
-
-				float speed = 5.0f;
-
-				if (Rosewood::Input::IsKeyPressed(KEY_A)) //switch to key::a
-					translation.Position.x -= speed * ts;
-				if (Rosewood::Input::IsKeyPressed(KEY_D))
-					translation.Position.x += speed * ts;
-				if (Rosewood::Input::IsKeyPressed(KEY_W))
-					translation.Position.y -= speed * ts;
-				if (Rosewood::Input::IsKeyPressed(KEY_S))
-					translation.Position.y += speed * ts;
-
-                //RW_INFO("{0}, {1}, {2}", translation.Position.x, translation.Position.y, translation.Position.z);
-			}
-		};
-
-		camera.AddComponent<Rosewood::NativeScriptComponent>().Bind<CameraController>();
+        ent.AddComponent<Rosewood::LuaScriptComponent>("SampleScript", "SampleScript");
+		camera.AddComponent<Rosewood::LuaScriptComponent>("CameraScript", "CameraScript");
+        childEnt.AddComponent<Rosewood::LuaScriptComponent>("SwordScript", "SwordScript");
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)
     {
-        m_Scene->OnUpdateRuntime(timestep);
+        Rosewood::SceneManager::OnUpdateRuntime(timestep);
         
     }
     void Scene::OnDraw()
@@ -72,7 +48,7 @@ extern uint32_t TileSize = 8;
         }
         Rosewood::BatchRenderer::ResetStats();
 
-        m_Scene->OnRenderRuntime();
+        Rosewood::SceneManager::OnRenderRuntime();
         
     }
     void Scene::OnUnload()
@@ -84,7 +60,7 @@ extern uint32_t TileSize = 8;
     }
     void Scene::OnEvent(Rosewood::Event &e)
     {
-        m_Scene->OnEvent(e);
+        Rosewood::SceneManager::OnEvent(e);
         for(auto& entity : m_Entities)
         {
             entity->OnEvent(e);
