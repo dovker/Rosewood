@@ -1,13 +1,10 @@
 # Rosewood
 Rosewood Game Engine
 
-**Rosewood Engine** is a game engine created for learning purposes and GameJam games. The base I had no idea how it worked was based on [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although at this stage the engine is very different.
+**Rosewood Engine** is a game engine created for learning purposes and GameJam games. The game engine started of following [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although has vastly moved on from it.
 
 # Plan
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.
-
-# Recent Thoughts
-I am thinking to replace Lua C library with Sol2 library for the sake of simplicity. I have learned how Lua C works and have gained the knowledge, therefore I see no further need to spend more time on it! 
 
 # Features
 * OpenGL Support
