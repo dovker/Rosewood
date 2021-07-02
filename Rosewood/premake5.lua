@@ -115,3 +115,6 @@ project "Rosewood"
         defines "RW_DIST"
         runtime "Release"
         optimize "On"
+
+    configuration "vs*"
+        buildoptions { "/Zm250", "/bigobj" } 
