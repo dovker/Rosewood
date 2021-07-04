@@ -8,7 +8,6 @@ namespace Rosewood
     class SceneManager
     {
     public:
-        static void Init();
         static Ref<Scene> GetScene();
         static void SetScene(Ref<Scene> scene);
         //TODO FINISH

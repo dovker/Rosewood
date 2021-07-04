@@ -11,6 +11,15 @@
 
 namespace Rosewood
 {
+    struct UIDComponent
+	{
+		uint32_t UID;
+
+		UIDComponent() = default;
+		UIDComponent(const UIDComponent&) = default;
+		UIDComponent(uint32_t uid)
+			: UID(uid) {}
+	};
     struct TagComponent
 	{
 		std::string Tag;
@@ -99,21 +108,7 @@ namespace Rosewood
             FixedAspectRatio = false;
         }
     };
-    // class ScriptableEntity;
-    // struct NativeScriptComponent
-	// {
-	// 	ScriptableEntity* Instance = nullptr;
 
-	// 	ScriptableEntity*(*InstantiateScript)();
-	// 	void (*DestroyScript)(NativeScriptComponent*);
-
-	// 	template<typename T>
-	// 	void Bind()
-	// 	{
-	// 		InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
-	// 		DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
-	// 	}
-	// };
     struct LuaScriptComponent
 	{
 		LuaScript Script;

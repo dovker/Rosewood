@@ -16,7 +16,6 @@ extern uint32_t TileSize = 8;
 
     void Scene::OnLoad()
     {
-        Rosewood::SceneManager::Init();
         Rosewood::SceneManager::SetScene(m_Scene);
 
         auto ent = m_Scene->CreateEntity("enity");
@@ -34,6 +33,8 @@ extern uint32_t TileSize = 8;
         ent.AddComponent<Rosewood::LuaScriptComponent>("SampleScript", "SampleScript");
 		camera.AddComponent<Rosewood::LuaScriptComponent>("CameraScript", "CameraScript");
         childEnt.AddComponent<Rosewood::LuaScriptComponent>("SwordScript", "SwordScript");
+
+        //Rosewood::SceneManager::GetScene()->Serialize();
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)
     {

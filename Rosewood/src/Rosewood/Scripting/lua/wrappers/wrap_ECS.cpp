@@ -67,5 +67,6 @@ namespace Rosewood
             "TransfromComponent", [](Entity& e) -> TransformComponent& { return std::ref(e.GetComponent<TransformComponent>()); },
             "SpriteRenderComponent", [](Entity& e) -> SpriteRenderComponent& { return std::ref(e.GetComponent<SpriteRenderComponent>()); }
         );
+        //TODO: Scene.GetCamera stuff
     }
 }

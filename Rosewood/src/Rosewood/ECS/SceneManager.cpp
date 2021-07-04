@@ -8,20 +8,13 @@ namespace Rosewood
     struct SceneData
     {
         Ref<Scene> Scene;
-        Ref<LuaState> Lua;
         std::vector<System> Systems;
     };
     static SceneData s_Data;
 
-    void SceneManager::Init()
-    {
-        s_Data.Lua = LuaState::Create();
-    }
-
     Ref<Scene> SceneManager::GetScene() { return s_Data.Scene; }
     void SceneManager::SetScene(Ref<Scene> scene)
     {
-        scene->SetLuaState(s_Data.Lua);
         s_Data.Scene = scene;
         for(auto& system : s_Data.Systems)
         {

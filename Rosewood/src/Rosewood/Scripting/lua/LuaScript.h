@@ -21,6 +21,9 @@ namespace Rosewood
         LuaScript(Ref<TextFile> file, const std::string& tableName = "");
         LuaScript(const std::string& fileName, const std::string& tableName = "");
         ~LuaScript();
+
+        std::string GetTableName() { return m_TableName; }
+
         void AttachScript(lua_State* luaPtr);
         template <class T> void AttachValue(const std::string& name, T value);
         void CallScript();

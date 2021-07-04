@@ -12,10 +12,26 @@
 
 namespace Rosewood
 {
+	static std::mt19937 uidGenerator = std::mt19937(232345);
+	static std::uniform_int_distribution<uint32_t> uidDistribution(0, std::numeric_limits<uint32_t>::max());
+
+	bool Scene::ExistsUID(uint32_t uid)
+	{
+		bool val = false;
+		auto view = m_Registry.view<UIDComponent>();
+		for(auto entity : view)
+		{
+			val = view.get<UIDComponent>(entity).UID == uid;
+			if(val) break;
+		}
+		return val;
+	}
+
     Scene::Scene()
     {
 		m_ViewportWidth = Rosewood::Application::Get().GetWindow().GetWidth();
 		m_ViewportHeight = Rosewood::Application::Get().GetWindow().GetHeight();
+		m_LuaState = LuaState::Create();
     }
     Scene::~Scene()
     {
@@ -30,8 +46,19 @@ namespace Rosewood
     {
         Entity entity = Entity(m_Registry.create(), this);
         entity.AddComponent<TransformComponent>();
+		
         auto& tag = entity.AddComponent<TagComponent>();
         tag.Tag = name.empty() ? "Blank Entity" : name;
+
+		auto& uidComponent = entity.AddComponent<UIDComponent>();
+		uint32_t uid;
+		do
+		{
+			uid = uidDistribution(uidGenerator);
+		}
+		while(ExistsUID(uid));
+		uidComponent.UID = uid;
+
         return entity;
     }
     void Scene::DestroyEntity(Entity entity)
@@ -111,6 +138,21 @@ namespace Rosewood
 		{
 			const auto& camera = view.get<CameraComponent>(entity);
 			if (camera.Primary)
+				return Entity{entity, this};
+		}
+		return {};
+	}
+    Entity Scene::GetEntityByID(uint32_t id)
+	{
+		return Entity{(entt::entity)id, this};
+	}
+    Entity Scene::GetEntityByUID(uint32_t uid)
+	{
+		auto view = m_Registry.view<UIDComponent>();
+		for (auto entity : view)
+		{
+			const auto& uidComp = view.get<UIDComponent>(entity);
+			if (uidComp.UID == uid)
 				return Entity{entity, this};
 		}
 		return {};
