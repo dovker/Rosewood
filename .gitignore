@@ -267,3 +267,4 @@ compile_commands/dist.json
 compile_commands/debug.json
 compile_commands/release.json
 bin-int/Debug-macosx-x86_64/Rosewood/rwpch.h
+*.recipe

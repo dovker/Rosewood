@@ -247,7 +247,8 @@ namespace Rosewood
 
     std::string& Scene::Serialize()
     {
-        
+		std::string s = "";
+		return s;
     }
     void Scene::Deserialize(const std::string& data)
     {

@@ -10,6 +10,7 @@ namespace Rosewood
         try //TEST TRY CATCH ERRORS
         {
             std::ifstream ifs(filepath, std::ios::binary);
+            
 
             ifs.unsetf(std::ios::skipws);
 
@@ -18,6 +19,10 @@ namespace Rosewood
             ifs.seekg(0, std::ios::end);
             fileSize = ifs.tellg();
             ifs.seekg(0, std::ios::beg);
+            if (ifs.bad() || fileSize < 0)
+            {
+                throw std::invalid_argument("Error Reading the file");
+            }
 
             // reserve capacity
             m_Data.clear();
@@ -27,11 +32,6 @@ namespace Rosewood
             m_Data.insert(m_Data.begin(),
                     std::istream_iterator<byte>(ifs),
                     std::istream_iterator<byte>());
-
-            if(ifs.bad())
-			{
-				throw std::invalid_argument("Error Reading the file");
-			}
 		}
 		catch (const std::invalid_argument& e)
 		{
