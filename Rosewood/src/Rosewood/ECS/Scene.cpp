@@ -235,7 +235,7 @@ namespace Rosewood
 		{
 			scriptComponent.Script.OnMouseButtonPressed(e.GetMouseButton());
 		});
-		return false;
+		return true;
 	}
 	bool Scene::OnMouseButtonReleasedEvent(Rosewood::MouseButtonReleasedEvent& e)
 	{
@@ -243,7 +243,7 @@ namespace Rosewood
 		{
 			scriptComponent.Script.OnMouseButtonReleased(e.GetMouseButton());
 		});
-		return false;
+		return true;
 	}
 	bool Scene::OnMouseMovedEvent(Rosewood::MouseMovedEvent& e)
 	{
@@ -251,7 +251,7 @@ namespace Rosewood
 		{
 			scriptComponent.Script.OnMouseMoved(e.GetX(), e.GetY());
 		});
-		return false;
+		return true;
 	}
 	bool Scene::OnMouseScrolledEvent(Rosewood::MouseScrolledEvent& e)
 	{
@@ -259,7 +259,7 @@ namespace Rosewood
 		{
 			scriptComponent.Script.OnMouseScrolled(e.GetXOffset(), e.GetYOffset());
 		});
-		return false;
+		return true;
 	}
 	bool Scene::OnKeyPressedEvent(Rosewood::KeyPressedEvent& e)
 	{
@@ -267,7 +267,7 @@ namespace Rosewood
 		{
 			scriptComponent.Script.OnKeyPressed(e.GetKeyCode());
 		});
-		return false;
+		return true;
 	}
 	bool Scene::OnKeyReleasedEvent(Rosewood::KeyReleasedEvent& e)
 	{
@@ -275,6 +275,6 @@ namespace Rosewood
 		{
 			scriptComponent.Script.OnKeyReleased(e.GetKeyCode());
 		});
-		return false;
+		return true;
 	}
 }
