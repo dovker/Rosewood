@@ -23,7 +23,7 @@ extern uint32_t TileSize = 8;
 
         auto childEnt = m_Scene->CreateEntity("enity2");
         childEnt.AddComponent<Rosewood::SpriteRenderComponent>("Sword");
-        childEnt.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(11.0f, 10.0f, 0.0f);
+        childEnt.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(6.0f, 10.0f, 0.0f);
 
         ent.AddChild(childEnt);
 

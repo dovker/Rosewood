@@ -1,14 +1,22 @@
 SampleScript = {}
 
 local Trans = nil;
+local This = nil;
 local Speed = 2;
 local InputLeft = 0;
 local InputRight = 0;
 local InputUp = 0;
 local InputDown = 0;
+local SwordTrans = nil;
+
+local function ChangeFacing(facingDir)
+    Trans.Rotation.y = math.pi * facingDir;
+end
 
 function SampleScript:OnCreate(entity)
     Trans = entity:TransfromComponent().Transform;
+    This = entity;
+    entity:SpriteRenderComponent().Offset.Pivot.x = 0.5;
 end
 
 function SampleScript:OnUpdate(ts)
@@ -23,8 +31,10 @@ end
 function SampleScript:OnKeyPressed(key)
     if(key == Keys.A) then
         InputLeft = 1;
+        ChangeFacing(1);
     elseif (key == Keys.D) then
         InputRight = 1;
+        ChangeFacing(0);
     elseif (key == Keys.S) then
         InputDown = 1;
     elseif (key == Keys.W) then
@@ -43,6 +53,8 @@ function SampleScript:OnKeyReleased(key)
         InputUp = 0;
     end
 end
+
+
 
 -- function SampleScript:OnMessageReceived(entity, messageData)
 -- end

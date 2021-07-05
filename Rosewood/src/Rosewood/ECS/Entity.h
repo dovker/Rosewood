@@ -98,6 +98,7 @@ namespace Rosewood
 					curr = m_Scene->m_Registry.get<RelationshipComponent>(curr).Next;
 				}
 			}
+			RW_CORE_ERROR("ENTITY NOT FOUND");
 			return entt::null;
 		}
 		Entity GetChildEntity(const std::string& tagName) const
