@@ -58,15 +58,8 @@ namespace Rosewood
 
     void LuaState::ExecuteScript(const std::string& filepath)
     {
-        if (FileSystem::Exists(std::filesystem::path(filepath)))
-        {
             int result = luaL_dofile(L, filepath.c_str());
             RW_CORE_ASSERT(CheckError(result), "Lua File Error!!");//Fix this for engine use
-        }
-        else
-        {
-            RW_CORE_ERROR("FILE: {0} Does not exist.", filepath);
-        }
     }
     void LuaState::ExecuteScript(const Ref<TextFile>& file)
     {
