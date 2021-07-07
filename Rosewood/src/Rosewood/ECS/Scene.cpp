@@ -223,7 +223,6 @@ namespace Rosewood
 	{
 		component.Script.AttachScript(m_LuaState);
 		component.Script.CallScript();
-		component.Script.AttachValue<Entity>("entity", entity);
 		component.Script.OnAttached(entity);
 	}
 

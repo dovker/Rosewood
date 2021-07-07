@@ -5,7 +5,8 @@
 #include "Rosewood/Maths/Structs.h"
 #include "Rosewood/Core/Application.h"
 #include "Rosewood/ECS/Entity.h"
-
+#include "Rosewood/Scripting/lua/LuaScript.h"
+#include "Rosewood/Assets/AssetManager.h"
 
 #include <yaml-cpp/yaml.h>
 
@@ -257,6 +258,8 @@ namespace Rosewood
     }
     void SceneSerializer::Deserialize(const std::string& data)
     {
+		std::vector<std::pair<Entity, std::pair<LuaScript, std::string>>> scripts;
+
 		YAML::Node scene = YAML::Load(data);
 		if (!scene["Scene"])
 			return;
@@ -347,12 +350,17 @@ namespace Rosewood
 				auto luaScriptComponent = entity["LuaScriptComponent"];
 				if (luaScriptComponent)
 				{
-					deserializedEntity.AddComponent<LuaScriptComponent>(luaScriptComponent["AssetName"].as<std::string>(), luaScriptComponent["TableName"].as<std::string>());
+					scripts.push_back({ deserializedEntity, { LuaScript(AssetManager::Get<TextFile>(luaScriptComponent["AssetName"].as<std::string>()), luaScriptComponent["TableName"].as<std::string>()), luaScriptComponent["AssetName"].as<std::string>() } });
 				}
 			}
-			for(auto rel : relationships)
+			for(auto &rel : relationships)
 			{
 				m_Scene->GetEntityByUUID(rel.first).AddChild(rel.second);
+			}
+			for (auto &lua : scripts)
+			{
+				auto &pair = lua.second;
+				lua.first.AddComponent<LuaScriptComponent>(pair.first, pair.second);
 			}
 		}
     }

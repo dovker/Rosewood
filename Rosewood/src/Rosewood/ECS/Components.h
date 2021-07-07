@@ -116,8 +116,8 @@ namespace Rosewood
 
         LuaScriptComponent() = default;
         LuaScriptComponent(const LuaScriptComponent&) = default;
-        LuaScriptComponent(const LuaScript& luaScript)
-            : Script(luaScript) {}
+        LuaScriptComponent(const LuaScript& luaScript, const std::string& assetName)
+            : Script(luaScript), AssetName(assetName) {}
         LuaScriptComponent(const std::string& assetName, const std::string& tableName)
             : AssetName(assetName), Script(assetName, tableName)
         { }
