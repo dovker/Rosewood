@@ -1,7 +1,9 @@
 #include "rwpch.h"
 
 #include "SceneManager.h"
-#include "Rosewood/Scripting/lua/LuaState.h"
+#include "Rosewood/Assets/AssetManager.h"
+#include "Rosewood/Files/File.h"
+#include "Rosewood/Data/SceneSerializer.h"
 
 namespace Rosewood
 {
@@ -23,8 +25,29 @@ namespace Rosewood
     }
     void SceneManager::LoadScene(const std::string& name)
     {
-        //.... AFTER SERIALIZATION
-        //SetScene(ref);
+        auto scene = Scene::Create();
+        std::string data;
+		SceneSerializer s(scene);
+		s.Deserialize(AssetManager::Get<TextFile>(name)->GetData());
+        SetScene(scene);
+    }
+    void SceneManager::SaveScene(const std::string& filepath)
+    {
+		SceneSerializer s(s_Data.Scene);
+		try
+        {
+            std::ofstream ofs(filepath);
+            ofs.exceptions(std::ofstream::badbit | std::ofstream::failbit);
+            ofs << s.Serialize();
+            if(ofs.bad())
+			{
+				throw std::invalid_argument("Error Reading the file");
+			}
+		}
+		catch (const std::invalid_argument& e)
+		{
+            RW_CORE_ERROR("SCENE OFSTREAM ERROR: {0}", e.what());
+        }
     }
 
     void SceneManager::AddSystem(System& system)

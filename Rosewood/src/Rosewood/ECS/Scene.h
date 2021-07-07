@@ -17,11 +17,10 @@ namespace Rosewood
     {
     public:
         Scene();
-        Scene(const std::string& filepath);
-        Scene(const TextFile& textFile);
         ~Scene();
 
         Entity CreateEntity(const std::string& name = std::string());
+        Entity CreateEntity(const std::string& name, uint64_t uuid);
 		void DestroyEntity(Entity entity);
 
 		void OnUpdateRuntime(Timestep ts);
@@ -41,7 +40,7 @@ namespace Rosewood
 
         Entity GetPrimaryCameraEntity();
         Entity GetEntityByID(uint32_t id);
-        Entity GetEntityByUID(uint32_t uid);
+        Entity GetEntityByUUID(uint64_t uuid);
         entt::registry* GetRegistry() { return &m_Registry; }
 
         static Ref<Scene> Create()
@@ -49,24 +48,10 @@ namespace Rosewood
             return CreateRef<Scene>();
         }
 
-        static Ref<Scene> Create(const std::string& filepath)
-        {
-            return CreateRef<Scene>(filepath);
-        }
-
-        static Ref<Scene> Create(const TextFile& textFile)
-        {
-            return CreateRef<Scene>(textFile);
-        }
-        
-        std::string& Serialize();
-        void Deserialize(const std::string& data);
-        void Write(const std::string& filename);
-
     private:
         template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
-        bool ExistsUID(uint32_t uid);
+        bool ExistsUUID(uint64_t uuid);
 
         uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
         entt::registry m_Registry; 
@@ -76,4 +61,5 @@ namespace Rosewood
         friend class Entity;
         friend class System;
     };
+
 }

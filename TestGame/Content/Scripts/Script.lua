@@ -24,7 +24,8 @@ function SampleScript:OnUpdate(ts)
     if(dir.x ~= 0.0 and dir.y ~= 0.0) then
         dir = dir:normalize();
     end
-    Trans.Position:add(dir * Speed);
+    --Trans.Position:add(vec3:new(0.8, 0.0, 0.0));
+    Trans.Position:add(dir * Speed * ts * 60.0);
 end
 
 

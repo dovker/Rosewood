@@ -13,7 +13,7 @@ namespace Rosewood
     {
     private:
         Ref<TextFile> m_Script;
-        lua_State* L;
+        Ref<LuaState> L;
         bool m_Attached = false;
         std::string m_TableName;
     public:
@@ -24,7 +24,7 @@ namespace Rosewood
 
         std::string GetTableName() { return m_TableName; }
 
-        void AttachScript(lua_State* luaPtr);
+        void AttachScript(Ref<LuaState> l);
         template <class T> void AttachValue(const std::string& name, T value);
         void CallScript();
         void CallVoidFunction(const std::string& fnName);

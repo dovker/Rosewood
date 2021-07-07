@@ -1,10 +1,10 @@
 #include "rwpch.h"
 
-#include "Scene.h"
-#include "Components.h"
+#include "SceneSerializer.h"
+#include "Rosewood/ECS/Components.h"
 #include "Rosewood/Maths/Structs.h"
 #include "Rosewood/Core/Application.h"
-#include "Entity.h"
+#include "Rosewood/ECS/Entity.h"
 
 
 #include <yaml-cpp/yaml.h>
@@ -113,9 +113,9 @@ namespace Rosewood
 
     static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
-        if(!entity.HasComponent<UIDComponent>()) return;
+        if(!entity.HasComponent<UUIDComponent>()) return;
 		out << YAML::BeginMap; // Entity
-		out << YAML::Key << "Entity" << YAML::Value << entity.GetComponent<UIDComponent>().UID; // TODO: Entity ID
+		out << YAML::Key << "Entity" << YAML::Value << entity.GetComponent<UUIDComponent>().UUID;
 
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -130,12 +130,18 @@ namespace Rosewood
 
         if (entity.HasComponent<RelationshipComponent>())
 		{
+			auto& rc = entity.GetComponent<RelationshipComponent>();
+			
 			out << YAML::Key << "RelationshipComponent";
 			out << YAML::BeginMap;
-
-			auto& rc = entity.GetComponent<RelationshipComponent>();
-			out << YAML::Key << "Parent" << YAML::Value << entity.GetScene()->GetEntityByID((uint32_t)rc.Parent).GetComponent<UIDComponent>().UID;
-
+			if(rc.Parent != entt::null)
+			{
+				out << YAML::Key << "Parent" << YAML::Value << entity.GetScene()->GetEntityByID((uint32_t)rc.Parent).GetComponent<UUIDComponent>().UUID;
+			}
+			else
+			{
+				out << YAML::Key << "Parent" << YAML::Value << 0;
+			}
 			out << YAML::EndMap;
 		}
 
@@ -204,7 +210,6 @@ namespace Rosewood
             out << YAML::Key << "Animation2D" << YAML::Value;
 			out << YAML::BeginMap; //Animation2D
 			out << YAML::Key << "Speed" << YAML::Value << sprite.Animation.Speed;
-			out << YAML::Key << "Frame" << YAML::Value << 0;
             out << YAML::Key << "TotalFrames" << YAML::Value << sprite.Animation.TotalFrames;
 			out << YAML::Key << "Playing" << YAML::Value << sprite.Animation.Playing;
 			out << YAML::Key << "Loops" << YAML::Value << sprite.Animation.Loops;
@@ -232,30 +237,123 @@ namespace Rosewood
 		out << YAML::EndMap; // Entity
 	}
 
-    Scene::Scene(const std::string& filepath)
+    std::string SceneSerializer::Serialize()
     {
-        m_ViewportWidth = Rosewood::Application::Get().GetWindow().GetWidth();
-		m_ViewportHeight = Rosewood::Application::Get().GetWindow().GetHeight();
-		m_LuaState = LuaState::Create();
-    }
-    Scene::Scene(const TextFile& textFile)
-    {
-        m_ViewportWidth = Rosewood::Application::Get().GetWindow().GetWidth();
-		m_ViewportHeight = Rosewood::Application::Get().GetWindow().GetHeight();
-		m_LuaState = LuaState::Create();
-    }
+		YAML::Emitter out;
+		out << YAML::BeginMap;
+		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
+		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
+		m_Scene->GetRegistry()->each([&](auto entityID)
+		{
+			Entity entity = { entityID, m_Scene.get() };
+			if (!entity)
+				return;
 
-    std::string& Scene::Serialize()
-    {
-		std::string s = "";
-		return s;
+			SerializeEntity(out, entity);
+		});
+		out << YAML::EndSeq;
+		out << YAML::EndMap;
+		return out.c_str();
     }
-    void Scene::Deserialize(const std::string& data)
+    void SceneSerializer::Deserialize(const std::string& data)
     {
+		YAML::Node scene = YAML::Load(data);
+		if (!scene["Scene"])
+			return;
 
-    }
-    void Scene::Write(const std::string& filename)
-    {
-        
+		std::string sceneName = scene["Scene"].as<std::string>();
+		RW_CORE_TRACE("Deserializing scene '{0}'", sceneName);
+
+		std::unordered_map<uint64_t, Entity> relationships;
+
+		auto entities = scene["Entities"];
+		if (entities)
+		{
+			for (auto entity : entities)
+			{
+				uint64_t uuid = entity["Entity"].as<uint64_t>();
+
+				std::string name;
+				auto tagComponent = entity["TagComponent"];
+				if (tagComponent)
+					name = tagComponent["Tag"].as<std::string>();
+				RW_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
+
+				auto deserializedEntity = m_Scene->CreateEntity(name, uuid);
+
+				auto transformComponent = entity["TransformComponent"];
+				if (transformComponent)
+				{
+					auto& tc = deserializedEntity.GetComponent<TransformComponent>();
+					tc.TransformData.Position = transformComponent["Position"].as<glm::vec3>();
+					tc.TransformData.Rotation = transformComponent["Rotation"].as<glm::vec3>();
+					tc.TransformData.Scale = transformComponent["Scale"].as<glm::vec3>();
+				}
+
+				auto relationshipComponent = entity["RelationshipComponent"];
+				if (relationshipComponent)
+				{
+					deserializedEntity.AddComponent<RelationshipComponent>();
+					uint64_t uuid = relationshipComponent["Parent"].as<uint64_t>();
+					if(uuid != 0)
+						relationships[uuid] = deserializedEntity;
+				}
+
+				auto cameraComponent = entity["CameraComponent"];
+				if (cameraComponent)
+				{
+					auto& cc = deserializedEntity.AddComponent<CameraComponent>();
+
+					auto cameraProps = cameraComponent["Camera"];
+					cc.Camera.SetProjectionType((SceneCamera::ProjectionType)cameraProps["ProjectionType"].as<int>());
+
+					cc.Camera.SetPerspectiveVerticalFOV(cameraProps["PerspectiveFOV"].as<float>());
+					cc.Camera.SetPerspectiveNearClip(cameraProps["PerspectiveNear"].as<float>());
+					cc.Camera.SetPerspectiveFarClip(cameraProps["PerspectiveFar"].as<float>());
+
+					cc.Camera.SetOrthographicSize(cameraProps["OrthographicSize"].as<float>());
+					cc.Camera.SetOrthographicNearClip(cameraProps["OrthographicNear"].as<float>());
+					cc.Camera.SetOrthographicFarClip(cameraProps["OrthographicFar"].as<float>());
+
+					cc.Primary = cameraComponent["Primary"].as<bool>();
+					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
+				}
+
+				auto spriteRenderComponent = entity["SpriteRenderComponent"];
+				if (spriteRenderComponent)
+				{
+					auto& src = deserializedEntity.AddComponent<SpriteRenderComponent>();
+					auto& sprite = src.SpriteData;
+					auto sd = spriteRenderComponent["Sprite"];
+					sprite.Visible = sd["Visible"].as<bool>();
+					sprite.Transparent = sd["Transparent"].as<bool>();
+					sprite.Color = sd["Color"].as<glm::vec4>();
+					auto sr = sd["SourceRect"];
+					sprite.SourceRect.SetPosition(sr["Position"].as<glm::vec2>());
+					sprite.SourceRect.SetSize(sr["Size"].as<glm::vec2>());
+					auto of = sd["Offset2D"];
+					sprite.Offset.Pivot = of["Pivot"].as<glm::vec2>();
+					sprite.Offset.FlippedX = of["FlippedX"].as<bool>();
+					sprite.Offset.FlippedY = of["FlippedY"].as<bool>();
+					auto an = sd["Animation2D"];
+					sprite.Animation.Speed = an["Speed"].as<float>();
+					sprite.Animation.TotalFrames = an["TotalFrames"].as<uint32_t>();
+					sprite.Animation.Playing = an["Playing"].as<bool>();
+					sprite.Animation.Loops = an["Loops"].as<bool>();
+
+					src.AssetName = spriteRenderComponent["AssetName"].as<std::string>();
+					sprite.ReloadTexture(src.AssetName);
+				}
+				auto luaScriptComponent = entity["LuaScriptComponent"];
+				if (luaScriptComponent)
+				{
+					deserializedEntity.AddComponent<LuaScriptComponent>(luaScriptComponent["AssetName"].as<std::string>(), luaScriptComponent["TableName"].as<std::string>());
+				}
+			}
+			for(auto rel : relationships)
+			{
+				m_Scene->GetEntityByUUID(rel.first).AddChild(rel.second);
+			}
+		}
     }
 }

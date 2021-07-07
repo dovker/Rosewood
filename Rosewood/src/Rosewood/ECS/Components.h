@@ -11,14 +11,14 @@
 
 namespace Rosewood
 {
-    struct UIDComponent
+    struct UUIDComponent
 	{
-		uint32_t UID;
+		uint64_t UUID;
 
-		UIDComponent() = default;
-		UIDComponent(const UIDComponent&) = default;
-		UIDComponent(uint32_t uid)
-			: UID(uid) {}
+		UUIDComponent() = default;
+		UUIDComponent(const UUIDComponent&) = default;
+		UUIDComponent(uint64_t uuid)
+			: UUID(uuid) {}
 	};
     struct TagComponent
 	{

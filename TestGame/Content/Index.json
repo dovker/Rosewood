@@ -35,6 +35,15 @@
         "PathType": "Project",
         "Version": 0
     },
+    "Scene": {
+        "Archived": false,
+        "AssetType": "tf",
+        "Compressed": false,
+        "LoadOnInit": true,
+        "Path": "Scene.yaml",
+        "PathType": "Project",
+        "Version": 0
+    },
     "SampleScript": {
         "Archived": false,
         "AssetType": "tf",

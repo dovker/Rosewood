@@ -46,44 +46,45 @@ namespace Rosewood
     }
 
 
-    void LuaScript::AttachScript(lua_State* luaPtr)
+    void LuaScript::AttachScript(Ref<LuaState> l)
     {
-        L = luaPtr;
+        L = l;
+        m_Attached = true;
     }
     
     template<>
     void LuaScript::AttachValue(const std::string& name, int value)
     {
-        sol::state_view lua(L);
+        sol::state_view lua(L->GetPointer());
         lua[m_TableName][name] = value;
     }
     template<>
     void LuaScript::AttachValue(const std::string& name, float value)
     {
-        sol::state_view lua(L);
+        sol::state_view lua(L->GetPointer());
         lua[m_TableName][name] = value;
     }
     template<>
     void LuaScript::AttachValue(const std::string& name, const std::string& value)
     {
-        sol::state_view lua(L);
+        sol::state_view lua(L->GetPointer());
         lua[m_TableName][name] = value;
     }
     template<>
     void LuaScript::AttachValue(const std::string& name, bool value)
     {
-        sol::state_view lua(L);
+        sol::state_view lua(L->GetPointer());
         lua[m_TableName][name] = value;
     }
     template<>
-    void LuaScript::AttachValue(const std::string& name, const Entity& value)
+    void LuaScript::AttachValue(const std::string& name, Entity value)
     {
-        sol::state_view lua(L);
+        sol::state_view lua(L->GetPointer());
         lua[m_TableName][name] = value;
     }
     void LuaScript::CallScript()
     {
-        sol::state_view lua(L);
+        sol::state_view lua(L->GetPointer());
         
         lua.safe_script(m_Script->GetData(), [](lua_State*, sol::protected_function_result pfr)
         {
@@ -95,14 +96,14 @@ namespace Rosewood
 
     void LuaScript::CallVoidFunction(const std::string& fnName)
     {
-        auto [fn, t] = Helper::GetFuntion(L, fnName, m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), fnName, m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t));
     }
 
     void LuaScript::OnAttached(const Entity& entity)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnCreate", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnCreate", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, entity));
     }
@@ -112,7 +113,7 @@ namespace Rosewood
     }
     void LuaScript::OnUpdate(Timestep ts)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnUpdate", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnUpdate", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, ts.GetSeconds()));
     }
@@ -122,37 +123,37 @@ namespace Rosewood
     }
     void LuaScript::OnKeyPressed(int key)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnKeyPressed", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnKeyPressed", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, key));
     }
     void LuaScript::OnKeyReleased(int key)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnKeyReleased", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnKeyReleased", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, key));
     }
     void LuaScript::OnMouseButtonPressed(int key)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnMouseButtonPressed", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnMouseButtonPressed", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, key));
     }
     void LuaScript::OnMouseButtonReleased(int key)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnMouseButtonReleased", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnMouseButtonReleased", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, key));
     }
     void LuaScript::OnMouseMoved(float x, float y)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnMouseMoved", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnMouseMoved", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, x, y));
     }
     void LuaScript::OnMouseScrolled(float xOffset, float yOffset)
     {
-        auto [fn, t] = Helper::GetFuntion(L, "OnMouseScrolled", m_TableName);
+        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnMouseScrolled", m_TableName);
         if(!fn.valid()) return;
         Helper::CheckResult(fn(t, xOffset, yOffset));
     }

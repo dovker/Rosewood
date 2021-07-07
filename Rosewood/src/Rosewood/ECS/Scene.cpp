@@ -12,16 +12,16 @@
 
 namespace Rosewood
 {
-	static std::mt19937 uidGenerator = std::mt19937(232345);
-	static std::uniform_int_distribution<uint32_t> uidDistribution(0, std::numeric_limits<uint32_t>::max());
+	static std::mt19937 uuidGenerator = std::mt19937(232345);
+	static std::uniform_int_distribution<uint64_t> uuidDistribution(0, std::numeric_limits<uint64_t>::max());
 
-	bool Scene::ExistsUID(uint32_t uid)
+	bool Scene::ExistsUUID(uint64_t uuid)
 	{
 		bool val = false;
-		auto view = m_Registry.view<UIDComponent>();
+		auto view = m_Registry.view<UUIDComponent>();
 		for(auto entity : view)
 		{
-			val = view.get<UIDComponent>(entity).UID == uid;
+			val = view.get<UUIDComponent>(entity).UUID == uuid;
 			if(val) break;
 		}
 		return val;
@@ -44,23 +44,26 @@ namespace Rosewood
 
     Entity Scene::CreateEntity(const std::string& name)
     {
-        Entity entity = Entity(m_Registry.create(), this);
+		uint64_t uuid;
+		do
+		{
+			uuid = uuidDistribution(uuidGenerator);
+		}
+		while(ExistsUUID(uuid) && uuid != 0);
+        return CreateEntity(name, uuid);
+    }
+	Entity Scene::CreateEntity(const std::string& name, uint64_t uuid)
+	{
+		Entity entity = Entity(m_Registry.create(), this);
         entity.AddComponent<TransformComponent>();
 		
         auto& tag = entity.AddComponent<TagComponent>();
         tag.Tag = name.empty() ? "Blank Entity" : name;
 
-		auto& uidComponent = entity.AddComponent<UIDComponent>();
-		uint32_t uid;
-		do
-		{
-			uid = uidDistribution(uidGenerator);
-		}
-		while(ExistsUID(uid));
-		uidComponent.UID = uid;
+		entity.AddComponent<UUIDComponent>(uuid);
 
-        return entity;
-    }
+		return entity;
+	}
     void Scene::DestroyEntity(Entity entity)
 	{
 		entity.GetComponent<LuaScriptComponent>().Script.OnDestroy();
@@ -73,7 +76,6 @@ namespace Rosewood
 		{
 			m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
 			{
-				Rosewood::BenchmarkTimer timer = Rosewood::BenchmarkTimer("Lua OnUpdate");
 				scriptComponent.Script.OnUpdate(ts);
 			});
 		}
@@ -146,13 +148,13 @@ namespace Rosewood
 	{
 		return Entity{(entt::entity)id, this};
 	}
-    Entity Scene::GetEntityByUID(uint32_t uid)
+    Entity Scene::GetEntityByUUID(uint64_t uuid)
 	{
-		auto view = m_Registry.view<UIDComponent>();
+		auto view = m_Registry.view<UUIDComponent>();
 		for (auto entity : view)
 		{
-			const auto& uidComp = view.get<UIDComponent>(entity);
-			if (uidComp.UID == uid)
+			const auto& uuidComp = view.get<UUIDComponent>(entity);
+			if (uuidComp.UUID == uuid)
 				return Entity{entity, this};
 		}
 		return {};
@@ -219,8 +221,9 @@ namespace Rosewood
 	template<>
 	void Scene::OnComponentAdded<LuaScriptComponent>(Entity entity, LuaScriptComponent& component)
 	{
-		component.Script.AttachScript(m_LuaState->GetPointer());
+		component.Script.AttachScript(m_LuaState);
 		component.Script.CallScript();
+		component.Script.AttachValue<Entity>("entity", entity);
 		component.Script.OnAttached(entity);
 	}
 
