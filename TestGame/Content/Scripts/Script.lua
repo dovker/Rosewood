@@ -1,7 +1,6 @@
 SampleScript = {}
 
 local Trans = nil;
-local This = nil;
 local Speed = 2;
 local InputLeft = 0;
 local InputRight = 0;
@@ -13,15 +12,15 @@ local function ChangeFacing(facingDir)
     Trans.Rotation.y = math.pi * facingDir;
 end
 
-function SampleScript:OnCreate(entity)
-    Trans = entity:TransfromComponent().Transform;
-    This = entity;
-    entity:SpriteRenderComponent().Offset.Pivot.x = 0.5;
+function SampleScript:OnCreate()
+    --Maybe try Scene:GetEntity(self.entity);
+    self.Entity:GetSpriteRenderComponent().Offset.Pivot.x = 0.5;
 end
 
 function SampleScript:OnUpdate(ts)
+    Trans = self.Entity:GetTransfromComponent().Transform;
     local dir = vec3:new(InputRight - InputLeft, InputDown - InputUp, 0.0);
-    if(dir.x ~= 0.0 and dir.y ~= 0.0) then
+    if(dir.x ~= 0.0 or dir.y ~= 0.0) then
         dir = dir:normalize();
     end
     --Trans.Position:add(vec3:new(0.8, 0.0, 0.0));

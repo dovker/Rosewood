@@ -350,17 +350,13 @@ namespace Rosewood
 				auto luaScriptComponent = entity["LuaScriptComponent"];
 				if (luaScriptComponent)
 				{
-					scripts.push_back({ deserializedEntity, { LuaScript(AssetManager::Get<TextFile>(luaScriptComponent["AssetName"].as<std::string>()), luaScriptComponent["TableName"].as<std::string>()), luaScriptComponent["AssetName"].as<std::string>() } });
+					deserializedEntity.AddComponent<LuaScriptComponent>(luaScriptComponent["AssetName"].as<std::string>(), luaScriptComponent["TableName"].as<std::string>());
 				}
 			}
 			for(auto &rel : relationships)
 			{
-				m_Scene->GetEntityByUUID(rel.first).AddChild(rel.second);
-			}
-			for (auto &lua : scripts)
-			{
-				auto &pair = lua.second;
-				lua.first.AddComponent<LuaScriptComponent>(pair.first, pair.second);
+				auto ent = m_Scene->GetEntityByUUID(rel.first);
+				ent.AddChild(rel.second);
 			}
 		}
     }

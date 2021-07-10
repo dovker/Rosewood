@@ -101,11 +101,9 @@ namespace Rosewood
         Helper::CheckResult(fn(t));
     }
 
-    void LuaScript::OnAttached(const Entity& entity)
+    void LuaScript::OnAttached()
     {
-        auto [fn, t] = Helper::GetFuntion(L->GetPointer(), "OnCreate", m_TableName);
-        if(!fn.valid()) return;
-        Helper::CheckResult(fn(t, entity));
+        CallVoidFunction("OnCreate");
     }
     void LuaScript::OnDestroy()
     {

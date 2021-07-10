@@ -29,7 +29,7 @@ namespace Rosewood
         void CallScript();
         void CallVoidFunction(const std::string& fnName);
 
-        void OnAttached(const Entity& entity);
+        void OnAttached();
 		void OnDestroy();
 		void OnUpdate(Timestep ts);
 		void OnRender2D(); //TODO: GRAPHICS SCRIPTING

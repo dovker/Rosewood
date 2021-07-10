@@ -16,30 +16,29 @@ extern uint32_t TileSize = 8;
 
     void Scene::OnLoad()
     {
-        /*
-        Rosewood::SceneManager::SetScene(m_Scene);
+        // Rosewood::SceneManager::SetScene(m_Scene);
        
-        auto ent = m_Scene->CreateEntity("enity");
-        ent.AddComponent<Rosewood::SpriteRenderComponent>("TempPlayer");
+        // auto ent = m_Scene->CreateEntity("enity");
+        // ent.AddComponent<Rosewood::SpriteRenderComponent>("TempPlayer");
+        // ent.AddComponent<Rosewood::LuaScriptComponent>("SampleScript", "SampleScript");
 
-        auto childEnt = m_Scene->CreateEntity("enity2");
-        childEnt.AddComponent<Rosewood::SpriteRenderComponent>("Sword");
-        childEnt.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(6.0f, 10.0f, 0.0f);
+        // auto childEnt = m_Scene->CreateEntity("enity2");
+        // childEnt.AddComponent<Rosewood::SpriteRenderComponent>("Sword");
+        // childEnt.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(6.0f, 10.0f, 0.0f);
+        // childEnt.AddComponent<Rosewood::LuaScriptComponent>("SwordScript", "SwordScript");
 
-        ent.AddChild(childEnt);
+        // ent.AddChild(childEnt);
 
-        auto camera = m_Scene->CreateEntity("camera");
-        camera.AddComponent<Rosewood::CameraComponent>();
+        // auto camera = m_Scene->CreateEntity("camera");
+        // camera.AddComponent<Rosewood::CameraComponent>();
 
-        ent.AddComponent<Rosewood::LuaScriptComponent>("SampleScript", "SampleScript");
-		camera.AddComponent<Rosewood::LuaScriptComponent>("CameraScript", "CameraScript");
-        childEnt.AddComponent<Rosewood::LuaScriptComponent>("SwordScript", "SwordScript");
-        
-        Rosewood::SceneManager::SaveScene(Rosewood::FileSystem::GetPath("Scene.yaml"));
-        */
+		// camera.AddComponent<Rosewood::LuaScriptComponent>("CameraScript", "CameraScript");
+
+        // Rosewood::SceneManager::SaveScene(Rosewood::FileSystem::GetPath("Scene.yaml"));
 
         // Rosewood::SceneManager::GetScene()->Serialize();
         Rosewood::SceneManager::LoadScene("Scene");
+        // Rosewood::SceneManager::SaveScene(Rosewood::FileSystem::GetPath("SceneTEST.yaml"));
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)
     {

@@ -1,0 +1,83 @@
+Scene: Untitled
+Entities:
+  - Entity: 1782204731334878479
+    TagComponent:
+      Tag: enity
+    RelationshipComponent:
+      Parent: 0
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRenderComponent:
+      Sprite:
+        Visible: true
+        Transparent: false
+        Color: [1, 1, 1, 1]
+        SourceRect:
+          Position: [0, 0]
+          Size: [16, 16]
+        Offset2D:
+          Pivot: [0.5, 0]
+          FlippedX: false
+          FlippedY: false
+        Animation2D:
+          Speed: 1
+          TotalFrames: 1
+          Playing: false
+          Loops: true
+      AssetName: TempPlayer
+    LuaScriptComponent:
+      TableName: SampleScript
+      AssetName: SampleScript
+  - Entity: 18295586561413507145
+    TagComponent:
+      Tag: enity2
+    RelationshipComponent:
+      Parent: 1782204731334878479
+    TransformComponent:
+      Position: [6, 10, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRenderComponent:
+      Sprite:
+        Visible: true
+        Transparent: false
+        Color: [1, 1, 1, 1]
+        SourceRect:
+          Position: [0, 0]
+          Size: [9, 3]
+        Offset2D:
+          Pivot: [0, 0.5]
+          FlippedX: false
+          FlippedY: false
+        Animation2D:
+          Speed: 1
+          TotalFrames: 1
+          Playing: false
+          Loops: true
+      AssetName: Sword
+    LuaScriptComponent:
+      TableName: SwordScript
+      AssetName: SwordScript
+  - Entity: 1473311721182046506
+    TagComponent:
+      Tag: camera
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [2, 2, 2]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 720
+        OrthographicNear: -10000
+        OrthographicFar: 10000
+      Primary: true
+      FixedAspectRatio: false
+    LuaScriptComponent:
+      TableName: CameraScript
+      AssetName: CameraScript
