@@ -18,16 +18,14 @@ extern uint32_t TileSize = 8;
     {
         // Rosewood::SceneManager::SetScene(m_Scene);
        
-        // auto ent = m_Scene->CreateEntity("enity");
-        // ent.AddComponent<Rosewood::SpriteRenderComponent>("TempPlayer");
-        // ent.AddComponent<Rosewood::LuaScriptComponent>("SampleScript", "SampleScript");
+        // for(int i = 0; i < 3000; i++)
+        // {
+        //     auto ent = m_Scene->CreateEntity("enity");
+        //     ent.AddComponent<Rosewood::SpriteRenderComponent>("TempPlayer");
+        //     ent.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(rand()%1000, rand()%1000, rand()%1000);
+        //     ent.AddComponent<Rosewood::LuaScriptComponent>("SampleScript", "SampleScript");
 
-        // auto childEnt = m_Scene->CreateEntity("enity2");
-        // childEnt.AddComponent<Rosewood::SpriteRenderComponent>("Sword");
-        // childEnt.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(6.0f, 10.0f, 0.0f);
-        // childEnt.AddComponent<Rosewood::LuaScriptComponent>("SwordScript", "SwordScript");
-
-        // ent.AddChild(childEnt);
+        // }
 
         // auto camera = m_Scene->CreateEntity("camera");
         // camera.AddComponent<Rosewood::CameraComponent>();
@@ -36,9 +34,7 @@ extern uint32_t TileSize = 8;
 
         // Rosewood::SceneManager::SaveScene(Rosewood::FileSystem::GetPath("Scene.yaml"));
 
-        // Rosewood::SceneManager::GetScene()->Serialize();
         Rosewood::SceneManager::LoadScene("Scene");
-        // Rosewood::SceneManager::SaveScene(Rosewood::FileSystem::GetPath("SceneTEST.yaml"));
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)
     {

@@ -8,6 +8,11 @@ local InputUp = 0;
 local InputDown = 0;
 local SwordTrans = nil;
 
+function SampleScript:new(entity) --GENERIC FOR ALL SCRIPTS
+    self.__index = self;
+    return setmetatable({ Entity = entity }, self);
+end
+
 local function ChangeFacing(facingDir)
     Trans.Rotation.y = math.pi * facingDir;
 end

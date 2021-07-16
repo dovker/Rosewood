@@ -10,6 +10,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+#include "Rosewood/Benchmark/Benchmark.h"
 
 #include "Sprite.h"
 
@@ -33,9 +34,7 @@ namespace Rosewood
         Rect frameRect = Rect(SourceRect.Position() + glm::vec2(Animation.Frame * SourceRect.Width, 0.0f), SourceRect.RelativeWidth());
         
         glm::vec2 scale = glm::vec2(transform.Scale.x, transform.Scale.y);
-        
-        glm::vec2 texSize = glm::vec2(SpriteTexture->GetWidth(), SpriteTexture->GetHeight());
-        
+                
         glm::vec2 UVX;
         glm::vec2 UVY;
         
@@ -45,12 +44,22 @@ namespace Rosewood
         if(Offset.FlippedY) UVY = glm::vec2(frameRect.Bottom, frameRect.Top);
         else UVY = glm::vec2(frameRect.Top, frameRect.Bottom);
 
-        glm::mat4 result = 
-              glm::translate(glm::mat4(1.0f), transform.Position) *
-              glm::translate(glm::mat4(1.0f), glm::vec3(Offset.Pivot, 0.0f)) *
+        glm::mat4 result;
+        if(Offset.Pivot.x > 0.0f || Offset.Pivot.y > 0.0f)
+        {
+            BenchmarkTimer benchTimer("Matrix Multiplication");
+            result = 
+              glm::translate(glm::mat4(1.0f), transform.Position + glm::vec3(Offset.Pivot, 0.0f)) *
               glm::toMat4(glm::quat(transform.Rotation)) *
               glm::scale(glm::mat4(1.0f), glm::vec3(SourceRect.RelativeWidth() * scale, 1.0f)) *
               glm::translate(glm::mat4(1.0f), -glm::vec3(Offset.Pivot, 0.0f));
+        }
+        else
+        {
+            result = glm::translate(glm::mat4(1.0f), transform.Position) *
+              glm::toMat4(glm::quat(transform.Rotation)) *
+              glm::scale(glm::mat4(1.0f), glm::vec3(SourceRect.RelativeWidth() * scale, 1.0f));
+        }
 
         BatchRenderer::DrawQuad(result, SpriteTexture, {UVX.x, UVY.x}, {UVX.y, UVY.y}, Color);
     }

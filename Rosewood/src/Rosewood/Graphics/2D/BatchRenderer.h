@@ -39,7 +39,7 @@ namespace Rosewood
         static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
         static void DrawQuad(const glm::mat4& transform, Ref<Texture>& texture, const glm::vec4& uv, const glm::vec4& color);
 
-        static void DrawRotatedQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, float rotation, const glm::vec4&& uv, const glm::vec4& color);
+        static void DrawRotatedQuad(const glm::vec3& pos, const glm::vec2& size, Ref<Texture>& texture, float rotation, const glm::vec4& uv, const glm::vec4& color);
         static void DrawQuad(const glm::vec3& pos, const glm::vec2& size, const glm::vec4& color);
         
         static void DrawQuad(const glm::mat4& transform, Ref<Texture>& texture, const glm::vec2& fromPix, const glm::vec2& toPix, const glm::vec4& color);

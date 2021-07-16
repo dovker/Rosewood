@@ -4,7 +4,7 @@
 #include "Rosewood/Assets/AssetManager.h"
 #include "Rosewood/Files/FileSystem.h"
 #include "Rosewood/Graphics/Graphics.h"
-
+#include "Rosewood/Benchmark/Benchmark.h"
 
 namespace Rosewood
 {
@@ -26,7 +26,7 @@ namespace Rosewood
         RenderCircle::CircleTextureHeight = RenderCircle::CircleTexture->GetHeight();
         
         s_Data.TransparentSprites = std::vector<std::pair<RenderItem2D*, Transform>>();
-        s_Data.TransparentSprites.reserve(100);
+        s_Data.TransparentSprites.reserve(1000);
         BatchRenderer::Init();
     }
     void Renderer2D::Shutdown()
@@ -56,6 +56,7 @@ namespace Rosewood
     }
     void Renderer2D::End()
     {
+        BenchmarkTimer timer("Rendering Inside with Sorting");
         std::sort(s_Data.TransparentSprites.begin(), s_Data.TransparentSprites.end(), compareSprites);
         for(auto& s : s_Data.TransparentSprites)
         {

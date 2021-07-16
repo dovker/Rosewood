@@ -8,6 +8,11 @@ local Swing = false;
 local FacingDir = -1;
 local enT = nil;
 
+function SwordScript:new(entity) --GENERIC FOR ALL SCRIPTS
+    self.__index = self;
+    return setmetatable({ Entity = entity }, self);
+end
+
 local function ChangeFacing(facingDir)
     Trans.Position.x = DefaultX * facingDir;
     Trans.Rotation.z = -facingDir;

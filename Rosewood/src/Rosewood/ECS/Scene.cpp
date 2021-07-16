@@ -72,6 +72,7 @@ namespace Rosewood
 
     void Scene::OnUpdateRuntime(Timestep ts)
 	{
+		BenchmarkTimer timer("Updating");
         // Update scripts
 		{
 			m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
@@ -104,6 +105,7 @@ namespace Rosewood
 		// Render 2D
 		if (mainCamera)
 		{
+			BenchmarkTimer timer("2D Rendering");
 			Renderer2D::Begin(*mainCamera, cameraTransform);
 
 			//Go Through sprites

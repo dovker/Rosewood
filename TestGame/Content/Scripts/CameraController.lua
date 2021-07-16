@@ -5,6 +5,11 @@ local InputUp = 0;
 local InputDown = 0;
 local Trans = nil;
 
+function CameraScript:new(entity) --GENERIC FOR ALL SCRIPTS
+    self.__index = self;
+    return setmetatable({ Entity = entity }, self);
+end
+
 function CameraScript:OnCreate()
     Trans = self.Entity:GetTransfromComponent().Transform;
     Trans.Scale = vec3:new(2.0);

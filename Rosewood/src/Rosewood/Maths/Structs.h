@@ -12,7 +12,7 @@
 #include "rwpch.h"
 
 namespace Rosewood {
-
+    
     struct Transform
     {
         glm::vec3 Position, Rotation, Scale;

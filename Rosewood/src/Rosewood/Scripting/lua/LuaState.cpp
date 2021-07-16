@@ -39,6 +39,7 @@ namespace Rosewood
         wrap_Math math(L);
 
         wrap_ECS ecs(L);
+        ExecuteScript(FileSystem::GetPath("Scripts/Defines.lua", FilePathType::ENGINE));
     }
 
     LuaState::~LuaState()
