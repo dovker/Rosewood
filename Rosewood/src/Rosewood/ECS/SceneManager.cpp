@@ -31,6 +31,15 @@ namespace Rosewood
 		s.Deserialize(AssetManager::Get<TextFile>(name)->GetData());
         SetScene(scene);
     }
+    void SceneManager::LoadScenByPath(const std::string& filepath)
+    {
+        auto scene = Scene::Create();
+        std::string data;
+		SceneSerializer s(scene);
+        TextFile file(filepath);
+		s.Deserialize(file.GetData());
+        SetScene(scene);
+    }
     void SceneManager::SaveScene(const std::string& filepath)
     {
 		SceneSerializer s(s_Data.Scene);

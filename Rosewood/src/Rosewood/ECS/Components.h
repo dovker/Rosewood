@@ -2,12 +2,12 @@
 #include "rwpch.h"
 #include "Rosewood/Maths/Structs.h"
 #include "Rosewood/Graphics/2D/Sprite.h"
+#include "Rosewood/Assets/AssetManager.h"
+#include "Rosewood/Files/File.h"
 
 #include <glm/glm.hpp>
 #include "SceneCamera.h"
 #include "entt.hpp"
-
-#include "Rosewood/Scripting/lua/LuaScript.h"
 
 namespace Rosewood
 {
@@ -111,15 +111,16 @@ namespace Rosewood
 
     struct LuaScriptComponent
 	{
-		LuaScript Script;
+		Ref<TextFile> Script;
+        std::string TableName;
         std::string AssetName;
 
         LuaScriptComponent() = default;
         LuaScriptComponent(const LuaScriptComponent&) = default;
-        LuaScriptComponent(const LuaScript& luaScript, const std::string& assetName)
-            : Script(luaScript), AssetName(assetName) {}
+        LuaScriptComponent(const Ref<TextFile>& luaScript, const std::string& tableName, const std::string& assetName)
+            : Script(luaScript), TableName(tableName), AssetName(assetName) {}
         LuaScriptComponent(const std::string& assetName, const std::string& tableName)
-            : AssetName(assetName), Script(assetName, tableName)
+            : AssetName(assetName), Script(AssetManager::Get<TextFile>(assetName)), TableName(tableName)
         { }
 	};
 }

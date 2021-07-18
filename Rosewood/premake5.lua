@@ -39,6 +39,7 @@ project "Rosewood"
         "%{IncludeDir.yaml_cpp}",
         "%{IncludeDir.json}",
         "%{IncludeDir.libzip}",
+        "%{IncludeDir.asio}",
     }
     filter "action:xcode4"
         pchheader "src/rwpch.h"
@@ -62,6 +63,7 @@ project "Rosewood"
             "%{IncludeDir.yaml_cpp}",
             "%{IncludeDir.json}",
             "%{IncludeDir.libzip}",
+            "%{IncludeDir.asio}",
         }
     filter {}
     

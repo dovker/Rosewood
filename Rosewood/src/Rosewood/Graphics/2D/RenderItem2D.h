@@ -17,6 +17,7 @@ namespace Rosewood
     public:
         bool Visible = true;
         bool Transparent = false;
+        //bool AxisAligned = true;
 
         glm::vec4 Color = {1.0f, 1.0f, 1.0f, 1.0f};
         RenderItem2D(glm::vec4 color): Color(color)

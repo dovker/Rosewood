@@ -5,7 +5,6 @@
 #include "Rosewood/Maths/Structs.h"
 #include "Rosewood/Core/Application.h"
 #include "Rosewood/ECS/Entity.h"
-#include "Rosewood/Scripting/lua/LuaScript.h"
 #include "Rosewood/Assets/AssetManager.h"
 
 #include <yaml-cpp/yaml.h>
@@ -227,9 +226,8 @@ namespace Rosewood
 			out << YAML::BeginMap;
 
 			auto& luaScriptComponent = entity.GetComponent<LuaScriptComponent>();
-			auto& script = luaScriptComponent.Script;
 
-			out << YAML::Key << "TableName" << YAML::Value << script.GetTableName();
+			out << YAML::Key << "TableName" << YAML::Value << luaScriptComponent.TableName;
 			out << YAML::Key << "AssetName" << YAML::Value << luaScriptComponent.AssetName;
 
 			out << YAML::EndMap;
@@ -258,14 +256,11 @@ namespace Rosewood
     }
     void SceneSerializer::Deserialize(const std::string& data)
     {
-		std::vector<std::pair<Entity, std::pair<LuaScript, std::string>>> scripts;
-
 		YAML::Node scene = YAML::Load(data);
 		if (!scene["Scene"])
 			return;
 
 		std::string sceneName = scene["Scene"].as<std::string>();
-		RW_CORE_TRACE("Deserializing scene '{0}'", sceneName);
 
 		std::unordered_map<uint64_t, Entity> relationships;
 
@@ -280,7 +275,6 @@ namespace Rosewood
 				auto tagComponent = entity["TagComponent"];
 				if (tagComponent)
 					name = tagComponent["Tag"].as<std::string>();
-				RW_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
 
 				auto deserializedEntity = m_Scene->CreateEntity(name, uuid);
 

@@ -16,24 +16,6 @@ extern uint32_t TileSize = 8;
 
     void Scene::OnLoad()
     {
-        // Rosewood::SceneManager::SetScene(m_Scene);
-       
-        // for(int i = 0; i < 3000; i++)
-        // {
-        //     auto ent = m_Scene->CreateEntity("enity");
-        //     ent.AddComponent<Rosewood::SpriteRenderComponent>("TempPlayer");
-        //     ent.GetComponent<Rosewood::TransformComponent>().TransformData.Position += glm::vec3(rand()%1000, rand()%1000, rand()%1000);
-        //     ent.AddComponent<Rosewood::LuaScriptComponent>("SampleScript", "SampleScript");
-
-        // }
-
-        // auto camera = m_Scene->CreateEntity("camera");
-        // camera.AddComponent<Rosewood::CameraComponent>();
-
-		// camera.AddComponent<Rosewood::LuaScriptComponent>("CameraScript", "CameraScript");
-
-        // Rosewood::SceneManager::SaveScene(Rosewood::FileSystem::GetPath("Scene.yaml"));
-
         Rosewood::SceneManager::LoadScene("Scene");
     }
     void Scene::OnUpdate(Rosewood::Timestep timestep)

@@ -5,8 +5,6 @@
 #include "Rosewood/Core/Application.h"
 #include "ScriptableEntity.h"
 #include "Rosewood/Benchmark/Benchmark.h"
-#include "Rosewood/Scripting/lua/LuaScript.h"
-
 
 #include "Entity.h"
 
@@ -35,10 +33,7 @@ namespace Rosewood
     }
     Scene::~Scene()
     {
-		m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-		{
-			scriptComponent.Script.OnDestroy();
-		});
+		m_LuaState->DestroyScripts();
     }
 
 
@@ -66,7 +61,7 @@ namespace Rosewood
 	}
     void Scene::DestroyEntity(Entity entity)
 	{
-		entity.GetComponent<LuaScriptComponent>().Script.OnDestroy();
+		m_LuaState->UnregisterScript(entity);
 		m_Registry.destroy(entity);
 	}
 
@@ -75,10 +70,7 @@ namespace Rosewood
 		BenchmarkTimer timer("Updating");
         // Update scripts
 		{
-			m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-			{
-				scriptComponent.Script.OnUpdate(ts);
-			});
+			m_LuaState->CallOnUpdate(ts);
 		}
 
 		
@@ -108,14 +100,11 @@ namespace Rosewood
 			BenchmarkTimer timer("2D Rendering");
 			Renderer2D::Begin(*mainCamera, cameraTransform);
 
+			m_LuaState->CallVoidScriptFunction("OnRender2D");
 			//Go Through sprites
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRenderComponent>);
 			for (auto entity : group)
 			{
-				if(m_Registry.has<LuaScriptComponent>(entity))
-				{
-					m_Registry.get<LuaScriptComponent>(entity).Script.OnRender2D();
-				}
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRenderComponent>(entity);
 				Transform t;
 				
@@ -223,10 +212,9 @@ namespace Rosewood
 	template<>
 	void Scene::OnComponentAdded<LuaScriptComponent>(Entity entity, LuaScriptComponent& component)
 	{
-		component.Script.AttachScript(m_LuaState);
-		component.Script.CallScript();
-		component.Script.AttachValue("Entity", entity);
-		component.Script.OnAttached();
+		m_LuaState->CallScript(component.Script);
+		m_LuaState->RegisterScript(entity, component.TableName);
+		m_LuaState->CallVoidIndividualFunction(entity, "OnCreate");
 	}
 
 	template<>
@@ -236,50 +224,32 @@ namespace Rosewood
 	
 	bool Scene::OnMouseButtonPressedEvent(Rosewood::MouseButtonPressedEvent& e)
 	{
-		m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-		{
-			scriptComponent.Script.OnMouseButtonPressed(e.GetMouseButton());
-		});
+		m_LuaState->CallOnMouseButtonPressed(e.GetMouseButton());
 		return true;
 	}
 	bool Scene::OnMouseButtonReleasedEvent(Rosewood::MouseButtonReleasedEvent& e)
 	{
-		m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-		{
-			scriptComponent.Script.OnMouseButtonReleased(e.GetMouseButton());
-		});
+		m_LuaState->CallOnMouseButtonReleased(e.GetMouseButton());
 		return true;
 	}
 	bool Scene::OnMouseMovedEvent(Rosewood::MouseMovedEvent& e)
 	{
-		m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-		{
-			scriptComponent.Script.OnMouseMoved(e.GetX(), e.GetY());
-		});
+		m_LuaState->CallOnMouseMoved(e.GetX(), e.GetY());
 		return true;
 	}
 	bool Scene::OnMouseScrolledEvent(Rosewood::MouseScrolledEvent& e)
 	{
-		m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-		{
-			scriptComponent.Script.OnMouseScrolled(e.GetXOffset(), e.GetYOffset());
-		});
+		m_LuaState->CallOnMouseScrolled(e.GetXOffset(), e.GetYOffset());
 		return true;
 	}
 	bool Scene::OnKeyPressedEvent(Rosewood::KeyPressedEvent& e)
 	{
-		m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-		{
-			scriptComponent.Script.OnKeyPressed(e.GetKeyCode());
-		});
+		m_LuaState->CallOnKeyPressed(e.GetKeyCode());
 		return true;
 	}
 	bool Scene::OnKeyReleasedEvent(Rosewood::KeyReleasedEvent& e)
 	{
-		m_Registry.view<LuaScriptComponent>().each([=](auto entity, auto& scriptComponent)
-		{
-			scriptComponent.Script.OnKeyReleased(e.GetKeyCode());
-		});
+		m_LuaState->CallOnKeyReleased(e.GetKeyCode());
 		return true;
 	}
 }

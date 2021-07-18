@@ -63,6 +63,7 @@ namespace Rosewood
             "GetChild", [](const Entity& e, std::string tag) -> Entity { return e.GetChildEntity(tag); },
             "GetChildren", &Entity::GetChildren,
             sol::meta_function::equal_to, &Entity::operator==,
+            "GetID", [](Entity& e) -> uint32_t { return (uint32_t)e; },
             "GetTagComponent", [](Entity& e) -> TagComponent& { return std::ref(e.GetComponent<TagComponent>()); },
             "GetTransfromComponent", [](Entity& e) -> TransformComponent& { return std::ref(e.GetComponent<TransformComponent>()); },
             "GetSpriteRenderComponent", [](Entity& e) -> SpriteRenderComponent& { return std::ref(e.GetComponent<SpriteRenderComponent>()); }

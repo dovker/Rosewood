@@ -8,11 +8,6 @@ local InputUp = 0;
 local InputDown = 0;
 local SwordTrans = nil;
 
-function SampleScript:new(entity) --GENERIC FOR ALL SCRIPTS
-    self.__index = self;
-    return setmetatable({ Entity = entity }, self);
-end
-
 local function ChangeFacing(facingDir)
     Trans.Rotation.y = math.pi * facingDir;
 end
@@ -28,7 +23,7 @@ function SampleScript:OnUpdate(ts)
     if(dir.x ~= 0.0 or dir.y ~= 0.0) then
         dir = dir:normalize();
     end
-    --Trans.Position:add(vec3:new(0.8, 0.0, 0.0));
+    -- --Trans.Position:add(vec3:new(0.8, 0.0, 0.0));
     Trans.Position:add(dir * Speed * ts * 60.0);
 end
 
@@ -59,7 +54,6 @@ function SampleScript:OnKeyReleased(key)
     end
 end
 
-
-
+return SampleScript;
 -- function SampleScript:OnMessageReceived(entity, messageData)
 -- end

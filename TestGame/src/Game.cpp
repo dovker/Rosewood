@@ -54,6 +54,7 @@ namespace TestGame {
     }
     
     bool open = true;
+    char txt[32] = "Scene.yaml";
     void Game::OnImGuiRender()
     {
         auto stats = Rosewood::BatchRenderer::GetStats();
@@ -65,6 +66,15 @@ namespace TestGame {
         if(ImGui::Button("Export Assets"))
         {
             Rosewood::AssetLoader::ExportAssetIndex(Rosewood::FileSystem::GetPath("Index.json"), Rosewood::FilePathType::PROJECT);
+        }
+        ImGui::InputText("Scene FileName", txt, 32, ImGuiInputTextFlags_None);
+        if(ImGui::Button("Export Scene")) 
+        {
+            Rosewood::SceneManager::SaveScene(Rosewood::FileSystem::GetPath(txt));
+        }
+        if(ImGui::Button("Load Scene")) 
+        {
+            Rosewood::SceneManager::LoadScenByPath(Rosewood::FileSystem::GetPath(txt));
         }
 
         ImGui::Separator();

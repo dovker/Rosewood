@@ -12,6 +12,7 @@ namespace Rosewood
         static void SetScene(Ref<Scene> scene);
         //TODO FINISH
         static void LoadScene(const std::string& name);
+        static void LoadScenByPath(const std::string& filepath);
         static void SaveScene(const std::string& filepath);
 
         static void AddSystem(System& system);

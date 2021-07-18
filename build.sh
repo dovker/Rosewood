@@ -1,3 +1,4 @@
 INPUT=${1:-TestGame}
-make
-./run.sh $INPUT
+CONFIG=${2:-debug}
+make config=$CONFIG
+./run.sh $INPUT $CONFIG

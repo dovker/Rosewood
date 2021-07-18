@@ -35,6 +35,7 @@ workspace "Rosewood"
     IncludeDir["entt"] =        "%{wks.location}/Rosewood/vendor/entt/include"          
     IncludeDir["lua"] =         "%{wks.location}/Rosewood/vendor/lua/src"          
     IncludeDir["sol"] =         "%{wks.location}/Rosewood/vendor/sol"          
+    IncludeDir["asio"] =        "%{wks.location}/Rosewood/vendor/asio/include"          
     IncludeDir["yaml_cpp"] =    "%{wks.location}/Rosewood/vendor/yaml-cpp/include"
     IncludeDir["json"] =        "%{wks.location}/Rosewood/vendor/json/include"
     
