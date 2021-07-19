@@ -1,7 +1,7 @@
 # Rosewood
 Rosewood Game Engine
 
-**Rosewood Engine** is a game engine created for learning purposes and GameJam games. The game engine started of following [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although has vastly moved on from it.
+**Rosewood Engine** is a game engine created for learning purposes and GameJam games. The game engine started of following [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although has vastly moved away from it.
 
 # Plan
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.
@@ -10,28 +10,26 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * OpenGL Support
 * Cross-Platform (Tested on major desktop platforms)
 * 2D Rendering (Line Rendering to come in the future)
-* Asset Manager and loader with zip archive support
-* Audio (SoLoud) support
-* Spritefont support
+* Asset managment system
+* 2D Audio support
 * ECS
-* Virtual File System
-* File Compression
+* File system and Compression
 * Lua Scripting
 
 # Currently working on
-* Scene Serialization
-* Observers
-
-# Goals / To-do
 * Networking
 * Binary Serialization
+
+# Goals / To-do
 * Level editor
-* 3D Rendering
+* Animation and tweening
 * Scripted UI
 * Text rendering
 * Particle effects
-* Support Vulkan and Metal
-* Physics support
+* SDL for Cross-Platform support
+* 3D Rendering
+* Support Vulkan, OpenGL ES and Metal
+* Physics engine
 * Multi-threading
 
 # Building
@@ -67,19 +65,20 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
   `./build-linux.sh [project name to launch]`
 ### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
 
-# Libraries / dependencies
-* [Premake5](https://github.com/premake/premake-core)
-* [Dear ImGui](https://github.com/ocornut/imgui)
-* [GLFW](https://github.com/glfw/glfw)
-* [glm](https://github.com/g-truc/glm)
-* [Glad](https://glad.dav1d.de/)
-* [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h)
-* [spdlog](https://github.com/gabime/spdlog)
-* [SoLoud](https://github.com/jarikomppa/soloud)
-* [Assimp](https://github.com/assimp/assimp)
-* [zlib](https://zlib.net)
-* [libzip](https://libzip.org)
-* [LUA](http://www.lua.org/home.html)
-* [Sol2](https://github.com/ThePhD/sol2)
-* [Entt](https://github.com/skypjack/entt)
-* [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+# Libraries used
+* [Dear ImGui for debug UI](https://github.com/ocornut/imgui)
+* [GLFW for window context creation](https://github.com/glfw/glfw)
+* [glm for Vector maths](https://github.com/g-truc/glm)
+* [Glad for OpenGL](https://glad.dav1d.de/)
+* [stb_image.h for Image loading](https://github.com/nothings/stb/blob/master/stb_image.h)
+* [spdlog for debug logging](https://github.com/gabime/spdlog)
+* [SoLoud for Audio](https://github.com/jarikomppa/soloud)
+* [Assimp for 3D model importing](https://github.com/assimp/assimp)
+* [zlib for data compression](https://zlib.net)
+* [libzip for asset archives](https://libzip.org)
+* [LUA for scripting](http://www.lua.org/home.html)
+* [Sol2 for simplifying lua wrapping process](https://github.com/ThePhD/sol2)
+* [Entt for ECS](https://github.com/skypjack/entt)
+* [yaml-cpp for Scene and Config file serialization](https://github.com/jbeder/yaml-cpp)
+* [json for Asset indexing](https://github.com/nlohmann/json)
+* [asio for networking](https://think-async.com/Asio/)
