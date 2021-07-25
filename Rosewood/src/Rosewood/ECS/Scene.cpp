@@ -225,31 +225,31 @@ namespace Rosewood
 	bool Scene::OnMouseButtonPressedEvent(Rosewood::MouseButtonPressedEvent& e)
 	{
 		m_LuaState->CallOnMouseButtonPressed(e.GetMouseButton());
-		return true;
+		return false;
 	}
 	bool Scene::OnMouseButtonReleasedEvent(Rosewood::MouseButtonReleasedEvent& e)
 	{
 		m_LuaState->CallOnMouseButtonReleased(e.GetMouseButton());
-		return true;
+		return false;
 	}
 	bool Scene::OnMouseMovedEvent(Rosewood::MouseMovedEvent& e)
 	{
 		m_LuaState->CallOnMouseMoved(e.GetX(), e.GetY());
-		return true;
+		return false;
 	}
 	bool Scene::OnMouseScrolledEvent(Rosewood::MouseScrolledEvent& e)
 	{
 		m_LuaState->CallOnMouseScrolled(e.GetXOffset(), e.GetYOffset());
-		return true;
+		return false;
 	}
 	bool Scene::OnKeyPressedEvent(Rosewood::KeyPressedEvent& e)
 	{
 		m_LuaState->CallOnKeyPressed(e.GetKeyCode());
-		return true;
+		return false;
 	}
 	bool Scene::OnKeyReleasedEvent(Rosewood::KeyReleasedEvent& e)
 	{
 		m_LuaState->CallOnKeyReleased(e.GetKeyCode());
-		return true;
+		return false;
 	}
 }

@@ -4,7 +4,7 @@
 
 namespace Rosewood
 {
-    enum class MessageCategory : uint32_t
+    enum class SignalCategory : uint32_t
     {
         NONE = BIT(0),
         UI = BIT(1),

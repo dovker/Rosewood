@@ -1,14 +1,14 @@
 #pragma once
 #include "rwpch.h"
 #include "Observer.h"
-#include "MessageTypes.h"
+#include "SignalTypes.h"
 #include "Rosewood/Core/Types.h"
 
 namespace Rosewood
 {
-    struct Message
+    struct Signal
     {
-        MessageCategory Category;
+        SignalCategory Category;
         uint32_t Type; //Allows to be user defined for simplicity
         //Maybe STD::INITIALIZER LIST?
         union Data
@@ -53,11 +53,11 @@ namespace Rosewood
             }
         }
     protected:
-        void Notify(std::any& sender, Message message)
+        void Notify(std::any& sender, Signal signal)
         {
             for(auto o : m_Observers)
             {
-                o->OnNotify(sender, message);
+                o->OnNotify(sender, signal);
             }
         }
     private:

@@ -17,14 +17,16 @@ namespace Rosewood {
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnImGuiRender() override;
+		virtual void OnEvent(Event& e) override;
+		
+		void SetEventBlocking(bool blocking) { m_BlockEvents = blocking; }
 
 		void Begin();
 		void End();
 
 
 	private:
-		float m_Time = 0.0f;
-
+		bool m_BlockEvents = true;
 	};
 
 }

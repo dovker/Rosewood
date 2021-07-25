@@ -60,8 +60,6 @@ namespace Rosewood
 		EventDispatcher dispatcher = EventDispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(RW_BIND_EVENT_FN(Application::OnWindowClosed));
 
-		//RW_CORE_TRACE("{0}", e);
-
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
 			if (e.Handled) break;

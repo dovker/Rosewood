@@ -7,6 +7,6 @@ namespace Rosewood
     {
     public:
         virtual ~Observer() {}
-        virtual void OnNotify(std::any& sender, Message message) = 0;
+        virtual void OnNotify(std::any& sender, Signal signal) = 0;
     };
 }

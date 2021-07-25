@@ -67,7 +67,7 @@ namespace Rosewood {
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.Handled = func(static_cast<T&>(m_Event));
+				m_Event.Handled |= func(static_cast<T&>(m_Event));
 				return true; //TODO: MAKE BUS FOR EVENTS DURING UPDATE
 			}
 			return false;
