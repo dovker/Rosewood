@@ -11,13 +11,13 @@ namespace Rosewood
     {
         T Id {};
         uint32_t Size = 0;
-    }
+    };
 
     template<typename T> 
     struct Message
     {
         MessageHeader<T> Header {};
-        std::vector<Byte> Data;
+        std::vector<byte> Data;
 
         uint32_t GetSize() { return sizeof(MessageHeader<T>) + Data.size(); }
 
@@ -58,7 +58,7 @@ namespace Rosewood
 
             return msg;
         }		        
-    }
+    };
 
     template <typename T>
     class Connection;

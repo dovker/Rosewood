@@ -27,6 +27,8 @@ project "TestGame"
         "%{IncludeDir.SoLoud}",
         "%{IncludeDir.yaml_cpp}",
         "%{IncludeDir.json}",
+        "%{IncludeDir.asio}",
+        "%{IncludeDir.openssl}",
     }
     links
     {
@@ -39,8 +41,11 @@ project "TestGame"
         "zlib",
         "libzip",
         "yaml-cpp",
+        "ssl",
+        "crypto",
         "lua"
     }
+    libdirs { "%{wks.location}/Rosewood/vendor/openssl" }
     
     filter "action:xcode4"
         xcodebuildsettings = { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
@@ -55,6 +60,8 @@ project "TestGame"
             "%{IncludeDir.SoLoud}",
             "%{IncludeDir.yaml_cpp}",
             "%{IncludeDir.json}",
+            "%{IncludeDir.asio}",
+            "%{IncludeDir.openssl}",
         }
     
     

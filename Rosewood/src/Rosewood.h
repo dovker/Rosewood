@@ -61,4 +61,9 @@
 #include "Rosewood/ECS/ScriptableEntity.h"
 #include "Rosewood/ECS/Components.h"
 
+#include "Rosewood/Net/Message.h"
+#include "Rosewood/Net/Client.h"
+#include "Rosewood/Net/Server.h"
+#include "Rosewood/Net/Connection.h"
+
 #endif

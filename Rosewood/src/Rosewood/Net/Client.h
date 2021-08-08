@@ -11,17 +11,32 @@ namespace Rosewood
     class ClientInterface
     {
     public:
-        ClientInterface() : m_Socket(m_AsioContext) {}
+        ClientInterface(){}
         virtual ~ClientInterface() { Disconnect(); }
 
-        bool Connect(const std::string& host, const uint16_t port)
+        bool Connect(const std::string& host, const uint16_t port, bool ssl, const std::string& certificatePath = "")
         {
             try
             {
-                m_Connection = CreateRef<Connection<T>>();
-
                 asio::ip::tcp::resolver resolver(m_AsioContext);
                 asio::ip::tcp::resolver::results_type endPoints = resolver.resolve(host, std::to_string(port));
+                //Do the SSL INIT STUFF
+                if(ssl)
+                {
+                    m_AsioSSLContext.load_verify_file(certificatePath);
+                    m_AsioSSLContext.set_verify_mode(asio::ssl::verify_none); //TODO: verify_peer on release
+                    m_AsioSSLContext.set_verify_callback([this](bool preverified, asio::ssl::verify_context& ctx)
+                    {
+                        char subject_name[256];
+                        X509* cert = X509_STORE_CTX_get_current_cert(m_AsioSSLContext.native_handle());
+                        X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
+                        RW_CORE_INFO("[CLIENT] Verifying: {0}", subject_name);
+
+                        return preverified;
+                    });
+                }
+
+                m_Connection = CreateRef<Connection<T>>(Connection<T>::Owner::Client, m_AsioContext, asio::ssl::stream<asio::ip::tcp::socket>(m_AsioContext, m_AsioSSLContext), m_MessageInQueue, ssl, certificatePath);
 
                 m_Connection->ConnectToServer(endPoints);
 
@@ -35,6 +50,7 @@ namespace Rosewood
             
             return true;
         }
+
         void Disconnect()
         {
             if(IsConnected())
@@ -57,16 +73,15 @@ namespace Rosewood
             else
                 return false;
         }
-        TSQueue<OwnedMessage>& GetIncomingMessages() { return m_MessageInQueue; }
+        TSQueue<OwnedMessage<T>>& GetIncomingMessages() { return m_MessageInQueue; }
     protected:
         asio::io_context m_AsioContext;
+        asio::ssl::context m_AsioSSLContext;
 
         std::thread m_ThreadContext;
 
-        asio::ip::tcp::socket m_Socket;
-
         Ref<Connection<T>> m_Connection;
     private:
-        TSQueue<OwnedMessage> m_MessageInQueue;
-    }
+        TSQueue<OwnedMessage<T>> m_MessageInQueue;
+    };
 }

@@ -26,11 +26,17 @@ namespace Rosewood
         {
             std::scoped_lock lock(m_MuxQueue);
             m_DeqQueue.emplace_back(std::move(value));
+
+            std::unique_lock<std::mutex> ul(m_MuxBlocking);
+            m_Blocking.notify_one();
         }
         void PushFront(const T& value)
         {
             std::scoped_lock lock(m_MuxQueue);
             m_DeqQueue.emplace_front(std::move(value));
+
+            std::unique_lock<std::mutex> ul(m_MuxBlocking);
+            m_Blocking.notify_one();
         }
 
         bool IsEmpty()
@@ -65,8 +71,20 @@ namespace Rosewood
             m_DeqQueue.pop_back();
             return t;
         }
+
+        void Wait()
+        {
+            while(IsEmpty())
+            {
+                std::unique_lock<std::mutex> ul(m_MuxBlocking);
+                m_Blocking.wait(ul);
+            }
+        }
     private:
         std::mutex m_MuxQueue;
         std::deque<T> m_DeqQueue;
-    }
+
+        std::condition_variable m_Blocking;
+        std::mutex m_MuxBlocking;
+    };
 }

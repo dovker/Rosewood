@@ -11,14 +11,24 @@ namespace Rosewood
     class ServerInterface
     {
     public:
-        ServerInterface(uint16_t port)
-            : m_AsioAcceptor(m_AsioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
+        ServerInterface(uint16_t port, bool secure = false)
+            : m_AsioAcceptor(m_AsioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)), m_AsioSSLContext(asio::ssl::context::sslv23), m_SecureServer(secure)
         {}
         virtual ~ServerInterface() 
         { 
             Stop();
         }
 
+        //MUST BE CALLED BEFORE STARTING THE SERVER
+        void InitSSL(const std::string& certPath, const std::string& keyFile)
+        {
+            m_AsioSSLContext.set_options(
+                asio::ssl::context::default_workarounds
+                | asio::ssl::context::no_sslv2
+                | asio::ssl::context::single_dh_use);
+            m_AsioSSLContext.use_certificate(certPath);
+            m_AsioSSLContext.use_private_key_file(keyFile, asio::ssl::context::pem);
+        }
 
         bool Start() 
         { 
@@ -48,18 +58,19 @@ namespace Rosewood
         //ASYNC
         void WaitForClientConnection()
         {
-            m_AsioAcceptor.async_accept([this](std::error_code ec, asio::ip::tcp::socket socket)
+            m_AsioAcceptor.async_accept([this](std::error_code ec, asio::ssl::stream<asio::ip::tcp::socket> socket)
             {
                 if(!ec)
                 {
-                    RW_CORE_INFO("[SERVER] New connection: ", socket.remote_endpoint());
-
-                    Ref<Conntection<T>> newConnection = CreateRef<Connection<T>>(Connection<T>::Owner::Server, m_AsioContext, std::move(socket), m_MessageInQueue);
+                    RW_CORE_INFO("[SERVER] New connection: ", socket.lowest_layer().remote_endpoint());
+                    
+                    Ref<Connection<T>> newConnection = CreateRef<Connection<T>>(Connection<T>::Owner::Server, m_AsioContext, m_AsioSSLContext, std::move(socket), m_MessageInQueue, m_SecureServer);
                     if(OnClientConnect(newConnection))
                     {
                         m_Connections.push_back(std::move(newConnection));
 
-                        m_Connections.back()->ConnectToClient(m_IDCounter++);
+                        m_Connections.back()->ConnectToClient(this, m_IDCounter++);
+                        
                         RW_CORE_INFO("[{0}] Connection Approved.", m_Connections.back()->GetID());
                     }
                     else
@@ -111,8 +122,9 @@ namespace Rosewood
             }
         }
 
-        void Update(size_t maxMessages = -1)
+        void Update(size_t maxMessages = -1, bool wait = false)
         {
+            if(wait) m_MessageInQueue.Wait();
             size_t messageCount = 0;
             while(messageCount < maxMessages && !m_MessageInQueue.empty())
             {
@@ -135,14 +147,21 @@ namespace Rosewood
         {
 
         }
-        TSQueue<OwnedMessage> m_MessageInQueue;
-        std::deque<Ref<Connection<T>> m_Connections;
+        virtual void OnClientValidated(Ref<Connection<T>> client)
+        {
+
+        }
+        TSQueue<OwnedMessage<T>> m_MessageInQueue;
+        std::deque<Ref<Connection<T>>> m_Connections;
 
         asio::io_context m_AsioContext;
+        asio::ssl::context m_AsioSSLContext;
         std::thread m_ThreadContext;
 
         asio::ip::tcp::acceptor m_AsioAcceptor;
 
-        uint32_t m_IDCounter = 10000;
-    }
+        uint32_t m_IDCounter = 0;
+
+        bool m_SecureServer = false;
+    };
 }

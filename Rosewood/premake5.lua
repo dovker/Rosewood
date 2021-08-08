@@ -40,6 +40,7 @@ project "Rosewood"
         "%{IncludeDir.json}",
         "%{IncludeDir.libzip}",
         "%{IncludeDir.asio}",
+        "%{IncludeDir.openssl}",
     }
     filter "action:xcode4"
         pchheader "src/rwpch.h"
@@ -64,6 +65,7 @@ project "Rosewood"
             "%{IncludeDir.json}",
             "%{IncludeDir.libzip}",
             "%{IncludeDir.asio}",
+            "%{IncludeDir.openssl}",
         }
     filter {}
     
@@ -79,6 +81,8 @@ project "Rosewood"
             "CoreFoundation.framework"
         }
     filter {}
+
+    libdirs { "%{wks.location}/Rosewood/vendor/openssl" }
     
     links
     {
@@ -91,6 +95,8 @@ project "Rosewood"
         "libzip",
         "lua",
         "yaml-cpp",
+        "crypto",
+        "ssl",
         "opengl32.lib"
     }
     defines
