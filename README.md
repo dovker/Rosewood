@@ -34,7 +34,8 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 
 # Building
 ## All Platforms
-  If you try to make project and it fails, make sure every dependency has it's premake5.lua file, if not, you can find those files in **"Rosewood/vendor/premakes"** folder.
+  If you try to make project and it fails, make sure every dependency has it's premake5.lua file, if not, you can find those files in **"vendor/premakes"** folder.
+  **IMPORTANT!** Make sure to compile OpenSSL in the **"Rosewood/vendor/openssl"** directory as a Static Library (Using **"no-shared"** option).
 ## Windows:
 
   Double click **"premake5.bat"** file and VS2019 project files will be generated
