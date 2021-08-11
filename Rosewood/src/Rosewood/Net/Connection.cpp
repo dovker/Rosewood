@@ -1,5 +1,6 @@
 #include "rwpch.h"
 
+#ifdef RW_NETWORKING_ENABLED
 #include "Connection.h"
 
 namespace Rosewood
@@ -294,3 +295,4 @@ namespace Rosewood
         ReadHeader();
     }
 }
+#endif

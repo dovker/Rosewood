@@ -102,7 +102,8 @@ project "Rosewood"
     defines
     {
         "_CRT_SCURE_NO_WARNINGS",
-        "GLFW_INCLUDE_NONE"
+        "GLFW_INCLUDE_NONE",
+        "RW_NETWORKING_ENABLED"
     }
     filter "system:windows"
         systemversion "latest"
@@ -125,4 +126,4 @@ project "Rosewood"
         optimize "On"
 
     configuration "vs*"
-        buildoptions { "/Zm250", "/bigobj" } 
+        buildoptions { "/Zm250", "/bigobj" }
