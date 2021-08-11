@@ -62,13 +62,13 @@ def run_callback(sender, app_data):
     call_command(os.path.join(get_workspace_path(), 'bin', get_value(ConfigComboID).capitalize() + '-' + get_platform() + "-x86_64", get_value(AppComboID)), get_call_thing() + get_value(AppComboID) + get_executable_ext())
 
 with window(label="Example Window") as main_window:
-    add_combo(label="Config Combo", id=ConfigComboID, default_value="debug", items=Configurations)
-    add_combo(label="App Combo", id=AppComboID, default_value="TestGame", items=Applications)
+    add_combo(label="Configurations", id=ConfigComboID, default_value="debug", items=Configurations)
+    add_combo(label="Project", id=AppComboID, default_value="TestGame", items=Applications)
     add_button(label="Build", callback=build_callback)
     add_same_line()
     add_button(label="Run", callback=run_callback)
-    add_combo(label="Premake Combo", id=PremakeComboID, default_value="gmake2", items=PremakeConfigs)
-    add_button(label="Remake Premake", callback=premake_callback)
+    add_combo(label="Project generator type", id=PremakeComboID, default_value="gmake2", items=PremakeConfigs)
+    add_button(label="Generate project files", callback=premake_callback)
 
 set_primary_window(main_window, True)
 
