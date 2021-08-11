@@ -36,23 +36,23 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 ## All Platforms
   1. If you try to make project and it fails, make sure every dependency has it's premake5.lua file, if not, you can find those files in **"vendor/premakes"** folder.
   2. **IMPORTANT!** Make sure to compile OpenSSL in the **"Rosewood/vendor/openssl"** directory as a Static Library (Using **"no-shared"** option).
-  3. Open the build tool, located in **"Tools/BuildTool.py"**
+  3. Open the **Build Tool**, located in **"Tools/BuildTool.py"**
 ## Windows:
   1. Generate project files by selecting the project and generator type.
-  2. Open in preferred IDE or press the Build and Run buttons if you chose gmake2
+  2. Open in preferred IDE or Open **Build Tool** and press the **Build** and **Run** buttons if you chose `gmake2`
   
 ## MacOS:
-  1. Download Premake5 binaries for Mac OS and paste them in vendor/bin/premake folder.
-  2. Use the Build Tool to create MakeFiles or XCode files
-  3. Press Build and Run if you chose MakeFiles or open your XCode files and build there.
+  1. Download Premake5 binaries for Mac OS and paste them in **"vendor/bin/premake"** folder.
+  2. Use the **Build Tool** to create `MakeFiles` or `XCode` files
+  3. Press **Build** and **Run** if you chose `MakeFiles` or open your `XCode` files and build there.
 
 ## Linux:
-  1. Download Premake5 binaries for Linux and paste them in vendor/bin/premake folder.
+  1. Download Premake5 binaries for Linux and paste them in **"vendor/bin/premake"** folder.
   2. REQUIRED PACKAGES:
-    ** `xorg-dev`
-    ** `libasound2-dev`
-  3. Open Build Tool and create MakeFiles
-  4. Press Build and Run
+    * `xorg-dev`
+    * `libasound2-dev`
+  3. Open **Build Tool** and create `MakeFiles`
+  4. Press **Build** and **Run**
 ### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
 
 # Libraries used
