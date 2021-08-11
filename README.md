@@ -34,36 +34,25 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 
 # Building
 ## All Platforms
-  If you try to make project and it fails, make sure every dependency has it's premake5.lua file, if not, you can find those files in **"vendor/premakes"** folder.
-  **IMPORTANT!** Make sure to compile OpenSSL in the **"Rosewood/vendor/openssl"** directory as a Static Library (Using **"no-shared"** option).
+  1. If you try to make project and it fails, make sure every dependency has it's premake5.lua file, if not, you can find those files in **"vendor/premakes"** folder.
+  2. **IMPORTANT!** Make sure to compile OpenSSL in the **"Rosewood/vendor/openssl"** directory as a Static Library (Using **"no-shared"** option).
+  3. Open the **Build Tool**, located in **"Tools/BuildTool.py"**
 ## Windows:
-
-  Double click **"premake5.bat"** file and VS2019 project files will be generated
-  
-  If you wish to create project files for another IDE, change `vs2019` with whatever you choose in **"premake5.bat"** file.
+  1. Generate project files by selecting the project and generator type.
+  2. Open in preferred IDE or Open **Build Tool** and press the **Build** and **Run** buttons if you chose `gmake2`
   
 ## MacOS:
-  1. Download Premake5 binaries for Mac OS and paste them in vendor/bin/premake folder.
-  2. Open **Terminal** and type `cd <Enter the solution direction>`
-  3. Proceed by entering this command:
-  `./premake5.sh [build system (gmake by default)]`
-  
-  Your makefiles should now be generated!
-  4. Then you can build and run the project with this command:
-  `./build.sh [project name to launch]`
+  1. Download Premake5 binaries for Mac OS and paste them in **"vendor/bin/premake"** folder.
+  2. Use the **Build Tool** to create `MakeFiles` or `XCode` files
+  3. Press **Build** and **Run** if you chose `MakeFiles` or open your `XCode` files and build there.
 
 ## Linux:
-  1. Download Premake5 binaries for Linux and paste them in vendor/bin/premake folder.
+  1. Download Premake5 binaries for Linux and paste them in **"vendor/bin/premake"** folder.
   2. REQUIRED PACKAGES:
-    ** `xorg-dev`
-    ** `libasound2-dev`
-  3. Open **Terminal** and type `cd <Enter the solution direction>`
-  4. Proceed by entering this command:
-  `./premake5.sh [build system (gmake by default)]`
-  
-  Your makefiles should now be generated!
-  5. Then you can build and run the project with this command:
-  `./build-linux.sh [project name to launch]`
+    * `xorg-dev`
+    * `libasound2-dev`
+  3. Open **Build Tool** and create `MakeFiles`
+  4. Press **Build** and **Run**
 ### **[Trello board](https://trello.com/b/bTRVKkrL/rosewood-engine)**
 
 # Libraries used
@@ -83,3 +72,4 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * [yaml-cpp for Scene and Config file serialization](https://github.com/jbeder/yaml-cpp)
 * [json for Asset indexing](https://github.com/nlohmann/json)
 * [asio for networking](https://think-async.com/Asio/)
+* [OpenSSL for security](https://www.openssl.org)
