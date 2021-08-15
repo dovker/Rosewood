@@ -27,4 +27,15 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#define ASIO_STANDALONE
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+
+#include "asio.hpp"
+#include "asio/ts/buffer.hpp"
+#include "asio/ts/internet.hpp"
+
+#include "asio/ssl.hpp"
+
+
 #include "Rosewood/Core/Log.h"
+

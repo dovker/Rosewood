@@ -1,6 +1,6 @@
 #pragma once
+#include "rwpch.h"
 
-#include "Networking.h"
 #include "Message.h"
 #include "Rosewood/Data/TSQueue.h"
 #include "Rosewood/Core/Core.h"
@@ -26,7 +26,7 @@ namespace Rosewood
                 asio::ssl::context::default_workarounds
                 | asio::ssl::context::no_sslv2
                 | asio::ssl::context::single_dh_use);
-            m_AsioSSLContext.use_certificate(certPath);
+            m_AsioSSLContext.use_certificate_chain_file(certPath);
             m_AsioSSLContext.use_private_key_file(keyFile, asio::ssl::context::pem);
         }
 
@@ -53,18 +53,21 @@ namespace Rosewood
             if(m_ThreadContext.joinable())
                 m_ThreadContext.join();
             RW_CORE_INFO("[SERVER] Stopped");
+            return true;
         }
 
         //ASYNC
         void WaitForClientConnection()
         {
-            m_AsioAcceptor.async_accept([this](std::error_code ec, asio::ssl::stream<asio::ip::tcp::socket> socket)
+            m_AsioAcceptor.async_accept([this](std::error_code ec, asio::ip::tcp::socket socket) //Error here bc of conversion
             {
                 if(!ec)
                 {
-                    RW_CORE_INFO("[SERVER] New connection: ", socket.lowest_layer().remote_endpoint());
-                    
-                    Ref<Connection<T>> newConnection = CreateRef<Connection<T>>(Connection<T>::Owner::Server, m_AsioContext, m_AsioSSLContext, std::move(socket), m_MessageInQueue, m_SecureServer);
+                    RW_CORE_INFO("[SERVER] New connection: ", socket.remote_endpoint());
+
+                    asio::ssl::stream<asio::ip::tcp::socket> sslSocket(std::move(socket), m_AsioSSLContext);
+
+                    Ref<Connection<T>> newConnection = CreateRef<Connection<T>>(Connection<T>::Owner::Server, m_AsioContext, m_AsioSSLContext, std::move(sslSocket), m_MessageInQueue, m_SecureServer);
                     if(OnClientConnect(newConnection))
                     {
                         m_Connections.push_back(std::move(newConnection));
@@ -126,7 +129,7 @@ namespace Rosewood
         {
             if(wait) m_MessageInQueue.Wait();
             size_t messageCount = 0;
-            while(messageCount < maxMessages && !m_MessageInQueue.empty())
+            while(messageCount < maxMessages && !m_MessageInQueue.IsEmpty())
             {
                 auto msg = m_MessageInQueue.PopFront();
                 OnMessage(msg.Remote, msg.Msg);
@@ -147,10 +150,12 @@ namespace Rosewood
         {
 
         }
+    public:
         virtual void OnClientValidated(Ref<Connection<T>> client)
         {
 
         }
+    protected:
         TSQueue<OwnedMessage<T>> m_MessageInQueue;
         std::deque<Ref<Connection<T>>> m_Connections;
 

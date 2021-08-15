@@ -103,7 +103,6 @@ project "Rosewood"
     {
         "_CRT_SCURE_NO_WARNINGS",
         "GLFW_INCLUDE_NONE",
-        "RW_NETWORKING_ENABLED"
     }
     filter "system:windows"
         systemversion "latest"

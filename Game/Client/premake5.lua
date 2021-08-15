@@ -85,7 +85,7 @@ project "GameClient"
         postbuildcommands 
         {
             "{COPY} Content %{cfg.targetdir}",
-            "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}" --For some fucking reason folder copying is different on different platforms... FOR FUCKS SAKE
+            "{COPY} ../../Rosewood/EngineContent %{cfg.targetdir}" --For some fucking reason folder copying is different on different platforms... FOR FUCKS SAKE
         }
     
     filter "system:windows"
@@ -95,7 +95,7 @@ project "GameClient"
         postbuildcommands 
         {
             "{COPY} Content %{cfg.targetdir}/Content",
-            "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}/EngineContent"
+            "{COPY} ../../Rosewood/EngineContent %{cfg.targetdir}/EngineContent"
         }
     filter "system:linux"
         
@@ -103,7 +103,7 @@ project "GameClient"
         postbuildcommands 
         {
             "{COPY} Content %{cfg.targetdir}",
-            "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}"
+            "{COPY} ../../Rosewood/EngineContent %{cfg.targetdir}"
         }
         links
         {

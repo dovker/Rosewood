@@ -4,26 +4,30 @@
 
 const std::string Rosewood::FileSystem::ProjectRoot = "../../../Game/Server/";
 
-// namespace Game
-// {
-//     class Server : public Rosewood::ServerInterface<GameMessages>
-//     {
-
-//     };
-// }
+namespace Game
+{
+    class Server : public Rosewood::ServerInterface<GameMessages>
+    {
+    public:
+        Server(uint16_t port, bool secure = false)
+            : Rosewood::ServerInterface<GameMessages>(port, secure)
+        {
+            
+        }
+    };
+}
 
 int main()
 {
-    // Game::Server server(25565, true);
-    // server.InitSSL(Rosewood::FileSystem::GetPath("certificate.crt"), Rosewood::FileSystem::GetPath("key.key"));
-    // server.Start();
-    #ifdef RW_NETWORKING_ENABLED
-    RW_INFO("PENIS");
-    #endif
+    Rosewood::Log::Init();
 
-    // while (1)
-	// {
-	// 	server.Update(-1, true);
-	// }
+    Game::Server server(25567, true);
+    server.InitSSL(Rosewood::FileSystem::GetPath("certificate.crt"), Rosewood::FileSystem::GetPath("key.key"));
+    server.Start();
+
+    while (1)
+	{
+		server.Update(-1, true);
+	}
     return 0;
 }

@@ -61,11 +61,9 @@
 #include "Rosewood/ECS/ScriptableEntity.h"
 #include "Rosewood/ECS/Components.h"
 
-#ifdef RW_NETWORKING_ENABLED
 #include "Rosewood/Net/Message.h"
 #include "Rosewood/Net/Client.h"
 #include "Rosewood/Net/Server.h"
 #include "Rosewood/Net/Connection.h"
-#endif
 
 #endif

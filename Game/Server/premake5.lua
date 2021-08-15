@@ -64,10 +64,6 @@ project "GameServer"
             "%{IncludeDir.asio}",
             "%{IncludeDir.openssl}",
         }
-    defines
-        {
-            "RW_NETWORKING_ENABLED"
-        }
     
     filter "system:macosx"
         links
@@ -83,7 +79,7 @@ project "GameServer"
         postbuildcommands 
         {
             "{COPY} Content %{cfg.targetdir}",
-            "{COPY} ../Rosewood/EngineContent %{cfg.targetdir}" --For some fucking reason folder copying is different on different platforms... FOR FUCKS SAKE
+            "{COPY} ../../Rosewood/EngineContent %{cfg.targetdir}" --For some fucking reason folder copying is different on different platforms... FOR FUCKS SAKE
         }
     
     filter "system:windows"
