@@ -50,7 +50,6 @@ project "GameClient"
 
     defines
     {
-        "RW_NETWORKING_ENABLED"
     }
     
     filter "action:xcode4"
@@ -59,6 +58,7 @@ project "GameClient"
         {
             "%{wks.location}/Rosewood/vendor/spdlog/include",
             "%{wks.location}/Rosewood/src",
+            "../Shared/include",
             "%{IncludeDir.ImGui}",
             "%{IncludeDir.glm}",
             "%{IncludeDir.entt}",

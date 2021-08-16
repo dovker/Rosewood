@@ -85,10 +85,6 @@ namespace Rosewood
                     }
                 });
             }
-            else
-            {
-                //Do Other connection
-            }
         }
         void HandleSSLHandshake(ServerInterface<T>* server = nullptr)
         {
@@ -118,7 +114,7 @@ namespace Rosewood
                     }
                     else
                     {
-                        RW_CORE_ERROR("Client side SSL Handshake failed.");
+                        RW_CORE_ERROR("Client side SSL Handshake failed: {0}", ec.message());
                         CloseSocket();
                     }
                 });

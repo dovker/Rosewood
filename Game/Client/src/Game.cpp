@@ -1,56 +1,54 @@
 #include "Rosewood.h"
 #include "imgui.h"
-#include "Scene/Scene.h"
 #include "Game.h"
+#include "Shared/Common.h"
 
+const std::string Rosewood::FileSystem::ProjectRoot = "../../../Game/Client/";
 
-const std::string Rosewood::FileSystem::ProjectRoot = "../../../TestGame/";
+namespace Game {
+    class Client : public Rosewood::ClientInterface<GameMessages>
+    {
+    public:
+        Client()
+            : Rosewood::ClientInterface<GameMessages>()
+        {}
+    };
 
-namespace TestGame {
-
-    Scene* Game::s_Scene = nullptr;
-
+    Client client;
     
     Game::Game()
         : Layer("Example") {}
-
-    Rosewood::Ref<Rosewood::Texture> GRASS;
     void Game::OnAttach()
     {
         Rosewood::Renderer2D::Init();
         Rosewood::Benchmark::Init();
-        
-
-        Rosewood::BinaryFile file(Rosewood::FileSystem::GetPath("grass.png"));
-
-        {
-            file.Write(Rosewood::FileSystem::GetPath("grass1.png"));
-            Rosewood::Pack pack(Rosewood::FileSystem::GetRootPath() + Rosewood::FileSystem::GetFolderName() + ".zip");
-            pack.AddFile("grass.png", file.GetData());
-        }
-        {
-            Rosewood::Pack pack(Rosewood::FileSystem::GetRootPath() + Rosewood::FileSystem::GetFolderName() + ".zip");
-            file.SetData(pack.ReadFile("grass.png"));
-            file.Write(Rosewood::FileSystem::GetPath("grass123.png"));
-        }
 
         Rosewood::AssetLoader::LoadAssets(Rosewood::FileSystem::GetPath("Index.json"));
-        s_Scene = new Scene();
-        
-        s_Scene->OnLoad();
+
+        Rosewood::SceneManager::SetScene(Rosewood::Scene::Create());
+        client.Connect("127.0.0.1", 25567, true, Rosewood::FileSystem::GetPath("certificate.crt"));
     }
 
     void Game::OnUpdate(Rosewood::Timestep timestep)
     {
-        s_Scene->OnUpdate(timestep);
-        
-        s_Scene->OnDraw();
+        if(client.IsConnected())
+        {
+            Rosewood::SceneManager::OnUpdateRuntime(timestep);
+
+            {
+                Rosewood::GraphicsCommand::SetClearColor(glm::vec4(0.1f, 0.12f, 0.1f, 1.0f));
+                Rosewood::GraphicsCommand::Clear();
+            }
+
+            Rosewood::BatchRenderer::ResetStats();
+
+            Rosewood::SceneManager::OnRenderRuntime();
+        }    
     }
     
     void Game::OnDetach()
     {
-        s_Scene->OnUnload();
-        delete s_Scene;
+        
     }
     
     bool open = true;
@@ -87,8 +85,6 @@ namespace TestGame {
             ImGui::Separator();
         }
         Rosewood::Benchmark::Reset();
-        //float deltaTime = 1.0f / (float)(Rosewood::Application::GetDeltaTime());
-        //ImGui::InputFloat("hz", &deltaTime, 0.0f, 0.0f, nullptr, ImGuiInputTextFlags_None);
         
         ImGui::Separator();
                     
@@ -97,13 +93,9 @@ namespace TestGame {
 
     void Game::OnEvent(Rosewood::Event& e)
     {
-        s_Scene->OnEvent(e);
+        Rosewood::SceneManager::OnEvent(e);
     }
-    
-    Scene* Game::GetScene()
-    {
-        return s_Scene;
-    }
+
 }
 
 

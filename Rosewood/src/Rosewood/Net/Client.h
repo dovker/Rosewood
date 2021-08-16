@@ -12,7 +12,7 @@ namespace Rosewood
     class ClientInterface
     {
     public:
-        ClientInterface(){}
+        ClientInterface() : m_AsioSSLContext(asio::ssl::context::sslv23) {}
         virtual ~ClientInterface() { Disconnect(); }
 
         bool Connect(const std::string& host, const uint16_t port, bool ssl, const std::string& certificatePath = "")
@@ -32,7 +32,7 @@ namespace Rosewood
                     sslSocket.set_verify_callback([this](bool preverified, asio::ssl::verify_context& ctx)
                     {
                         char subject_name[256];
-                        X509* cert = X509_STORE_CTX_get_current_cert(m_AsioSSLContext.native_handle());
+                        X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
                         X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
                         RW_CORE_INFO("[CLIENT] Verifying: {0}", subject_name);
 
@@ -40,7 +40,7 @@ namespace Rosewood
                     });
                 }
 
-                m_Connection = CreateRef<Connection<T>>(Connection<T>::Owner::Client, m_AsioContext, std::move(sslSocket), m_MessageInQueue, ssl, certificatePath);
+                m_Connection = CreateScope<Connection<T>>(Connection<T>::Owner::Client, m_AsioContext, m_AsioSSLContext, std::move(sslSocket), m_MessageInQueue, ssl);
 
                 m_Connection->ConnectToServer(endPoints);
 
@@ -77,6 +77,11 @@ namespace Rosewood
             else
                 return false;
         }
+        void Send(const Message<T>& msg)
+        {
+            if (IsConnected())
+                    m_Connection->Send(msg);
+        }
         TSQueue<OwnedMessage<T>>& GetIncomingMessages() { return m_MessageInQueue; }
     protected:
         asio::io_context m_AsioContext;
@@ -84,7 +89,7 @@ namespace Rosewood
 
         std::thread m_ThreadContext;
 
-        Ref<Connection<T>> m_Connection;
+        Scope<Connection<T>> m_Connection;
     private:
         TSQueue<OwnedMessage<T>> m_MessageInQueue;
     };

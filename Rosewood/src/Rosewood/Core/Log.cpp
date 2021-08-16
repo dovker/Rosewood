@@ -14,7 +14,7 @@ namespace Rosewood
 	void Log::Init()
 	{
         
-		spdlog::set_pattern("%^[%T] %n: %v%$");
+		spdlog::set_pattern("[%L]%^[%T] %n: %v%$");
 		
 		
 		s_CoreLogger = spdlog::stdout_color_mt("ENGINE");

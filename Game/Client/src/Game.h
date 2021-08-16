@@ -1,8 +1,7 @@
 #pragma once
 #include "Rosewood.h"
-#include "Scene/Scene.h"
 
-namespace TestGame
+namespace Game
 {
     class Game : public Rosewood::Layer
     {
@@ -17,9 +16,6 @@ namespace TestGame
         virtual void OnImGuiRender() override;
         void OnEvent(Rosewood::Event& e) override;
 
-        static Scene* GetScene();
-    private:
-        static Scene* s_Scene;
     };
 
 }

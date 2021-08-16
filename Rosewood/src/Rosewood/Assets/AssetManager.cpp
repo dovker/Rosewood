@@ -6,7 +6,7 @@ namespace Rosewood
 
     Asset AssetManager::GetAsset(const std::string& name)
     {
-        RW_CORE_ASSERT(Exists(name), "{0} not found", name);
+        RW_CORE_ASSERT(Exists(name), name + " not found");
         return assetsData.Assets[name];
     }
     std::unordered_map<std::string, Asset> AssetManager::GetAssets()

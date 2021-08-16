@@ -3,27 +3,24 @@
 
 #include "Game.h"
 
-
-class Sandbox : public Rosewood::Application
+class GameApplication : public Rosewood::Application
 {
 public:
 
-    Sandbox()
+    GameApplication()
     {
-        PushLayer(new TestGame::Game());
+        PushLayer(new Game::Game());
     }
 
-    ~Sandbox()
+    ~GameApplication()
     {
         Rosewood::Renderer2D::Shutdown();
-
     }
 };
 
 Rosewood::Application* Rosewood::CreateApplication()
 {
-    
-    return new Sandbox();
+    return new GameApplication();
 }
 
 

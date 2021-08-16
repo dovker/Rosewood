@@ -14,7 +14,13 @@ namespace Game
         {
             
         }
+    protected:
+        bool OnClientConnect(Rosewood::Ref<Rosewood::Connection<GameMessages>> client) override
+        {
+            return true;
+        }
     };
+
 }
 
 int main()

@@ -1,46 +1,10 @@
 {
-    "Tileset": {
-        "Archived": false,
-        "AssetType": "tx",
-        "Compressed": false,
-        "LoadOnInit": true,
-        "Path": "Tileset.png",
-        "PathType": "Project",
-        "Version": 0
-    },
-    "TempPlayer": {
-        "Archived": false,
-        "AssetType": "tx",
-        "Compressed": false,
-        "LoadOnInit": true,
-        "Path": "Idek.png",
-        "PathType": "Project",
-        "Version": 0
-    },
-    "Sword": {
-        "Archived": false,
-        "AssetType": "tx",
-        "Compressed": false,
-        "LoadOnInit": true,
-        "Path": "Sword.png",
-        "PathType": "Project",
-        "Version": 0
-    },
-    "neim": {
-        "Archived": true,
-        "AssetType": "tx",
-        "Compressed": false,
-        "LoadOnInit": true,
-        "Path": "grass.png",
-        "PathType": "Project",
-        "Version": 0
-    },
-    "Scene": {
+    "CameraScript": {
         "Archived": false,
         "AssetType": "tf",
         "Compressed": false,
         "LoadOnInit": true,
-        "Path": "Scene.yaml",
+        "Path": "Scripts/CameraController.lua",
         "PathType": "Project",
         "Version": 0
     },
@@ -53,12 +17,21 @@
         "PathType": "Project",
         "Version": 0
     },
-    "CameraScript": {
+    "Scene": {
         "Archived": false,
         "AssetType": "tf",
         "Compressed": false,
         "LoadOnInit": true,
-        "Path": "Scripts/CameraController.lua",
+        "Path": "Scene.yaml",
+        "PathType": "Project",
+        "Version": 0
+    },
+    "Sword": {
+        "Archived": false,
+        "AssetType": "tx",
+        "Compressed": false,
+        "LoadOnInit": true,
+        "Path": "Sword.png",
         "PathType": "Project",
         "Version": 0
     },
@@ -68,6 +41,33 @@
         "Compressed": false,
         "LoadOnInit": true,
         "Path": "Scripts/SwordScript.lua",
+        "PathType": "Project",
+        "Version": 0
+    },
+    "TempPlayer": {
+        "Archived": false,
+        "AssetType": "tx",
+        "Compressed": false,
+        "LoadOnInit": true,
+        "Path": "Idek.png",
+        "PathType": "Project",
+        "Version": 0
+    },
+    "Tileset": {
+        "Archived": false,
+        "AssetType": "tx",
+        "Compressed": false,
+        "LoadOnInit": true,
+        "Path": "Tileset.png",
+        "PathType": "Project",
+        "Version": 0
+    },
+    "neim": {
+        "Archived": true,
+        "AssetType": "tx",
+        "Compressed": false,
+        "LoadOnInit": true,
+        "Path": "grass.png",
         "PathType": "Project",
         "Version": 0
     }

@@ -3,7 +3,7 @@ workspace "Rosewood"
 
     --disablewarnings { "switch" }
     --disablewarnings { "#warnings" }
-
+    disablewarnings { "deprecated", }
     configurations
     {
         "Debug",
@@ -57,5 +57,6 @@ workspace "Rosewood"
     include "Rosewood"
     --include "Sandbox2D"
     --include "Sandbox3D"
-    --include "TestGame"
+    include "TestGame"
     include "Game/Server"
+    include "Game/Client"

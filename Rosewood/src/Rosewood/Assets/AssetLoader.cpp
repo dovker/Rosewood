@@ -49,7 +49,11 @@ namespace Rosewood
     {
         json j;
         std::ifstream ifs(packageDescriptorPath);
-        ifs >> j;
+        if(!std::filesystem::exists(packageDescriptorPath))
+        {
+            RW_CORE_ERROR("JSON IFSTREAM ERROR: Failed Reading the file {0}", packageDescriptorPath);        
+        } else
+            ifs >> j;
 
         for ( auto& keyValue : j.items() )
         {
