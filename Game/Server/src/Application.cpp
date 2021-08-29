@@ -19,6 +19,32 @@ namespace Game
         {
             return true;
         }
+
+        void OnMessage(Rosewood::Ref<Rosewood::Connection<GameMessages>> client, Rosewood::Message<GameMessages> message) override
+        {
+            std::cout<<'\n';
+            RW_CORE_INFO("Message Data: {0}, {1}", message.Header.Size, message.Header.Id);
+            switch (message.Header.Id)
+            {
+                case GameMessages::Misc_Hello:
+                {
+                    //char str[256];
+                    uint32_t integer;
+                    message >> integer;
+                    RW_INFO("Received a message from client {0}: {1}", client->GetID(), integer);
+                    
+                    break;
+                }
+                case GameMessages::Server_GetPing:
+                {
+                    uint64_t integer;
+                    message >> integer;
+                    RW_INFO("Received a notification from client {0}: {1}", client->GetID(), integer);
+                    
+                    break;
+                }
+            }
+        }
     };
 
 }
@@ -27,7 +53,7 @@ int main()
 {
     Rosewood::Log::Init();
 
-    Game::Server server(25567, true);
+    Game::Server server(60023, true);
     server.InitSSL(Rosewood::FileSystem::GetPath("certificate.crt"), Rosewood::FileSystem::GetPath("key.key"));
     server.Start();
 

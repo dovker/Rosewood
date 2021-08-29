@@ -131,11 +131,12 @@ namespace Rosewood
             return m_Socket.lowest_layer().is_open();
         }
 
-        bool Send(const Message<T>& msg)
+        //ASYNC
+        void Send(const Message<T>& msg)
         {
             asio::post(m_AsioContext, [this, msg]()
             {
-                bool writingMessage = !m_MessageOutQueue.Empty();
+                bool writingMessage = !m_MessageOutQueue.IsEmpty();
                 m_MessageOutQueue.PushBack(msg);
                 if(!writingMessage)
                     WriteHeader();
@@ -201,14 +202,14 @@ namespace Rosewood
                 {
                     if(!ec)
                     {
-                        if(m_TempMessageIn.Front().Header.Size > 0)
+                        if(m_MessageOutQueue.Front().Data.size() > 0)
                         {
                             WriteBody();
                         }
                         else
                         {
                             m_MessageOutQueue.PopFront();
-                            if(!m_MessageOutQueue.Empty())
+                            if(!m_MessageOutQueue.IsEmpty())
                             {
                                 WriteHeader();
                             }
@@ -234,7 +235,7 @@ namespace Rosewood
                     if(!ec)
                     {
                         m_MessageOutQueue.PopFront();
-                        if(!m_MessageOutQueue.Empty())
+                        if(!m_MessageOutQueue.IsEmpty())
                         {
                             WriteHeader();
                         }
@@ -246,9 +247,9 @@ namespace Rosewood
                     }
                 };
             if(m_Secure)
-                asio::async_write(m_Socket, asio::buffer(&m_MessageOutQueue.Front().Body.Data, m_MessageOutQueue.Front().Header.Size), fn);
+                asio::async_write(m_Socket, asio::buffer(m_MessageOutQueue.Front().Data.data(), m_MessageOutQueue.Front().Header.Size), fn);
             else
-                asio::async_write(m_Socket.next_layer(), asio::buffer(&m_MessageOutQueue.Front().Body.Data, m_MessageOutQueue.Front().Header.Size), fn);
+                asio::async_write(m_Socket.next_layer(), asio::buffer(m_MessageOutQueue.Front().Data.data(), m_MessageOutQueue.Front().Header.Size), fn);
         }
         //ASYNC
         void ReadValidation(ServerInterface<T>* server = nullptr)

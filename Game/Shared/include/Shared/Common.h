@@ -15,5 +15,7 @@ namespace Game
         Game_AddPlayer,
         Game_RemovePlayer,
         Game_UpdatePlayer,
+
+        Misc_Hello,
     };
 }

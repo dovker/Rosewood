@@ -26,13 +26,33 @@ namespace Game {
         Rosewood::AssetLoader::LoadAssets(Rosewood::FileSystem::GetPath("Index.json"));
 
         Rosewood::SceneManager::SetScene(Rosewood::Scene::Create());
-        client.Connect("127.0.0.1", 25567, true, Rosewood::FileSystem::GetPath("certificate.crt"));
+        client.Connect("127.0.0.1", 60023, true, Rosewood::FileSystem::GetPath("certificate.crt"));
     }
-
+    bool pressedPrev = false;
     void Game::OnUpdate(Rosewood::Timestep timestep)
     {
         if(client.IsConnected())
         {
+            if(!Rosewood::Input::IsKeyPressed(KEY_P) && pressedPrev)
+            {
+                Rosewood::Message<GameMessages> msg;
+                msg.Header.Id = GameMessages::Misc_Hello;
+                uint32_t integer = 74353458;
+                msg<<integer<<integer/2;
+                RW_INFO("Sent a message");
+                client.Send(msg);
+
+            }
+            if(Rosewood::Input::IsKeyPressed(KEY_F))
+            {
+                Rosewood::Message<GameMessages> msg;
+                msg.Header.Id = GameMessages::Server_GetPing;
+                uint64_t integer = 3;
+                msg<<integer;
+                RW_INFO("Sent a message 2");
+                client.Send(msg);
+
+            }
             Rosewood::SceneManager::OnUpdateRuntime(timestep);
 
             {
@@ -44,6 +64,7 @@ namespace Game {
 
             Rosewood::SceneManager::OnRenderRuntime();
         }    
+        pressedPrev = Rosewood::Input::IsKeyPressed(KEY_P);
     }
     
     void Game::OnDetach()

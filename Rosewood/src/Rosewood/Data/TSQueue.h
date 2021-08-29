@@ -15,12 +15,12 @@ namespace Rosewood
         const T& Front()
         {
             std::scoped_lock lock(m_MuxQueue);
-            return m_DeqQueue.front;
+            return m_DeqQueue.front();
         }
         const T& Back()
         {
             std::scoped_lock lock(m_MuxQueue);
-            return m_DeqQueue.back;
+            return m_DeqQueue.back();
         }
         void PushBack(const T& value)
         {

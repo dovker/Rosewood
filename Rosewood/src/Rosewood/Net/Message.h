@@ -19,7 +19,7 @@ namespace Rosewood
         MessageHeader<T> Header {};
         std::vector<byte> Data;
 
-        uint32_t GetSize() { return sizeof(MessageHeader<T>) + Data.size(); }
+        uint32_t GetSize() { return Data.size(); }
 
         friend std::ostream& operator << (std::ostream& os, const Message<T>& msg)
         {
@@ -38,7 +38,7 @@ namespace Rosewood
 
             std::memcpy(msg.Data.data() + i, &data, sizeof(DataType));
 
-            msg.Header.size = msg.size();
+            msg.Header.Size = msg.GetSize();
 
             return msg;
         }
@@ -54,7 +54,7 @@ namespace Rosewood
 
             msg.Data.resize(i);
 
-            msg.Header.size = msg.size();
+            msg.Header.Size = msg.GetSize();
 
             return msg;
         }		        
