@@ -1,2 +1,2 @@
-*.py linguist-detectable=false
+**.py linguist-detectable=false
 *.perl linguist-detectable=false
