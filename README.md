@@ -15,10 +15,10 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * ECS
 * File system and Compression
 * Lua Scripting
+* * Networking
+
 
 # Currently working on
-* Networking
-* Binary Serialization
 
 # Goals / To-do
 * Level editor
