@@ -1,9 +1,10 @@
 # Rosewood
 Rosewood Game Engine
 
-**Rosewood Engine** is a game engine created for learning purposes and GameJam games. The game engine started of following [The Cherno's Game Engine series](https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT) although has vastly moved away from it.
+**Rosewood Engine** is a game engine created for me to learn Graphics Programming and to learn how Game Engines work
 
 # Plan
+!! THIS GAME ENGINE IS NO LONGER BEING DEVELOPED !!
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.
 
 # Features
@@ -18,19 +19,7 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 * * Networking
 
 
-# Currently working on
-
-# Goals / To-do
-* Level editor
-* Animation and tweening
-* Scripted UI
-* Text rendering
-* Particle effects
-* SDL for Cross-Platform support
-* 3D Rendering
-* Support Vulkan, OpenGL ES and Metal
-* Physics engine
-* Multi-threading
+# Screenshots
 
 # Building
 ## All Platforms
