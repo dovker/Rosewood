@@ -4,13 +4,13 @@ Rosewood Game Engine
 **Rosewood Engine** is a game engine created for me to learn Graphics Programming and to learn how Game Engines work
 
 # Plan
-!! THIS GAME ENGINE IS NO LONGER BEING DEVELOPED !!
+!! THIS GAME ENGINE IS NO LONGER BEING DEVELOPED OR SUPPORTED !!
 My plan for this engine is to develop it to a point I can make an advanced 2D game and a simple 3D game with it, whilst learning Game Engine development, Design patterns, graphics programming, Advanced c++, problem solving.
 
 # Features
 * OpenGL Support
 * Cross-Platform (Tested on major desktop platforms)
-* 2D Rendering (Line Rendering to come in the future)
+* 2D Rendering
 * Asset managment system
 * 2D Audio support
 * ECS
@@ -21,11 +21,13 @@ My plan for this engine is to develop it to a point I can make an advanced 2D ga
 
 # Screenshots
 
-
+## Lua Scripting demonstration
+All the characters seen on this demonstration are being controled via a Lua Script
 
 https://user-images.githubusercontent.com/29017432/184543662-437f4487-839a-4301-a8f8-e27e1b23cb56.mov
 
-
+## Deferred pseudo-3D rendering
+What you're seeing here is an orthographic projection of 3D paper-fold like objects being lit by a deferred lighting system, emulating a lighting system seen on Eastward
 
 https://user-images.githubusercontent.com/29017432/184543668-893c5b6c-a754-4dc0-b502-7ff17cbf1a63.mov
 
